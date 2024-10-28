@@ -14,7 +14,7 @@
 *                                                                   
 * Input files:  SDTM: DM
 *              
-* Output files: adam.ADSL
+* Output files: adam.ADSL123456
 *               
 * Macros:       None
 *         
