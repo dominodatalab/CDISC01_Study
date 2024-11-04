@@ -1,6 +1,6 @@
 from flytekit import workflow
 from flytekit.types.file import FlyteFile
-from typing import TypeVar, NamedTuple
+from typing import TypeVar, NamedTuple, Tuple
 from flytekitplugins.domino.helpers import Input, Output, run_domino_job_task
 from flytekitplugins.domino.task import DominoJobConfig, DominoJobTask, GitRef, EnvironmentRevisionSpecification, EnvironmentRevisionType, DatasetSnapshot
 from flytekitplugins.domino.artifact import Artifact, DATA, MODEL, REPORT
@@ -9,15 +9,16 @@ from flytekitplugins.domino.artifact import Artifact, DATA, MODEL, REPORT
 # Enter the command below to run this Flow. There is a single Flow input parameter for the SDTM Dataset snapshot
 # pyflyte run --remote flow_1.py ADaM_only --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND
 
-ADaMDataArtifact = Artifact(name="ADaM Datasets", type=DATA)
-
-final_outputs = NamedTuple(
-   "final_outputs",
-    adsl_datasets=ADaMDatasetArtifact.File(name="adsl.sas7bdat")
-)
+DataArtifact = Artifact("ADaM", DATA)
 
 @workflow
-def ADaM_only(sdtm_dataset_snapshot: str): 
+def ADaM_only(sdtm_dataset_snapshot: str) -> Tuple[
+    DataArtifact.File(name="adsl.sas7bdat"),
+    DataArtifact.File(name="adae.sas7bdat"),
+    DataArtifact.File(name="adcm.sas7bdat"),
+    DataArtifact.File(name="adlb.sas7bdat"),
+    DataArtifact.File(name="admh.sas7bdat"),
+    DataArtifact.File(name="advs.sas7bdat")]: 
 
     #Crete ADSL dataset. The only input is the SDTM Dataset. 
     adsl_task = run_domino_job_task(
@@ -60,7 +61,7 @@ def ADaM_only(sdtm_dataset_snapshot: str):
         environment_name="SAS Analytics Pro",
     )
 
-    admh_taskk = run_domino_job_task(
+    admh_task = run_domino_job_task(
         flyte_task_name="Create ADMH Dataset",
         command="prod/adam_flows/ADMH.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
@@ -82,4 +83,4 @@ def ADaM_only(sdtm_dataset_snapshot: str):
 
     # Output from the task above will be used in the next step
 
-    return final_outputs(adsl_task.adsl_dataset)
+    return adsl_task["adsl_dataset"], adae_task["adae_dataset"], adcm_task["adcm_dataset"], adlb_task["adlb_dataset"], admh_task["admh_dataset"], advs_task["advs_dataset"]
