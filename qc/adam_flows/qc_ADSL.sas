@@ -43,6 +43,6 @@ data _null__;
 run;
 libname sdtm "&data_path.";
 
-data outputs.qc_adsl;
+data outputs.qc_adsl_dataset;
 	set sdtm.dm; *reading in the dm sas7bdat file from the SDTM Dataset which is fed in as Flow parameter.
 run;
