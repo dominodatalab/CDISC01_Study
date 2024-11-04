@@ -313,7 +313,7 @@ title3 "&DisplayTitle.";
 title4 "&Title1.";
 
 ** justify contents to decimal places;
-proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = outputs.t_pop_data;
+proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3};
         column  (order1 ageresults stat placebo low_dose high_dose);
         
         ** order variables;

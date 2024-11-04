@@ -415,7 +415,7 @@ title3 "&DisplayTitle.";
 title4 "&Title1.";
 
 ** justify contents to decimal places;
-proc report data = add_param_results_stat headline split = "*" style(report) = {width = 100% cellpadding = 3} out = outputs.t_vscat_data;
+proc report data = add_param_results_stat headline split = "*" style(report) = {width = 100% cellpadding = 3};
         column  (order1 order2 param_results stat placebo low_dose high_dose);
         
         ** order variables;

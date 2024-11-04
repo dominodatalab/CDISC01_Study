@@ -397,8 +397,7 @@ title4 "&Title1.";
 
 ** justify contents to decimal places;
 proc report data = final headline split = "*" 
-			style(report) = {width = 100%} 
-			out = outputs.t_ae_rel_data;
+			style(report) = {width = 100%};
         column  aesoc
                    aedecod
                    indent soc_pt_disp &byvar trt_99_npp;
