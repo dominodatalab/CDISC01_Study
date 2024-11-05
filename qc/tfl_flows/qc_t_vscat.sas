@@ -46,7 +46,7 @@ options
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/inputs/<NAME OF OUTPUT> */ 
 
 /* Mandatory step to add sas7bdat file extension to inputs */
-  x "mv /workflow/inputs/qc_advs /workflow/inputs/qc_advs.sas7bdat";
+  x "mv /workflow/inputs/qc_advs_dataset /workflow/inputs/qc_advs_dataset.sas7bdat";
 
 * Assign Metadata Dataset;
   libname metadata "/mnt/data/snapshots/METADATA/1";
@@ -115,7 +115,7 @@ options orientation = landscape nonumber nodate nobyline;
 ** vital signs adam and include required variables for table;
 data advs (rename = (visitnum = avisitn actarm = trta vstest = param vstestcd = paramcd vsstresn = aval));
 	length trtan paramn 8. crit1cd $1;
-	set inputs.qc_advs;
+	set inputs.qc_advs_dataset;
 	
 	if actarm = "Placebo" then trtan = 1;
 	else if actarm = "Xanomeline Low Dose" then trtan = 2;
