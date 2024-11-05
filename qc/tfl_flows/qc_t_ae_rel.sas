@@ -52,7 +52,7 @@ options
   x "mv /workflow/inputs/qc_adae_dataset /workflow/inputs/qc_adae_dataset.sas7bdat";
 
 * Assign Metadata Dataset;
-  libname metadata "/mnt/data/snapshots/METADATA/1";
+  libname metadata "/mnt/data/METADATA";
 
 
 * Assign values to these macro variables. I have no idea where they are coming from;
