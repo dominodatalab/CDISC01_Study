@@ -60,7 +60,7 @@ options
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/inputs/<NAME OF OUTPUT> */ 
 
 /* Mandatory step to add sas7bdat file extension to inputs */
-  x "mv /workflow/inputs/adsl /workflow/inputs/adsl.sas7bdat";
+  x "mv /workflow/inputs/adsl_dataset /workflow/inputs/adsl_dataset.sas7bdat";
 
 /* Read in the METADATA data path input from the Flow input parameter */
 data _null__;
@@ -127,7 +127,7 @@ options orientation = landscape nonumber nodate nobyline;
 ** adsl and include required variables for table;
 data adsl_all (rename = (actarm = trta));
 	length trtan agen sexn 8.;
-	set inputs.adsl;
+	set inputs.adsl_dataset;
 	
 	if actarm = "Placebo" then trtan = 1;
 	else if actarm = "Xanomeline Low Dose" then trtan = 2;
@@ -313,7 +313,7 @@ title3 "&DisplayTitle.";
 title4 "&Title1.";
 
 ** justify contents to decimal places;
-proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = outputs.t_pop_data;
+proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = outputs.t_pop_data;;
         column  (order1 ageresults stat placebo low_dose high_dose);
         
         ** order variables;

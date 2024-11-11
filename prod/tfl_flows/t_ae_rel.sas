@@ -61,8 +61,8 @@ options
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/inputs/<NAME OF OUTPUT> */ 
 
 /* Mandatory step to add sas7bdat file extension to inputs */
-  x "mv /workflow/inputs/adsl /workflow/inputs/adsl.sas7bdat";
-  x "mv /workflow/inputs/adae /workflow/inputs/adae.sas7bdat";
+  x "mv /workflow/inputs/adsl_dataset /workflow/inputs/adsl_dataset.sas7bdat";
+  x "mv /workflow/inputs/adae_dataset /workflow/inputs/adae_dataset.sas7bdat";
 
 /* Read in the METADATA data path input from the Flow input parameter */
 data _null__;
@@ -136,7 +136,7 @@ run;
 
 data teae (rename = (actarm = trta));
     length relcat $20;
-    set inputs.adae;
+    set inputs.adae_dataset;
     
 	if aerel in ('POSSIBLE' 'PROBABLE' 'DEFINITE') then relcat = 'Related';
     else relcat = 'Not Related';
@@ -148,7 +148,7 @@ run;
 
 ** exclude non-treated subjects;
 data adsl1 (rename = (actarm = trta) where = (trtan ^= .));
-    set inputs.adsl;
+    set inputs.adsl_dataset;
 	
 	if actarm = "Placebo" then trtan = 1;
 	else if actarm = "Xanomeline Low Dose" then trtan = 2;
@@ -397,8 +397,7 @@ title4 "&Title1.";
 
 ** justify contents to decimal places;
 proc report data = final headline split = "*" 
-			style(report) = {width = 100%} 
-			out = outputs.t_ae_rel_data;
+			style(report) = {width = 100%};
         column  aesoc
                    aedecod
                    indent soc_pt_disp &byvar trt_99_npp;

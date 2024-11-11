@@ -46,10 +46,10 @@ options
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/inputs/<NAME OF OUTPUT> */ 
 
 /* Mandatory step to add sas7bdat file extension to inputs */
-  x "mv /workflow/inputs/qc_adsl /workflow/inputs/qc_adsl.sas7bdat";
+  x "mv /workflow/inputs/qc_adsl_dataset /workflow/inputs/qc_adsl_dataset.sas7bdat";
 
 * Assign Metadata Dataset;
-  libname metadata "/mnt/data/snapshots/METADATA/1";
+  libname metadata "/mnt/data/METADATA";
 
 
 * Assign values to these macro variables. I have no idea where they are coming from;
@@ -118,7 +118,7 @@ options orientation = landscape nonumber nodate nobyline;
 ** adsl and include required variables for table;
 data adsl_all (rename = (actarm = trta));
 	length trtan agen sexn 8.;
-	set inputs.qc_adsl;
+	set inputs.qc_adsl_dataset;
 	
 	if actarm = "Placebo" then trtan = 1;
 	else if actarm = "Xanomeline Low Dose" then trtan = 2;

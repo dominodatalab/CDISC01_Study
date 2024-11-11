@@ -39,11 +39,11 @@
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/inputs/<NAME OF OUTPUT> */ 
 
 /* Mandatory step to add sas7bdat file extension to inputs */
-  x "mv /workflow/inputs/adsl /workflow/inputs/adsl.sas7bdat";
+  x "mv /workflow/inputs/adsl_dataset /workflow/inputs/adsl_dataset.sas7bdat";
 
 /* Read in the SDTM data path input from the Flow input parameter */
 data _null__;
-    infile '/workflow/inputs/sdtm_dataset_snapshot' truncover;
+    infile '/workflow/inputs/sdtm_snapshot_task_input' truncover;
     input data_path $CHAR100.;
     call symputx('data_path', data_path, 'G');
 run;
@@ -51,8 +51,8 @@ libname sdtm "&data_path.";
 *********;
 
 
-data adae;
-	merge inputs.adsl sdtm.ae (in = ae);
+data adae_dataset;
+	merge inputs.adsl_dataset sdtm.ae (in = ae);
 		by usubjid;
 	if ae;
 	if 1 <= aestdy < 13 then visitnum = 3;
@@ -60,11 +60,11 @@ data adae;
 	else if 162 <= aestdy then visitnum = 12;
 run;
 
-proc sort data = adae out = adae_s;
+proc sort data = adae_dataset out = adae_s;
 	by usubjid visitnum;
 run;
 
-data outputs.adae;
+data outputs.adae_dataset;
 	merge adae_s (in = ae) sdtm.ex;
 	by usubjid visitnum;
 	if ae;

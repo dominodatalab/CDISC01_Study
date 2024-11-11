@@ -14,7 +14,7 @@
 *                                                                   
 * Input files:  SDTM: DM
 *              
-* Output files: adam.ADSL
+* Output files: adam.ADSL123456
 *               
 * Macros:       None
 *         
@@ -43,6 +43,6 @@ data _null__;
 run;
 libname sdtm "&data_path.";
 
-data outputs.adsl;
+data outputs.adsl_dataset;
 	set sdtm.dm; *reading in the dm sas7bdat file from the SDTM Dataset which is fed in as Flow parameter.
 run;

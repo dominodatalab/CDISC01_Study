@@ -37,12 +37,12 @@
 
 /* Read in the SDTM data path input from the Flow input parameter */
 data _null__;
-    infile '/workflow/inputs/sdtm_dataset_snapshot' truncover;
+    infile '/workflow/inputs/sdtm_snapshot_task_input' truncover;
     input data_path $CHAR100.;
     call symputx('data_path', data_path, 'G');
 run;
 libname sdtm "&data_path.";
 
-data outputs.qc_adsl;
+data outputs.qc_adsl_dataset;
 	set sdtm.dm; *reading in the dm sas7bdat file from the SDTM Dataset which is fed in as Flow parameter.
 run;
