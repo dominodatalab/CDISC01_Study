@@ -26,6 +26,8 @@ def ADaM_only(sdtm_dataset_snapshot: str):
         output_specs=[Output(name="adsl_dataset", type=DataArtifact.File(name="adsl.sas7bdat"))],
         use_project_defaults_for_omitted=True,
         environment_name="SAS Analytics Pro",
+        cache=True,
+        cache_version="1.0"
        # dataset_snapshots=[DatasetSnapshot(Name=sdtm_dataset,Version=sdtm_dataset_snapshot_number)]
     )
 
@@ -38,6 +40,8 @@ def ADaM_only(sdtm_dataset_snapshot: str):
         output_specs=[Output(name="adae_dataset", type=DataArtifact.File(name="adae.sas7bdat"))],
         use_project_defaults_for_omitted=True,
         environment_name="SAS Analytics Pro",
+        cache=True,
+        cache_version="1.0"
         #dataset_snapshots=[DatasetSnapshot(Name=sdtm_dataset,Version=sdtm_dataset_snapshot_number)]
     )
     
@@ -49,6 +53,8 @@ def ADaM_only(sdtm_dataset_snapshot: str):
         output_specs=[Output(name="adcm_dataset", type=DataArtifact.File(name="adcm.sas7bdat"))],
         use_project_defaults_for_omitted=True,
         environment_name="SAS Analytics Pro",
+        cache=True,
+        cache_version="1.0"
       #  dataset_snapshots=[DatasetSnapshot(Name=sdtm_dataset,Version=sdtm_dataset_snapshot_number)]
     )
 
@@ -60,6 +66,8 @@ def ADaM_only(sdtm_dataset_snapshot: str):
         output_specs=[Output(name="adlb_dataset", type=DataArtifact.File(name="adlb.sas7bdat"))],
         use_project_defaults_for_omitted=True,
         environment_name="SAS Analytics Pro",
+        cache=True,
+        cache_version="1.0"
         #dataset_snapshots=[DatasetSnapshot(Name=sdtm_dataset,Version=sdtm_dataset_snapshot_number)]
     )
 
@@ -71,6 +79,8 @@ def ADaM_only(sdtm_dataset_snapshot: str):
         output_specs=[Output(name="admh_dataset", type=DataArtifact.File(name="admh.sas7bdat"))],
         use_project_defaults_for_omitted=True,
         environment_name="SAS Analytics Pro",
+        cache=True,
+        cache_version="1.0"
       #  dataset_snapshots=[DatasetSnapshot(Name=sdtm_dataset,Version=sdtm_dataset_snapshot_number)]
     )
 
@@ -82,6 +92,8 @@ def ADaM_only(sdtm_dataset_snapshot: str):
         output_specs=[Output(name="advs_dataset", type=DataArtifact.File(name="advs.sas7bdat"))],
         use_project_defaults_for_omitted=True,
         environment_name="SAS Analytics Pro",
+        cache=True,
+        cache_version="1.0"
         #dataset_snapshots=[DatasetSnapshot(Name=sdtm_dataset,Version=sdtm_dataset_snapshot_number)]
     )
 
