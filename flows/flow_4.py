@@ -7,7 +7,7 @@ from flytekitplugins.domino.artifact import Artifact, DATA, MODEL, REPORT
 
 
 # # Enter the command below to run this Flow. There are two Flow input parameters. One for the SDTM Dataset snapshot and one for the METADATA dataset snapshot.
-# pyflyte run --remote --name test-run flow_4.py ADaM_TFL_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
+# pyflyte run --remote flow_4.py ADaM_TFL_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
 
 DataArtifact = Artifact("ADaM Datasets", DATA)
 QCDataArtifact = Artifact("QC ADaM Datasets", DATA)
