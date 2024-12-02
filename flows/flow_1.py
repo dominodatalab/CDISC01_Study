@@ -9,7 +9,7 @@ sdtm_dataset="SDTMUNBLIND"
 sdtm_dataset_snapshot_number=1
 
 # Enter the command below to run this Flow. There is a single Flow input parameter for the SDTM Dataset snapshot
-# pyflyte run --remote flow_1.py ADaM_only --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND 
+# pyflyte run --remote --name test-run flow_1.py ADaM_only --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND 
 
 
 DataArtifact = Artifact("ADaM Datasets", DATA)
