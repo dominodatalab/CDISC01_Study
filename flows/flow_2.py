@@ -97,14 +97,4 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         environment_name="SAS Analytics Pro"
     )
 
-    t_vscat_task = run_domino_job_task(
-        flyte_task_name="Create T_VSCAT Report",
-        command="prod/tfl_flows/t_vscat.sas",
-        inputs=[Input(name="advs_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=advs_task["advs_dataset"]),
-                Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
-        output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat.pdf"))],
-        use_project_defaults_for_omitted=True,
-        environment_name="SAS Analytics Pro"
-    )
-
     return
