@@ -25,6 +25,7 @@
 *  08JUN2022   | Jake Tombeur   | Original version
 \*****************************************************************************/
 
+options user=work;
 options errorcheck=normal noerrorabend;
 
 %let _STUDYID = CDISC01;
