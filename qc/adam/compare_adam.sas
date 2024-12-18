@@ -78,9 +78,8 @@ data _null_;
    if &syserr in (4, 6) then call symputx('syserr', 0);
 run;
 
-proc options option=locale; run;
+proc options option=config; run;
 
-proc options option=sashelp; run;
 
 
 
