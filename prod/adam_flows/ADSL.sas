@@ -32,23 +32,9 @@
 *********;
 
 
-/* Retrieve the value of the DOMINO_IS_WORKFLOW_JOB environment variable */
-%let is_workflow_job = %sysget(DOMINO_IS_WORKFLOW_JOB);
-
-/* Check the value and set the libraries accordingly */
-%macro set_libpaths;
-    %if &is_workflow_job = true %then %do;
-        libname inputs "/workflow/inputs";
-        libname outputs "/workflow/outputs";
-    %end;
-    %else %if &is_workflow_job = false %then %do;
-        libname inputs "/mnt/imported/data/SDTMBLIND";
-        libname outputs "/mnt/artifacts";
-    %end;
-%mend set_libpaths;
-
-/* Execute the macro to set library paths */
-%set_libpaths;
+* Assign read/write folders for Flows inputs/outputs;
+  libname inputs "/workflow/inputs"; /* All inputs live in this directory at workflow/inputs/<NAME OF INPUT> */ 
+  libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/outputs/<NAME OF OUTPUT> */ 
 
 /* Read in the SDTM data path input from the Flow input parameter */
 data _null__;
