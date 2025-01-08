@@ -1,7 +1,7 @@
 import os
 import shutil
 
-SDTM_DATA_PATH = workflow/inputs/sdtm_snapshot_task_input
+SDTM_DATA_PATH = "/workflow/inputs/sdtm_snapshot_task_input"
 OUTPUT_PATH = "/workflow/outputs"
 
 src_file = os.path.join(SDTM_DATA_PATH, "ae.sas7bdat")
