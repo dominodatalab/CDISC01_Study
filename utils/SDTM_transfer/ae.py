@@ -1,9 +1,12 @@
 import os
 import shutil
+from argparse import ArgumentParser
 
+parser = ArgumentParser(description='SDTM data movement script')
+parser.add_argument('--sdtm_snapshot_task_input', type=str)
+args = parser.parse_args()
 
-
-SDTM_DATA_PATH = os.environ["sdtm_snapshot_task_input"]
+SDTM_DATA_PATH = args.sdtm_snapshot_task_input
 OUTPUT_PATH = "/workflow/outputs"
 
 src_file = os.path.join(SDTM_DATA_PATH, "ae.sas7bdat")
