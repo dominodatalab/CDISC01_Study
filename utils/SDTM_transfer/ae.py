@@ -3,7 +3,10 @@ import shutil
 from argparse import ArgumentParser
 
 parser = ArgumentParser(description='SDTM data movement script')
-parser.add_argument('--sdtm_snapshot_task_input', type=str)
+parser.add_argument('--sdtm_snapshot_task_input',
+                    type=str,
+                    default="/mnt/imported/data/SDTMBLIND",
+                    help="Path to SDTM data directory (default: /mnt/imported/data/SDTMBLIND)")
 args = parser.parse_args()
 
 SDTM_DATA_PATH = args.sdtm_snapshot_task_input
