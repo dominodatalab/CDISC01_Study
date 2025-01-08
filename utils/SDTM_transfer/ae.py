@@ -1,7 +1,6 @@
 import os
 import shutil
 from argparse import ArgumentParser
-from flows import read_input, get_output_location
 
 parser = ArgumentParser(description='SDTM data movement script')
 parser.add_argument('--sdtm_dataset_snapshot', type=str)
