@@ -1,19 +1,24 @@
 import os
 import shutil
-from argparse import ArgumentParser
 
-parser = ArgumentParser(description='SDTM data movement script')
-parser.add_argument('--sdtm_dataset_snapshot', type=str)
-args = parser.parse_args()
+# The name of the Flow input, which Domino places into a file blob under /workflow/inputs
+task_input_name = "sdtm_snapshot_task_input"
+input_location = f"/workflow/inputs/{task_input_name}"
 
-SDTM_DATA_PATH = args.sdtm_dataset_snapshot
-OUTPUT_PATH = "/workflow/outputs"
 
-src_file = os.path.join(SDTM_DATA_PATH, "ae.sas7bdat")
-dst_file = os.path.join(OUTPUT_PATH, "ae.sas7bdat")
+# 1. Read the directory path fed as a Launch parameter
+with open(input_location, "r") as file:
+    sdtm_dir = file.read().strip()
 
-if os.path.exists(src_file):
-    shutil.copy(src_file, dst_file)
-    print("File moved successfully.")
+# 2. Construct the full path to ae.sas7bdat
+ae_file_path = os.path.join(sdtm_dir, "ae.sas7bdat")
+
+# 3. Copy the file to /workflow/outputs
+output_file_path = "/workflow/outputs/ae.sas7bdat"
+if os.path.exists(ae_file_path):
+    shutil.copy(ae_file_path, output_file_path)
+    print(f"Copied {ae_file_path} to {output_file_path}")
 else:
-    print(f"File not found: {src_file}")
+    print(f"File not found: {ae_file_path}")
+
+    
