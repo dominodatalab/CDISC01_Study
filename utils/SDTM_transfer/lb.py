@@ -11,10 +11,10 @@ with open(input_location, "r") as file:
     sdtm_dir = file.read().strip()
 
 # 2. Construct the full path to the SDTM dataset
-file_path = os.path.join(sdtm_dir, "ex.sas7bdat")
+file_path = os.path.join(sdtm_dir, "lb.sas7bdat")
 
 # 3. Copy the file to /workflow/outputs
-output_file_path = "/workflow/outputs/ex.sas7bdat"
+output_file_path = "/workflow/outputs/lb.sas7bdat"
 if os.path.exists(file_path):
     shutil.copy(file_path, output_file_path)
     print(f"Copied {file_path} to {output_file_path}")
