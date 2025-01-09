@@ -23,6 +23,6 @@ def sdtm_to_adam(sdtm_dataset_snapshot: str):
         use_project_defaults_for_omitted=True,
         environment_name="6.0 Restricted Domino Standard Environment Py3.10 R4.4",
         cache=True,
-        cache_version="1.0"
+        cache_version="2.0"
     )
     return
