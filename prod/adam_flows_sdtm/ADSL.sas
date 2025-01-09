@@ -31,19 +31,13 @@
 *%include "/mnt/code/domino_flows.sas";
 *********;
 
-
 * Assign read/write folders for Flows inputs/outputs;
   libname inputs "/workflow/inputs"; /* All inputs live in this directory at workflow/inputs/<NAME OF INPUT> */ 
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/outputs/<NAME OF OUTPUT> */ 
 
-/* Read in the SDTM data path input from the Flow input parameter */
-data _null__;
-    infile '/workflow/inputs/sdtm_snapshot_task_input' truncover;
-    input data_path $CHAR100.;
-    call symputx('data_path', data_path, 'G');
-run;
-libname sdtm "&data_path.";
+/* Mandatory step to add sas7bdat file extension to inputs */
+  x "mv /workflow/inputs/dm /workflow/inputs/dm.sas7bdat";
 
 data outputs.adsl_dataset;
-	set sdtm.dm; *reading in the dm sas7bdat file from the SDTM Dataset which is fed in as Flow parameter.
+	set inputs.dm; *reading in the dm sas7bdat file from the SDTM Dataset which is fed in as Flow parameter.
 run;
