@@ -25,4 +25,40 @@ def sdtm_to_adam(sdtm_dataset_snapshot: str):
         cache=True,
         cache_version="2.0"
     )
+
+     # Move cm from Dataset to Flows node
+    cm_task = run_domino_job_task(
+        flyte_task_name="cm SDTM",
+        command="utils/SDTM_transfer/cm.py",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot)],
+        output_specs=[Output(name="cm", type=FlyteFile[TypeVar('sas7bdat')])],
+        use_project_defaults_for_omitted=True,
+        environment_name="6.0 Restricted Domino Standard Environment Py3.10 R4.4",
+        cache=True,
+        cache_version="2.0"
+    )
+
+     # Move dm from Dataset to Flows node
+    dm_task = run_domino_job_task(
+        flyte_task_name="dm SDTM",
+        command="utils/SDTM_transfer/dm.py",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot)],
+        output_specs=[Output(name="dm", type=FlyteFile[TypeVar('sas7bdat')])],
+        use_project_defaults_for_omitted=True,
+        environment_name="6.0 Restricted Domino Standard Environment Py3.10 R4.4",
+        cache=True,
+        cache_version="2.0"
+    )
+
+     # Move ds from Dataset to Flows node
+    ds_task = run_domino_job_task(
+        flyte_task_name="ds SDTM",
+        command="utils/SDTM_transfer/ds.py",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot)],
+        output_specs=[Output(name="ds", type=FlyteFile[TypeVar('sas7bdat')])],
+        use_project_defaults_for_omitted=True,
+        environment_name="6.0 Restricted Domino Standard Environment Py3.10 R4.4",
+        cache=True,
+        cache_version="2.0"
+    )
     return

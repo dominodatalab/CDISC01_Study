@@ -10,15 +10,15 @@ input_location = f"/workflow/inputs/{task_input_name}"
 with open(input_location, "r") as file:
     sdtm_dir = file.read().strip()
 
-# 2. Construct the full path to ae.sas7bdat
-ae_file_path = os.path.join(sdtm_dir, "ds.sas7bdat")
+# 2. Construct the full path to the SDTM dataset
+file_path = os.path.join(sdtm_dir, "ds.sas7bdat")
 
 # 3. Copy the file to /workflow/outputs
 output_file_path = "/workflow/outputs/ds.sas7bdat"
-if os.path.exists(ae_file_path):
-    shutil.copy(ae_file_path, output_file_path)
-    print(f"Copied {ae_file_path} to {output_file_path}")
+if os.path.exists(file_path):
+    shutil.copy(file_path, output_file_path)
+    print(f"Copied {file_path} to {output_file_path}")
 else:
-    print(f"File not found: {ae_file_path}")
+    print(f"File not found: {file_path}")
 
     
