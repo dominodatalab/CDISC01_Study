@@ -22,16 +22,68 @@ DataArtifact = Artifact("ADaM Datasets", DATA)
 @workflow
 def adsl(sdtm_dataset_snapshot: str):
 
-    #Crete ADSL dataset. The only input is the SDTM Dataset. 
     adsl_task = run_domino_job_task(
         flyte_task_name="Create ADSL Dataset",
-        command="ADSLd.sas",
+        command="prod/adam/ADSL.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot)],
         output_specs=[Output(name="adsl_dataset", type=DataArtifact.File(name="adsl", type="sas7bdat"))],
-        dataset_snapshots=[DatasetSnapshot(Name=sdtm_dataset,Version=sdtm_dataset_snapshot_version)],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+ 
+    adae_task = run_domino_job_task(
+        flyte_task_name="Create ADAE Dataset",
+        command="prod/adam/ADAE.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
+        output_specs=[Output(name="adae_dataset", type=DataArtifact.File(name="adae", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+    
+    adcm_task = run_domino_job_task(
+        flyte_task_name="Create ADCM Dataset",
+        command="prod/adam/ADCM.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
+        output_specs=[Output(name="adcm_dataset", type=DataArtifact.File(name="adcm", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         use_project_defaults_for_omitted=True
     )
 
+    adlb_task = run_domino_job_task(
+        flyte_task_name="Create ADLB Dataset",
+        command="prod/adam/ADLB.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
+        output_specs=[Output(name="adlb_dataset", type=DataArtifact.File(name="adlb", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+
+    admh_task = run_domino_job_task(
+        flyte_task_name="Create ADMH Dataset",
+        command="prod/adam/ADMH.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
+        output_specs=[Output(name="admh_dataset", type=DataArtifact.File(name="admh", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+
+    advs_task = run_domino_job_task(
+        flyte_task_name="Create ADVS Dataset",
+        command="prod/adam/ADVS.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
+        output_specs=[Output(name="advs_dataset", type=DataArtifact.File(name="advs", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
     return
