@@ -12,7 +12,7 @@ hardware_tier_name="Small"
 
 
 # Enter the command below to run this Flow. There is a single Flow input parameter for the SDTM Dataset snapshot
-# pyflyte run --remote ./flows/flow_3.py ADaM_only_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND
+# pyflyte run --remote ./flows/dev/flow_compare.py ADaM_only_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND
 
 # If you want to give the run a name, then use this command and replace the MY_CUSTOM_NAME argument
 # pyflyte run --remote --name MY_CUSTOM_NAME ./flows/flow_3.py ADaM_only_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND
@@ -21,6 +21,8 @@ hardware_tier_name="Small"
 # Define two Flow Artifacts called ADaM Dataset and QC ADaM Dataset to tag and group ADaM outputs respectively
 DataArtifact = Artifact("ADaM Datasets", DATA)
 QCDataArtifact = Artifact("QC ADaM Datasets", DATA)
+ReportArtifact = Artifact("Prod/QC ADaM Compare PDF Report", REPORT)
+
 
 @workflow
 def ADaM_only_QC(sdtm_dataset_snapshot: str):
@@ -153,6 +155,29 @@ def ADaM_only_QC(sdtm_dataset_snapshot: str):
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
                 Input(name="qc_adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adsl_task["qc_adsl_dataset"])],
         output_specs=[Output(name="qc_advs_dataset", type=QCDataArtifact.File(name="qc_advs", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+
+    compare_task = run_domino_job_task(
+        flyte_task_name="Compare PROD and QC ADaM Datasets",
+        command="runSas.sh qc/adam/compare_adam_flows.sas",
+        inputs=[Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"]),
+                Input(name="adae_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adae_task["adae_dataset"]),
+                Input(name="adcm_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adcm_task["adcm_dataset"]),
+                Input(name="adlb_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adlb_task["adlb_dataset"]),
+                Input(name="admh_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=admh_task["admh_dataset"]),
+                Input(name="advs_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=advs_task["advs_dataset"]),
+                Input(name="qc_adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adsl_task["qc_adsl_dataset"]),
+                Input(name="qc_adae_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adae_task["qc_adae_dataset"]),
+                Input(name="qc_adcm_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adcm_task["qc_adcm_dataset"]),
+                Input(name="qc_adlb_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adlb_task["qc_adlb_dataset"]),
+                Input(name="qc_admh_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_admh_task["qc_admh_dataset"]),
+                Input(name="qc_advs_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_advs_task["qc_advs_dataset"])
+                ],
+        output_specs=[Output(name="compare", type=ReportArtifact.File(name="compare", type="pdf")),
+                      Output(name="compare", type=FlyteFile[TypeVar('sas7bdat')])],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         use_project_defaults_for_omitted=True

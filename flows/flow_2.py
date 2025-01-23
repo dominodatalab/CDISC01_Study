@@ -27,7 +27,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
 
     adsl_task = run_domino_job_task(
         flyte_task_name="Create ADSL Dataset",
-        command="prod/adam_flows/ADSL.sas",
+        command="prod/adam/ADSL.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot)],
         output_specs=[Output(name="adsl_dataset", type=DataArtifact.File(name="adsl", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
@@ -37,7 +37,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
 
     adae_task = run_domino_job_task(
         flyte_task_name="Create ADAE Dataset",
-        command="prod/adam_flows/ADAE.sas",
+        command="prod/adam/ADAE.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
                 Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
         output_specs=[Output(name="adae_dataset", type=DataArtifact.File(name="adae", type="sas7bdat"))],
@@ -48,7 +48,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
     
     adcm_task = run_domino_job_task(
         flyte_task_name="Create ADCM Dataset",
-        command="prod/adam_flows/ADCM.sas",
+        command="prod/adam/ADCM.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
                 Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
         output_specs=[Output(name="adcm_dataset", type=DataArtifact.File(name="adcm", type="sas7bdat"))],
@@ -59,7 +59,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
 
     adlb_task = run_domino_job_task(
         flyte_task_name="Create ADLB Dataset",
-        command="prod/adam_flows/ADLB.sas",
+        command="prod/adam/ADLB.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
                 Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
         output_specs=[Output(name="adlb_dataset", type=DataArtifact.File(name="adlb", type="sas7bdat"))],
@@ -70,7 +70,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
 
     admh_task = run_domino_job_task(
         flyte_task_name="Create ADMH Dataset",
-        command="prod/adam_flows/ADMH.sas",
+        command="prod/adam/ADMH.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
                 Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
         output_specs=[Output(name="admh_dataset", type=DataArtifact.File(name="admh", type="sas7bdat"))],
@@ -81,7 +81,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
 
     advs_task = run_domino_job_task(
         flyte_task_name="Create ADVS Dataset",
-        command="prod/adam_flows/ADVS.sas",
+        command="prod/adam/ADVS.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
                 Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"])],
         output_specs=[Output(name="advs_dataset", type=DataArtifact.File(name="advs", type="sas7bdat"))],
@@ -92,7 +92,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
 
     t_pop_task = run_domino_job_task(
         flyte_task_name="Create T_POP Report",
-        command="prod/tfl_flows/t_pop.sas",
+        command="prod/tfl/t_pop.sas",
         inputs=[Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
         output_specs=[Output(name="t_pop", type=ReportArtifact.File(name="t_pop", type="pdf"))],
@@ -103,7 +103,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
 
     t_ae_rel_task = run_domino_job_task(
         flyte_task_name="Create T_AE_REL Report",
-        command="prod/tfl_flows/t_ae_rel.sas",
+        command="prod/tfl/t_ae_rel.sas",
         inputs=[Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"]),
                 Input(name="adae_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adae_task["adae_dataset"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
@@ -115,7 +115,7 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
 
     t_vscat_task = run_domino_job_task(
         flyte_task_name="Create T_VSCAT Report",
-        command="prod/tfl_flows/t_vscat.sas",
+        command="prod/tfl/t_vscat.sas",
         inputs=[Input(name="advs_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=advs_task["advs_dataset"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
         output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat", type="pdf"))],
