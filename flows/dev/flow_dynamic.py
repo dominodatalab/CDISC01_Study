@@ -13,7 +13,7 @@ hardware_tier_name="Small" # What hardware tier your Flow Job uses.
 environment_name="SAS Analytics Pro" # What Compute Environment your Flow Job uses.
 
 # Enter the command below to run this Flow. There is a single Flow input parameter for the SDTM Dataset snapshot
-# pyflyte run --remote flow_dynamic.py adsl --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND 
+# pyflyte run --remote ./flows/dev/flow_dynamic.py adsl --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND 
 
 
 DataArtifact = Artifact("ADaM Datasets", DATA)
@@ -27,13 +27,11 @@ def adsl(sdtm_dataset_snapshot: str):
         flyte_task_name="Create ADSL Dataset",
         command="ADSLd.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot)],
-        output_specs=[Output(name="adsl_dataset", type=DataArtifact.File(name="adsl.sas7bdat"))],
+        output_specs=[Output(name="adsl_dataset", type=DataArtifact.File(name="adsl", type="sas7bdat"))],
         dataset_snapshots=[DatasetSnapshot(Name=sdtm_dataset,Version=sdtm_dataset_snapshot_version)],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True,
-        #cache=True,
-        #cache_version="1.0"
+        use_project_defaults_for_omitted=True
     )
 
     return
