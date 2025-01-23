@@ -17,6 +17,7 @@ environment_name="SAS Analytics Pro" # What Compute Environment your Flow Job us
 
 
 DataArtifact = Artifact("ADaM Datasets", DATA)
+QCDataArtifact = Artifact("QC ADaM Datasets", DATA)
 
 
 @workflow
@@ -86,4 +87,72 @@ def adsl(sdtm_dataset_snapshot: str):
         environment_name=environment_name,
         use_project_defaults_for_omitted=True
     )
-    return
+
+    #QC 
+    qc_adsl_task = run_domino_job_task(
+        flyte_task_name="Create QC ADSL Dataset",
+        command="qc/adam/qc_ADSL.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot)],
+        output_specs=[Output(name="qc_adsl_dataset", type=QCDataArtifact.File(name="qc_adsl", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True,
+    ) 
+ 
+    #QC 
+    qc_adae_task = run_domino_job_task(
+        flyte_task_name="Create QC ADAE Dataset",
+        command="qc/adam/qc_ADAE.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="qc_adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adsl_task["qc_adsl_dataset"])],
+        output_specs=[Output(name="qc_adae_dataset", type=QCDataArtifact.File(name="qc_adae", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+    #QC 
+    qc_adcm_task = run_domino_job_task(
+        flyte_task_name="Create QC ADCM Dataset",
+        command="qc/adam/qc_ADCM.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="qc_adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adsl_task["qc_adsl_dataset"])],
+        output_specs=[Output(name="qc_adcm_dataset", type=QCDataArtifact.File(name="qc_adcm", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+    #QC 
+    qc_adlb_task = run_domino_job_task(
+        flyte_task_name="Create QC ADLB Dataset",
+        command="qc/adam/qc_ADLB.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="qc_adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adsl_task["qc_adsl_dataset"])],
+        output_specs=[Output(name="qc_adlb_dataset", type=QCDataArtifact.File(name="qc_adlb", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+    #QC 
+    qc_admh_task = run_domino_job_task(
+        flyte_task_name="Create QC ADMH Dataset",
+        command="qc/adam/qc_ADMH.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="qc_adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adsl_task["qc_adsl_dataset"])],
+        output_specs=[Output(name="qc_admh_dataset", type=QCDataArtifact.File(name="qc_admh", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+    #QC 
+    qc_advs_task = run_domino_job_task(
+        flyte_task_name="Create QC ADVS Dataset",
+        command="qc/adam/qc_ADVS.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=sdtm_dataset_snapshot),
+                Input(name="qc_adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=qc_adsl_task["qc_adsl_dataset"])],
+        output_specs=[Output(name="qc_advs_dataset", type=QCDataArtifact.File(name="qc_advs", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True
+    )
+
+    return 
