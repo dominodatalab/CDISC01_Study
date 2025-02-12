@@ -12,7 +12,7 @@
 * ____________________________________________________________________________
 * DESCRIPTION                                                    
 *                                                                   
-* Input files: ADaM.ADSL
+* Input files: ADaM.ADSL add a comment
 *              
 * Output files: t_pop.pdf
 *				t_pop.sas7bdat
