@@ -44,5 +44,5 @@ The QC programming is all in SAS, and there is a `compare_adam.sas` program whic
 
 # Support
 
-Programming was created by Veramed Ltd. on behalf of Domino Data Lab, Inc..
+Programming was created by Veramed Ltd. on behalf of Domino Data Lab, Inc.
 
