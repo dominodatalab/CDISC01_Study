@@ -8,7 +8,7 @@ Each reporting effort (Interim, Ad Hoc, CSR etc.) is a branch within this repo.
 
 The programming is created in a typical clinical trial folder structure, where the production (prod) and qc programs have independent directory trees.
 
-Reporting effort level standard code (e.g. SAS macros) should be stored in the `share/macros` folder
+Reporting effort level standard code (e.g. SAS macros) should be stored in the `share/macros` folder.
 
 The global `domino.sas` autoexec progam is also included in the repository to appropriately set up the SAS environment. 
 
