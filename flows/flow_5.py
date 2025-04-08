@@ -177,7 +177,7 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
     # Create T_POP report from the output of adsl_task and the metadata dataset launch parameter
     t_pop_task = run_domino_job_task(
         flyte_task_name="Create T_POP Report",
-        command="prod/tfl_flows/t_pop.sas",
+        command="prod/tfl/t_pop.sas",
         inputs=[Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
         output_specs=[Output(name="t_pop", type=ReportArtifact.File(name="t_pop", type="pdf"))],
@@ -189,7 +189,7 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
     # Create T_AE_REL report from the output of adsl_task, adae_task and the metadata dataset launch parameter
     t_ae_rel_task = run_domino_job_task(
         flyte_task_name="Create T_AE_REL Report",
-        command="prod/tfl_flows/t_ae_rel.sas",
+        command="prod/tfl/t_ae_rel.sas",
         inputs=[Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"]),
                 Input(name="adae_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adae_task["adae_dataset"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
@@ -202,7 +202,7 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
     # Create T_VSCAT report from the output of adsl_task, adae_task and the metadata dataset launch parameter
     t_vscat_task = run_domino_job_task(
         flyte_task_name="Create T_VSCAT Report",
-        command="prod/tfl_flows/t_vscat.sas",
+        command="prod/tfl/t_vscat.sas",
         inputs=[Input(name="advs_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=advs_task["advs_dataset"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
         output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat", type="pdf"))],
