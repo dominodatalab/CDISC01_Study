@@ -40,7 +40,7 @@
 
 
 *********;
-** Setup environment including libraries for this reporting effort;
+** Sup environment including libraries for this reporting effort;
 %include "/mnt/code/domino.sas";
 *********;
 
