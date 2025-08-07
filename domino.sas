@@ -41,17 +41,6 @@
 *
 * Assumptions: 
 * - Must be run on the Domino platform (assumes Domino environment vars)
-* ____________________________________________________________________________
-* PROGRAM HISTORY                                                         
-*  2022-06-06  | Stuart.Malcolm  | Program created
-*  2022-09-28  | Stuart.Malcolm  | Ported code to TFL_Standard_Repo 
-*  2022-10-03  | Stuart.Malcolm  | Moved into study /share directory
-*  2022-10-20  | Stuart.Malcolm  | support ADAM/TFL combined projects
-*  2023-05-09  | Tom.Ratford     | Support new project structure
-*  2023-05-09  | Tom.Ratford     | Output log in batch
-*  2023-05-18  | Megan.Harries   | Include metadata libname for RE Interim
-* ----------------------------------------------------------------------------
-*  YYYYMMDD  |  username        | ..description of change..         
 *****************************************************************************/
  
 %macro __setup();
@@ -93,17 +82,10 @@
 %if &__DCUTDTC. eq %str() %then %put %str(ER)ROR: Envoronment Variable DCUTDTC not set;
  
 * ==================================================================;
-* extract the protocol and project type from the project name;
+* Hardcode protocol and project type;
 * ==================================================================;
-%if %sysfunc(find(&__PROJECT_NAME.,_)) ge 1 %then %do;
-  %* found an underscrore, so assume project name is <PROTOCOL>_<TYPE> ;
-  %let __PROTOCOL     = %scan(&__PROJECT_NAME.,1,'_');
-  %* project type is everything after the protocol in the project name ;
-  %let __PROJECT_TYPE = %sysfunc(tranwrd(&__PROJECT_NAME.,&__PROTOCOL._, %str()));
-  %end;
-%else %do;
-  %put %str(ER)ROR: Project Name (DOMINO_PROJECT_NAME) ill-formed. Expecting <PROTOCOL>_<TYPE> ;
-%end;
+%let __PROTOCOL = CDISC01;
+%let __PROJECT_TYPE = RE;
  
 * ==================================================================;
 * work out if the project is git or domino based
