@@ -108,4 +108,6 @@ for missing_dataset in REQUIRED_MOUNTED.difference(CURRENT_MOUNTED):
         print(f"ERROR: Could not find required dataset {missing_dataset} in {SDTM_PROJECT} datasets: {SDTM_DATASETS.keys()}")
     except Exception as e:
         print(e)
-        
+
+# Create TFL artifacts directory
+os.makedirs("/mnt/artifacts/TFL", exist_ok=True)
