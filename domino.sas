@@ -88,26 +88,12 @@
 %let __PROJECT_TYPE = RE;
  
 * ==================================================================;
-* work out if the project is git or domino based
+* Set paths for git-based project;
 * ==================================================================;
-* !!ALERT!! DOMINO_IS_GIT_BASED is an undocumented environment variable;
-%let __is_git_project = %sysget(DOMINO_IS_GIT_BASED);
-%if %upcase(&__is_git_project) eq %str(TRUE) %then %do;
-  * local & imported dataset location;
-  %let __localdata_path = /mnt/data;
-  %let __sharedata_path = /mnt/imported/data;
-  * imported code location;
-  %let __imported_git_path = /mnt/imported/code;
-  * set  directory  where outputs (TFL) are written to;
-  %let __results_path=/mnt/artifacts/results;
-%end; %else %do;
-  %let __localdata_path = /domino/datasets/local;
-  %let __sharedata_path = /domino/datasets;
-  * Imported code repository location;
-  %let __imported_git_path = /repos;
-  * set  directory  where outputs (TFL) are written to;
-  %let __results_path=&__WORKING_DIR./results;
-%end;
+%let __localdata_path = /mnt/data;
+%let __sharedata_path = /mnt/imported/data;
+%let __imported_git_path = /mnt/imported/code;
+%let __results_path = /mnt/artifacts/TFL;
 
 * ==================================================================;
 * define library locations - these are dependent on the project type;
