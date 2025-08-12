@@ -10,6 +10,8 @@ from flytekitplugins.domino.artifact import Artifact, DATA, MODEL, REPORT
 environment_name="SAS Analytics Pro"
 hardware_tier_name="Small"
 
+# Default for caching, set to True or False
+cache = False
 
 # Enter the command below to run this Flow. There are two Flow input parameters. One for the SDTM Dataset snapshot and one for the METADATA dataset snapshot.
 # pyflyte run --remote ./flows/flow_2_dev.py ADaM_TFL --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
@@ -32,7 +34,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="adsl_dataset", type=DataArtifact.File(name="adsl", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     ) 
 
     adae_task = run_domino_job_task(
@@ -43,7 +47,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="adae_dataset", type=DataArtifact.File(name="adae", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
     
     adcm_task = run_domino_job_task(
@@ -54,7 +60,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="adcm_dataset", type=DataArtifact.File(name="adcm", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     adlb_task = run_domino_job_task(
@@ -65,7 +73,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="adlb_dataset", type=DataArtifact.File(name="adlb", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     admh_task = run_domino_job_task(
@@ -76,7 +86,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="admh_dataset", type=DataArtifact.File(name="admh", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     advs_task = run_domino_job_task(
@@ -87,7 +99,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="advs_dataset", type=DataArtifact.File(name="advs", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     t_pop_task = run_domino_job_task(
@@ -98,7 +112,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="t_pop", type=ReportArtifact.File(name="t_pop", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     t_ae_rel_task = run_domino_job_task(
@@ -110,7 +126,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="t_ae_rel", type=ReportArtifact.File(name="t_ae_rel", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     t_vscat_task = run_domino_job_task(
@@ -121,7 +139,9 @@ def ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     return
