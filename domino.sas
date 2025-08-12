@@ -112,7 +112,7 @@ libname SDTM "/mnt/imported/data/snapshots/&__SDTM_DATASET./&__DCUTDTC." access=
 libname ADAM "&__localdata_path./ADAM";
 libname ADAMQC "&__localdata_path./ADAMQC";
 * Metadata;
-libname METADATA "&__netapp_volume_path./METADATA";
+libname METADATA "&__netapp_volume_path./CDISC01_METADATA";
 * local read/write for TFL datasets ;
 libname TFL "&__results_path./TFL";
 libname TFLQC "&__results_path./TFL_QC";
