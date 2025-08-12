@@ -13,6 +13,7 @@ domino = Domino(f"{DOMINO_PROJECT_OWNER}/{DOMINO_PROJECT_NAME}")
 
 # Required Datasets & Descriptions
 REQUIRED = {
+    "METADATA": "Internal metadata",
     "COMPARE": "PROC COMPARE datasets for QC",
     "ADAM": "ADAM is created using SDTM data for production",
     "ADAMQC": "ADAMQC is created using SDTM data for qc"
