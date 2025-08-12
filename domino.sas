@@ -73,7 +73,7 @@
 %global __runmode;       * INTERACTIVE or BATCH (or UNKNOWN);
  
 * ==================================================================;
-* grab the environment varaibles that we need to create pathnames;
+* grab the default Domino environment variables that we need to create pathnames;
 * ==================================================================;
 %let __WORKING_DIR  = %sysget(DOMINO_WORKING_DIR);
 %let __PROJECT_NAME = %sysget(DOMINO_PROJECT_NAME);
