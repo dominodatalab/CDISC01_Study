@@ -48,12 +48,13 @@
 * global constants - USER CONFIGURABLE. Change these here if needed;
  
 * Location of Domino Datasets folders that are defined in this project;
-* Dependent on whether project is DFS or Git hosted;
 %global __localdata_path;
 * Location of mounted shared Domino Datasets;
 %global __sharedata_path;
 * Location of imported code repositories;
 %global __imported_git_path;
+* Location of NetApp Volumes;
+%global __netapp_volume_path;
 
 * globals read in from env vars; 
 %global __WORKING_DIR  ; * path to root of working directory ;
@@ -61,8 +62,8 @@
 %global __DCUTDTC      ; * cutoff date in ISO8901 format ;
  
 * globals derived from env vars;
-%global __PROTOCOL;      * Protocol identifier e.g H2QMCLZZT; 
-%global __PROJECT_TYPE ; * project type: SDTM | ADAM | TFL ;
+%global __PROTOCOL;      * Protocol identifier e.g CDISC01; 
+%global __PROJECT_TYPE ; * project type: SDTM | RE ;
  
 * other globals exported by setup;
 %global __prog_path;     * full path to the program being run;
@@ -92,6 +93,7 @@
 * ==================================================================;
 %let __localdata_path = /mnt/data;
 %let __sharedata_path = /mnt/imported/data;
+%let __netapp_volume_path = /mnt/netapp-volumes;
 %let __imported_git_path = /mnt/imported/code;
 %let __results_path = /mnt/artifacts;
 
@@ -112,7 +114,7 @@ libname ADAMQC "&__localdata_path./ADAMQC";
 libname TFL "&__localdata_path./TFL";
 libname TFLQC "&__localdata_path./TFLQC";
 * Metadata;
-libname METADATA "&__localdata_path./METADATA";
+libname METADATA "&__netapp_volume_path./METADATA";
  
 * ==================================================================;
 * Set SASAUTOS to search for shared macros ;
