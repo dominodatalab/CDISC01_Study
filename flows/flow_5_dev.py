@@ -10,6 +10,8 @@ from flytekitplugins.domino.artifact import Artifact, DATA, MODEL, REPORT
 environment_name="SAS Analytics Pro"
 hardware_tier_name="Small"
 
+# Default for caching, set to True or False
+cache = False
 
 # Enter the command below to run this Flow. There is a single Flow input parameter for the SDTM Dataset snapshot
 # pyflyte run --remote ./flows/flow_5_dev.py SDTM_ADaM_TFL --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
@@ -33,7 +35,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="ae", type=FlyteFile[TypeVar('sas7bdat')])],
         hardware_tier_name=hardware_tier_name,
         environment_name="GxP R & Python",
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Move cm from Dataset to Flows node
@@ -44,7 +48,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="cm", type=FlyteFile[TypeVar('sas7bdat')])],
         hardware_tier_name=hardware_tier_name,
         environment_name="GxP R & Python",
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Move dm from Dataset to Flows node
@@ -55,7 +61,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="dm", type=FlyteFile[TypeVar('sas7bdat')])],
         hardware_tier_name=hardware_tier_name,
         environment_name="GxP R & Python",
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Move ex from Dataset to Flows node
@@ -66,7 +74,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="ex", type=FlyteFile[TypeVar('sas7bdat')])],
         hardware_tier_name=hardware_tier_name,
         environment_name="GxP R & Python",
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Move lb from Dataset to Flows node
@@ -77,7 +87,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="lb", type=FlyteFile[TypeVar('sas7bdat')])],
         hardware_tier_name=hardware_tier_name,
         environment_name="GxP R & Python",
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Move mh from Dataset to Flows node
@@ -88,7 +100,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="mh", type=FlyteFile[TypeVar('sas7bdat')])],
         hardware_tier_name=hardware_tier_name,
         environment_name="GxP R & Python",
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Move vs from Dataset to Flows node
@@ -99,7 +113,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="vs", type=FlyteFile[TypeVar('sas7bdat')])],
         hardware_tier_name=hardware_tier_name,
         environment_name="GxP R & Python",
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create ADSL dataset from the output of dm_task
@@ -110,7 +126,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="adsl_dataset", type=DataArtifact.File(name="adsl.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create ADAE dataset from the output of ae_task, ex_task and adsl_task
@@ -123,7 +141,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="adae_dataset", type=DataArtifact.File(name="adae.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create ADCM dataset from the output of cm_task and adsl_task
@@ -135,7 +155,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="adcm_dataset", type=DataArtifact.File(name="adcm.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create ADLB dataset from the output of lb_task and adsl_task
@@ -147,7 +169,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="adlb_dataset", type=DataArtifact.File(name="adlb.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create ADMH dataset from the output of lb_task and adsl_task
@@ -159,7 +183,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="admh_dataset", type=DataArtifact.File(name="admh.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create ADVS dataset from the output of vs_task and adsl_task
@@ -171,7 +197,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="advs_dataset", type=DataArtifact.File(name="advs.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create T_POP report from the output of adsl_task and the metadata dataset launch parameter
@@ -183,7 +211,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="t_pop", type=ReportArtifact.File(name="t_pop", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create T_AE_REL report from the output of adsl_task, adae_task and the metadata dataset launch parameter
@@ -196,7 +226,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="t_ae_rel", type=ReportArtifact.File(name="t_ae_rel", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     # Create T_VSCAT report from the output of adsl_task, adae_task and the metadata dataset launch parameter
@@ -208,7 +240,9 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
-        use_project_defaults_for_omitted=True
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
     )
 
     return
