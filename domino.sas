@@ -93,7 +93,7 @@
 %let __localdata_path = /mnt/data;
 %let __sharedata_path = /mnt/imported/data;
 %let __imported_git_path = /mnt/imported/code;
-%let __results_path = /mnt/artifacts/TFL;
+%let __results_path = /mnt/artifacts/sas_logs;
 
 * ==================================================================;
 * define library locations for Reporting Effort (RE) project type;
