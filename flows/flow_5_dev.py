@@ -12,10 +12,10 @@ hardware_tier_name="Small"
 
 
 # Enter the command below to run this Flow. There is a single Flow input parameter for the SDTM Dataset snapshot
-# pyflyte run --remote ./flows/flow_5.py SDTM_ADaM_TFL --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
+# pyflyte run --remote ./flows/flow_5_dev.py SDTM_ADaM_TFL --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
 
 # If you want to give the run a name, then use this command and replace the MY_CUSTOM_NAME argument
-# pyflyte run --remote --name MY_CUSTOM_NAME ./flows/flow_5.py SDTM_ADaM_TFL --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
+# pyflyte run --remote --name ENTER_RUN_NAME ./flows/flow_5_dev.py SDTM_ADaM_TFL --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
 
 
 # Define two Flow Artifacts called ADaM Dataset and TFL Reports to tag and group ADaM and TFL outputs respectively

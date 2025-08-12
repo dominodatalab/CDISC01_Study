@@ -12,10 +12,10 @@ hardware_tier_name="Small"
 
 
 # Enter the command below to run this Flow. There are two Flow input parameters. One for the SDTM Dataset snapshot and one for the METADATA dataset snapshot.
-# pyflyte run --remote ./flows/flow_4.py ADaM_TFL_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
+# pyflyte run --remote ./flows/flow_4_dev.py ADaM_TFL_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
 
 # If you want to give the run a name, then use this command and replace the MY_CUSTOM_NAME argument
-# pyflyte run --remote --name MY_CUSTOM_NAME ./flows/flow_4.py ADaM_TFL_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA
+# pyflyte run --remote --name ENTER_RUN_NAME ./flows/flow_4_dev.py ADaM_TFL_QC --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA
 
 
 
