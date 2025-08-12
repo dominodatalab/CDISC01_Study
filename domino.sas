@@ -70,7 +70,7 @@
 %global __prog_path;     * full path to the program being run;
 %global __prog_name;     * filename (without extension) of program;
 %global __prog_ext;      * extension of program (usuall sas);
-%global __results_path;  * path to output file (e.g. for TFL write);
+%global __results_path;  * path to output file (e.g. for ADAM write);
 %global __full_path;     * full path and filename of program;
 %global __runmode;       * INTERACTIVE or BATCH (or UNKNOWN);
  
@@ -111,9 +111,6 @@ libname SDTM "/mnt/imported/data/snapshots/&__SDTM_DATASET./&__DCUTDTC." access=
 * local read/write acces to ADaM and QC folders;
 libname ADAM "&__localdata_path./ADAM";
 libname ADAMQC "&__localdata_path./ADAMQC";
-* local read/write for TFL datasets ;
-libname TFL "&__localdata_path./TFL";
-libname TFLQC "&__localdata_path./TFLQC";
 * Metadata;
 libname METADATA "&__netapp_volume_path./METADATA";
  
