@@ -30,6 +30,7 @@
 * - DOMINO_PROJECT_NAME
 * - DOMINO_WORKING_DIR
 * - DCUTDTC
+* - SDTM_DATASET
 *
 * Outputs:                                                   
 * - global variables defined
