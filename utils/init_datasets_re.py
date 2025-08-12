@@ -15,9 +15,7 @@ domino = Domino(f"{DOMINO_PROJECT_OWNER}/{DOMINO_PROJECT_NAME}")
 REQUIRED = {
     "COMPARE": "PROC COMPARE datasets for QC",
     "ADAM": "ADAM is created using SDTM data for production",
-    "ADAMQC": "ADAMQC is created using SDTM data for qc",
-    "TFL": "TFL is created using ADAM for production tfls",
-    "TFLQC": "TFLQC is created using ADAM for qc tfls"
+    "ADAMQC": "ADAMQC is created using SDTM data for qc"
 }
 
 # Existing Datasets
