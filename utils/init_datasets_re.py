@@ -110,5 +110,8 @@ for missing_dataset in REQUIRED_MOUNTED.difference(CURRENT_MOUNTED):
 # Create TFL artifacts directory
 os.makedirs("/mnt/artifacts/TFL", exist_ok=True)
 
+# Create QC TFL artifacts directory
+os.makedirs("/mnt/artifacts/TFL_QC", exist_ok=True)
+
 # Create SAS logs artifacts directory
 os.makedirs("/mnt/artifacts/sas_logs", exist_ok=True)
