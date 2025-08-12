@@ -113,7 +113,10 @@ libname ADAM "&__localdata_path./ADAM";
 libname ADAMQC "&__localdata_path./ADAMQC";
 * Metadata;
 libname METADATA "&__netapp_volume_path./METADATA";
- 
+* local read/write for TFL datasets ;
+libname TFL "&__results_path./TFL";
+libname TFLQC "&__results_path./TFL_QC";
+
 * ==================================================================;
 * Set SASAUTOS to search for shared macros ;
 * ==================================================================;
