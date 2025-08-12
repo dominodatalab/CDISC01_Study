@@ -93,7 +93,7 @@
 %let __localdata_path = /mnt/data;
 %let __sharedata_path = /mnt/imported/data;
 %let __imported_git_path = /mnt/imported/code;
-%let __results_path = /mnt/artifacts/sas_logs;
+%let __results_path = /mnt/artifacts;
 
 * ==================================================================;
 * define library locations for Reporting Effort (RE) project type;
@@ -178,7 +178,7 @@ options
 * ==================================================================;
 %if &__runmode eq %str(BATCH) %then %do;
   * Redirect SAS LOG files when in batch mode;
-  PROC PRINTTO LOG="&__results_path./&__prog_name..log" NEW;
+  PROC PRINTTO LOG="&__results_path./sas_logs/&__prog_name..log" NEW;
 %end;
  
 %mend __setup;
