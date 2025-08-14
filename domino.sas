@@ -30,6 +30,7 @@
 * - DOMINO_PROJECT_NAME
 * - DOMINO_WORKING_DIR
 * - DCUTDTC
+* - SDTM_DATASET
 *
 * Outputs:                                                   
 * - global variables defined
@@ -41,17 +42,6 @@
 *
 * Assumptions: 
 * - Must be run on the Domino platform (assumes Domino environment vars)
-* ____________________________________________________________________________
-* PROGRAM HISTORY                                                         
-*  2022-06-06  | Stuart.Malcolm  | Program created
-*  2022-09-28  | Stuart.Malcolm  | Ported code to TFL_Standard_Repo 
-*  2022-10-03  | Stuart.Malcolm  | Moved into study /share directory
-*  2022-10-20  | Stuart.Malcolm  | support ADAM/TFL combined projects
-*  2023-05-09  | Tom.Ratford     | Support new project structure
-*  2023-05-09  | Tom.Ratford     | Output log in batch
-*  2023-05-18  | Megan.Harries   | Include metadata libname for RE Interim
-* ----------------------------------------------------------------------------
-*  YYYYMMDD  |  username        | ..description of change..         
 *****************************************************************************/
  
 %macro __setup();
@@ -59,12 +49,13 @@
 * global constants - USER CONFIGURABLE. Change these here if needed;
  
 * Location of Domino Datasets folders that are defined in this project;
-* Dependent on whether project is DFS or Git hosted;
 %global __localdata_path;
 * Location of mounted shared Domino Datasets;
 %global __sharedata_path;
 * Location of imported code repositories;
 %global __imported_git_path;
+* Location of NetApp Volumes;
+%global __netapp_volume_path;
 
 * globals read in from env vars; 
 %global __WORKING_DIR  ; * path to root of working directory ;
@@ -72,19 +63,19 @@
 %global __DCUTDTC      ; * cutoff date in ISO8901 format ;
  
 * globals derived from env vars;
-%global __PROTOCOL;      * Protocol identifier e.g H2QMCLZZT; 
-%global __PROJECT_TYPE ; * project type: SDTM | ADAM | TFL ;
+%global __PROTOCOL;      * Protocol identifier e.g CDISC01; 
+%global __PROJECT_TYPE ; * project type: SDTM | RE ;
  
 * other globals exported by setup;
 %global __prog_path;     * full path to the program being run;
 %global __prog_name;     * filename (without extension) of program;
 %global __prog_ext;      * extension of program (usuall sas);
-%global __results_path;  * path to output file (e.g. for TFL write);
+%global __results_path;  * path to output file (e.g. for ADAM write);
 %global __full_path;     * full path and filename of program;
 %global __runmode;       * INTERACTIVE or BATCH (or UNKNOWN);
  
 * ==================================================================;
-* grab the environment varaibles that we need to create pathnames;
+* grab the default Domino environment variables that we need to create pathnames;
 * ==================================================================;
 %let __WORKING_DIR  = %sysget(DOMINO_WORKING_DIR);
 %let __PROJECT_NAME = %sysget(DOMINO_PROJECT_NAME);
@@ -93,76 +84,39 @@
 %if &__DCUTDTC. eq %str() %then %put %str(ER)ROR: Envoronment Variable DCUTDTC not set;
  
 * ==================================================================;
-* extract the protocol and project type from the project name;
+* Hardcode protocol and project type;
 * ==================================================================;
-%if %sysfunc(find(&__PROJECT_NAME.,_)) ge 1 %then %do;
-  %* found an underscrore, so assume project name is <PROTOCOL>_<TYPE> ;
-  %let __PROTOCOL     = %scan(&__PROJECT_NAME.,1,'_');
-  %* project type is everything after the protocol in the project name ;
-  %let __PROJECT_TYPE = %sysfunc(tranwrd(&__PROJECT_NAME.,&__PROTOCOL._, %str()));
-  %end;
-%else %do;
-  %put %str(ER)ROR: Project Name (DOMINO_PROJECT_NAME) ill-formed. Expecting <PROTOCOL>_<TYPE> ;
-%end;
+%let __PROTOCOL = CDISC01;
+%let __PROJECT_TYPE = RE;
  
 * ==================================================================;
-* work out if the project is git or domino based
+* Set paths for git-based project;
 * ==================================================================;
-* !!ALERT!! DOMINO_IS_GIT_BASED is an undocumented environment variable;
-%let __is_git_project = %sysget(DOMINO_IS_GIT_BASED);
-%if %upcase(&__is_git_project) eq %str(TRUE) %then %do;
-  * local & imported dataset location;
-  %let __localdata_path = /mnt/data;
-  %let __sharedata_path = /mnt/imported/data;
-  * imported code location;
-  %let __imported_git_path = /mnt/imported/code;
-  * set  directory  where outputs (TFL) are written to;
-  %let __results_path=/mnt/artifacts/results;
-%end; %else %do;
-  %let __localdata_path = /domino/datasets/local;
-  %let __sharedata_path = /domino/datasets;
-  * Imported code repository location;
-  %let __imported_git_path = /repos;
-  * set  directory  where outputs (TFL) are written to;
-  %let __results_path=&__WORKING_DIR./results;
-%end;
+%let __localdata_path = /mnt/data;
+%let __sharedata_path = /mnt/imported/data;
+%let __netapp_volume_path = /mnt/netapp-volumes;
+%let __imported_git_path = /mnt/imported/code;
+%let __results_path = /mnt/artifacts;
 
 * ==================================================================;
-* define library locations - these are dependent on the project type;
+* define library locations for Reporting Effort (RE) project type;
 * ==================================================================;
- 
-* SDTM ;
-* ------------------------------------------------------------------;
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),SDTM)) ge 1 %then %do;
-  * Local read/write access to SDTM and QC folders ;
-  libname SDTMUNBD   "&__localdata_path./SDTMUNBLIND";
-  libname SDTMBLND "&__localdata_path./SDTMBLIND";
-  * Imported SDTM projects; 
-  libname RAW "&__sharedata_path./RAW" access=readonly;
-  libname UNBLIND "&__sharedata_path./UNBLIND" access=readonly;
-  libname BLIND "&__sharedata_path./BLIND" access=readonly;
-  * Metadata;
-  libname METADATA "&__localdata_path./METADATA";
-%end;
-
 * Reporting Effort (RE) project ;
 * ------------------------------------------------------------------;
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),RE)) ge 1 %then %do;
-  * imported read-only SDTM data, using the data cutoff date.. ;
-  * .. and sdtm variable to identify the correct snapshot to use ;
-  %let __SDTM_DATASET = %sysget(SDTM_DATASET);
-  %if &__SDTM_DATASET. eq %str() %then %put %str(ER)ROR: Environment Variable SDTM_DATASET not set;
-  libname SDTM "/mnt/imported/data/snapshots/&__SDTM_DATASET./&__DCUTDTC." access=readonly;
-  * local read/write acces to ADaM and QC folders;
-  libname ADAM   "&__localdata_path./ADAM";
-  libname ADAMQC "&__localdata_path./ADAMQC";
-  * local read/write for TFL datasets ;
-  libname TFL   "&__localdata_path./TFL";
-  libname TFLQC "&__localdata_path./TFLQC";
-  * Metadata;
-  libname METADATA "&__localdata_path./METADATA";
-%end;
- 
+* imported read-only SDTM data, using the data cutoff date.. ;
+* .. and sdtm variable to identify the correct snapshot to use ;
+%let __SDTM_DATASET = %sysget(SDTM_DATASET);
+%if &__SDTM_DATASET. eq %str() %then %put %str(ER)ROR: Environment Variable SDTM_DATASET not set;
+libname SDTM "/mnt/imported/data/snapshots/&__SDTM_DATASET./&__DCUTDTC." access=readonly;
+* local read/write acces to ADaM and QC folders;
+libname ADAM "&__localdata_path./ADAM";
+libname ADAMQC "&__localdata_path./ADAMQC";
+* Metadata;
+libname METADATA "&__localdata_path./METADATA";
+* local read/write for TFL datasets ;
+libname TFL "&__results_path./TFL";
+libname TFLQC "&__results_path./TFL_QC";
+
 * ==================================================================;
 * Set SASAUTOS to search for shared macros ;
 * ==================================================================;
@@ -227,7 +181,7 @@ options
 * ==================================================================;
 %if &__runmode eq %str(BATCH) %then %do;
   * Redirect SAS LOG files when in batch mode;
-  PROC PRINTTO LOG="&__results_path./&__prog_name..log" NEW;
+  PROC PRINTTO LOG="&__results_path./sas_logs/&__prog_name..log" NEW;
 %end;
  
 %mend __setup;
