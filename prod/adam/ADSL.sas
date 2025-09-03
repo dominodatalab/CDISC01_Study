@@ -18,7 +18,7 @@
 *               
 * Macros:       None
 *         
-* Assumptions: 
+* Assumptions: ROSS CHANGE
 *
 * ____________________________________________________________________________
 * PROGRAM HISTORY                                                         
