@@ -268,7 +268,7 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
             Output(name="advs_validation_report", type=P21Artifact.File(name="advs_validation_report.pdf", type="pdf"))
         ],
         hardware_tier_name=hardware_tier_name,
-        environment_name="GxP R & Python",
+        environment_name="GxP Flows Env",
         use_project_defaults_for_omitted=True,
         cache=cache,
         cache_version="1.0"
