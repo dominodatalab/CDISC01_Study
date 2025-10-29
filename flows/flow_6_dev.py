@@ -235,7 +235,7 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
     # Create T_VSCAT report from the output of adsl_task, adae_task and the metadata dataset launch parameter
     t_vscat_task = run_domino_job_task(
         flyte_task_name="Create T_VSCAT Report",
-        command="code/prod/tfl/t_vscat.sas",
+        command="prod/tfl/t_vscat.sas",
         inputs=[Input(name="advs_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=advs_task["advs_dataset"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
         output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat", type="pdf"))],
