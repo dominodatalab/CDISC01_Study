@@ -249,7 +249,7 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
     # Pinnacle21 Validation - Validate all ADaM datasets against CDISC standards
     p21_validation_task = run_domino_job_task(
         flyte_task_name="Pinnacle21 CDISC Validation",
-        command="code/prod/validation/p21_validation.py",
+        command="python3 prod/validation/p21_validation.py",
         inputs=[
             Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"]),
             Input(name="adae_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adae_task["adae_dataset"]),
