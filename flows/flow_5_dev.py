@@ -20,9 +20,10 @@ cache = False
 # pyflyte run --remote --name ENTER_RUN_NAME ./flows/flow_5_dev.py SDTM_ADaM_TFL --sdtm_dataset_snapshot /mnt/imported/data/SDTMBLIND --metadata_snapshot /mnt/data/METADATA 
 
 
-# Define two Flow Artifacts called ADaM Dataset and TFL Reports to tag and group ADaM and TFL outputs respectively
+# Define Flow Artifacts for ADaM Datasets, TFL Reports, and Pinnacle21 Validation Reports
 DataArtifact = Artifact("ADaM Datasets", DATA)
 ReportArtifact = Artifact("TFL Reports", REPORT)
+P21Artifact = Artifact("Pinnacle21 Validation Report", REPORT)
 
 @workflow
 def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
@@ -240,6 +241,34 @@ def SDTM_ADaM_TFL(sdtm_dataset_snapshot: str, metadata_snapshot: str):
         output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
+    )
+
+    # Pinnacle21 Validation - Validate all ADaM datasets against CDISC standards
+    p21_validation_task = run_domino_job_task(
+        flyte_task_name="Pinnacle21 CDISC Validation",
+        command="prod/validation/p21_validation.py",
+        inputs=[
+            Input(name="adsl_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl_dataset"]),
+            Input(name="adae_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adae_task["adae_dataset"]),
+            Input(name="adcm_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adcm_task["adcm_dataset"]),
+            Input(name="adlb_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=adlb_task["adlb_dataset"]),
+            Input(name="admh_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=admh_task["admh_dataset"]),
+            Input(name="advs_dataset", type=FlyteFile[TypeVar("sas7bdat")], value=advs_task["advs_dataset"])
+        ],
+        output_specs=[
+            Output(name="p21_validation_summary", type=P21Artifact.File(name="p21_validation_summary.txt", type="txt")),
+            Output(name="adsl_validation_report", type=P21Artifact.File(name="adsl_validation_report.pdf", type="pdf")),
+            Output(name="adae_validation_report", type=P21Artifact.File(name="adae_validation_report.pdf", type="pdf")),
+            Output(name="adcm_validation_report", type=P21Artifact.File(name="adcm_validation_report.pdf", type="pdf")),
+            Output(name="adlb_validation_report", type=P21Artifact.File(name="adlb_validation_report.pdf", type="pdf")),
+            Output(name="admh_validation_report", type=P21Artifact.File(name="admh_validation_report.pdf", type="pdf")),
+            Output(name="advs_validation_report", type=P21Artifact.File(name="advs_validation_report.pdf", type="pdf"))
+        ],
+        hardware_tier_name=hardware_tier_name,
+        environment_name="GxP R & Python",
         use_project_defaults_for_omitted=True,
         cache=cache,
         cache_version="1.0"
