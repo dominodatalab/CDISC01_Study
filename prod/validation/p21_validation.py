@@ -3,6 +3,8 @@
 Pinnacle21 Validation Wrapper for Domino Flows
 This script validates ADaM datasets against CDISC standards and generates PDF validation reports.
 All validation logic is contained within this single Python script.
+
+CRITICAL: Output filenames must match the Flow definition output_specs exactly!
 """
 
 import os
@@ -203,9 +205,11 @@ class P21ValidationReport:
     def create_pdf_report(self, dataset: str, errors: int, warnings: int, notes: int) -> Path:
         """Create a PDF validation report using LaTeX."""
         
-        # Generate filename
-        pdf_filename = f"{dataset}_validation_{self.timestamp}.pdf"
-        tex_filename = f"{dataset}_validation_{self.timestamp}.tex"
+        # CRITICAL: Generate filename to match Flow output_specs EXACTLY
+        # Flow expects: adsl_validation_report.pdf, NOT ADSL_validation_20251029_191952.pdf
+        dataset_lower = dataset.lower()
+        pdf_filename = f"{dataset_lower}_validation_report.pdf"
+        tex_filename = f"{dataset_lower}_validation_report_{self.timestamp}.tex"
         
         tex_path = self.output_dir / tex_filename
         pdf_path = self.output_dir / pdf_filename
@@ -239,7 +243,7 @@ class P21ValidationReport:
         
         # Clean up auxiliary files
         for ext in ['.tex', '.aux', '.log']:
-            aux_file = self.output_dir / f"{dataset}_validation_{self.timestamp}{ext}"
+            aux_file = self.output_dir / f"{dataset_lower}_validation_report_{self.timestamp}{ext}"
             if aux_file.exists():
                 aux_file.unlink()
         
@@ -315,15 +319,14 @@ def run_p21_validation():
     print("=" * 60)
     print()
     
-    # Define paths
+    # Define paths - outputs must go directly to /workflow/outputs
+    # NOT to a subdirectory!
     workflow_outputs = Path("/workflow/outputs")
-    validation_reports_dir = workflow_outputs / "validation_reports"
     
-    # Create output directories
+    # Create output directory
     workflow_outputs.mkdir(parents=True, exist_ok=True)
-    validation_reports_dir.mkdir(parents=True, exist_ok=True)
     
-    print_success(f"Output directory created: {validation_reports_dir}")
+    print_success(f"Output directory: {workflow_outputs}")
     
     # Check LaTeX installation
     if not check_latex_installation():
@@ -331,19 +334,20 @@ def run_p21_validation():
         sys.exit(1)
     
     # Define ADaM datasets to validate with severity levels
+    # CRITICAL: Keys must match the lowercase dataset names in output_specs
     datasets = {
-        "ADSL": "clean",
-        "ADAE": "moderate",
-        "ADCM": "clean",
-        "ADLB": "clean",
-        "ADMH": "moderate",
-        "ADVS": "clean"
+        "adsl": "clean",
+        "adae": "moderate",
+        "adcm": "clean",
+        "adlb": "clean",
+        "admh": "moderate",
+        "advs": "clean"
     }
     
     # Check for ADaM datasets in workflow inputs
     print_status("Checking for ADaM datasets in workflow inputs...")
     workflow_inputs = Path("/workflow/inputs")
-    for dataset_lower in ['adsl', 'adae', 'adcm', 'adlb', 'admh', 'advs']:
+    for dataset_lower in datasets.keys():
         dataset_path = workflow_inputs / f"{dataset_lower}_dataset"
         if dataset_path.exists():
             print(f"      ✓ Found: {dataset_lower.upper()}.sas7bdat")
@@ -354,8 +358,8 @@ def run_p21_validation():
     print_status(f"Initiating mock validation for {len(datasets)} ADaM datasets...")
     print()
     
-    # Initialize report generator
-    report_gen = P21ValidationReport(validation_reports_dir)
+    # Initialize report generator - outputs go directly to /workflow/outputs
+    report_gen = P21ValidationReport(workflow_outputs)
     
     # Track validation results
     validation_summary = []
@@ -363,32 +367,33 @@ def run_p21_validation():
     
     # Process each dataset
     for dataset, severity in datasets.items():
-        print_status(f"Validating {dataset}.xpt against CDISC ADaM standards...")
+        dataset_upper = dataset.upper()
+        print_status(f"Validating {dataset_upper}.xpt against CDISC ADaM standards...")
         
         # Generate mock validation results
-        errors, warnings, notes = report_gen.generate_validation_data(dataset, severity)
+        errors, warnings, notes = report_gen.generate_validation_data(dataset_upper, severity)
         
         try:
-            # Create PDF report
-            print_status(f"Compiling PDF report for {dataset}...")
-            pdf_path = report_gen.create_pdf_report(dataset, errors, warnings, notes)
+            # Create PDF report with EXACT filename expected by Flow
+            print_status(f"Compiling PDF report for {dataset_upper}...")
+            pdf_path = report_gen.create_pdf_report(dataset_upper, errors, warnings, notes)
             generated_files.append(pdf_path)
             
             # Print results
             total_issues = errors + warnings + notes
             if errors == 0 and warnings == 0:
-                print_success(f"{dataset}: Validation passed ({notes} informational notes)")
+                print_success(f"{dataset_upper}: Validation passed ({notes} informational notes)")
             elif errors == 0:
-                print_warning(f"{dataset}: Validation completed with {warnings} warnings, {notes} notes")
+                print_warning(f"{dataset_upper}: Validation completed with {warnings} warnings, {notes} notes")
             else:
-                print_error(f"{dataset}: Validation found {errors} errors, {warnings} warnings, {notes} notes")
+                print_error(f"{dataset_upper}: Validation found {errors} errors, {warnings} warnings, {notes} notes")
             
             print(f"           Report: {pdf_path.name}")
             print()
             
             # Add to summary
             validation_summary.append({
-                'dataset': dataset,
+                'dataset': dataset_upper,
                 'errors': errors,
                 'warnings': warnings,
                 'notes': notes,
@@ -397,20 +402,14 @@ def run_p21_validation():
             })
             
         except Exception as e:
-            print_error(f"Failed to generate report for {dataset}: {e}")
+            print_error(f"Failed to generate report for {dataset_upper}: {e}")
             import traceback
             traceback.print_exc()
     
-    # Copy reports to workflow outputs (main directory)
+    # Create summary file with EXACT filename expected by Flow
     print()
-    print_status("Copying validation reports to workflow outputs...")
+    print_status("Creating validation summary...")
     
-    for pdf_file in generated_files:
-        dest_path = workflow_outputs / pdf_file.name
-        shutil.copy2(pdf_file, dest_path)
-        print(f"      ✓ Copied: {pdf_file.name}")
-    
-    # Create summary file
     summary_path = workflow_outputs / "p21_validation_summary.txt"
     with open(summary_path, 'w') as f:
         f.write("Pinnacle21 Validation Summary\n")
@@ -438,6 +437,32 @@ def run_p21_validation():
         f.write("For actual CDISC validation, use Pinnacle 21 Community or Enterprise.\n")
     
     print(f"      ✓ Created: p21_validation_summary.txt")
+    
+    # Verify all expected outputs exist
+    print()
+    print_status("Verifying output files...")
+    expected_outputs = [
+        "p21_validation_summary.txt",
+        "adsl_validation_report.pdf",
+        "adae_validation_report.pdf",
+        "adcm_validation_report.pdf",
+        "adlb_validation_report.pdf",
+        "admh_validation_report.pdf",
+        "advs_validation_report.pdf"
+    ]
+    
+    all_outputs_present = True
+    for expected_file in expected_outputs:
+        file_path = workflow_outputs / expected_file
+        if file_path.exists():
+            print(f"      ✓ {expected_file}")
+        else:
+            print(f"      ✗ MISSING: {expected_file}")
+            all_outputs_present = False
+    
+    if not all_outputs_present:
+        print_error("Not all expected outputs were generated!")
+        sys.exit(1)
     
     # Print final summary
     print()
