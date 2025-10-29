@@ -222,17 +222,23 @@ class P21ValidationReport:
             f.write(latex_content)
         
         # Compile PDF (run twice for proper formatting)
+        # Use -jobname to control output PDF filename
+        jobname = f"{dataset_lower}_validation_report"
         try:
             subprocess.run(
                 ['pdflatex', '-interaction=nonstopmode', 
-                 f'-output-directory={self.output_dir}', str(tex_path)],
+                 f'-output-directory={self.output_dir}',
+                 f'-jobname={jobname}',
+                 str(tex_path)],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
                 check=True
             )
             subprocess.run(
                 ['pdflatex', '-interaction=nonstopmode', 
-                 f'-output-directory={self.output_dir}', str(tex_path)],
+                 f'-output-directory={self.output_dir}',
+                 f'-jobname={jobname}',
+                 str(tex_path)],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
                 check=True
@@ -241,9 +247,14 @@ class P21ValidationReport:
             print(f"Error compiling LaTeX for {dataset}: {e}", file=sys.stderr)
             raise
         
-        # Clean up auxiliary files
+        # Clean up auxiliary files (they use jobname, not tex filename)
         for ext in ['.tex', '.aux', '.log']:
-            aux_file = self.output_dir / f"{dataset_lower}_validation_report_{self.timestamp}{ext}"
+            if ext == '.tex':
+                # Keep the timestamped tex file
+                aux_file = self.output_dir / tex_filename
+            else:
+                # Auxiliary files use jobname
+                aux_file = self.output_dir / f"{jobname}{ext}"
             if aux_file.exists():
                 aux_file.unlink()
         
