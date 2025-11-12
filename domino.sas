@@ -171,6 +171,17 @@
   proc printto log="&__log_dir./&__prog_name..log" NEW;
   run;
 
+  /* Duplicate log to /mnt/artifacts/logs after closing main log */
+  proc printto;
+  run;
+
+  data _null_;
+    infile "&__log_dir./&__prog_name..log" recfm=n;
+    file "/mnt/artifacts/logs/&__prog_name..log" recfm=n;
+    input c $char1.;
+    put c $char1.;
+  run;
+
 %end;
 
 %mend __setup;
