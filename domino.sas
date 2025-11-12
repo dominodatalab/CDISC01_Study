@@ -157,21 +157,34 @@
 /* ----------------------------- */
 %if %upcase(&__runmode)=BATCH %then %do;
 
-  %local __log_dir __PROD_DATA_ROOT;
+  %local __log_dir __base_root __is_tfl __is_qc
+         __PROD_DATA_ROOT __PROD_OUT_ROOT __path_lc;
+
+  /* PROD roots for log placement */
   %let __PROD_DATA_ROOT = &__netapp_root./CDISC01_CSR_DATA_PROD;
+  %let __PROD_OUT_ROOT  = &__netapp_root./CDISC01_CSR_OUTPUT_PROD;
 
-  /* Check if program name starts with qc_ */
-  %if %upcase(%substr(&__prog_name,1,3)) = QC_ %then
-      %let __log_dir = &__PROD_DATA_ROOT./qc/logs;
-  %else
-      %let __log_dir = &__PROD_DATA_ROOT./logs;
+  /* Classifiers */
+  %let __path_lc = %lowcase(&__prog_path.);
+  %let __is_tfl  = %sysfunc(index(&__path_lc.,/tfl/))>0;   /* TFL if path contains /tfl/ */
+  %let __is_qc   = %upcase(%substr(&__prog_name,1,3)) = QC_; /* QC if program starts with qc_ */
 
-  %put TRACE: (setup) Writing batch log to &__log_dir./&__prog_name..log;
+  /* Choose PROD base root: TFL -> OUTPUT_PROD, else -> DATA_PROD */
+  %if &__is_tfl %then %let __base_root = &__PROD_OUT_ROOT.;
+  %else            %let __base_root = &__PROD_DATA_ROOT.;
 
+  /* Choose logs or qc/logs */
+  %if &__is_qc %then %let __log_dir = &__base_root./qc/logs;
+  %else            %let __log_dir = &__base_root./logs;
+
+  %put TRACE: (setup) Batch log -> &__log_dir./&__prog_name..log (is_tfl=&__is_tfl is_qc=&__is_qc);
+  %put TRACE: (setup) Also copying to /mnt/artifacts/logs/&__prog_name..log;
+
+  /* Primary log to PROD volume */
   proc printto log="&__log_dir./&__prog_name..log" NEW;
   run;
 
-  /* Duplicate log to /mnt/artifacts/logs after closing main log */
+  /* Duplicate log to /mnt/artifacts/logs */
   proc printto;
   run;
 
