@@ -152,13 +152,26 @@
       ,SASAUTOS
     );
 
-  /* ----------------------------- */
-  /* Redirect logs (BATCH only)    */
-  /* ----------------------------- */
-  %if %upcase(&__runmode)=BATCH %then %do;
-    proc printto log="&__OUT_ROOT./sas_logs/&__prog_name..log" NEW;
-    run;
-  %end;
+/* ----------------------------- */
+/* Redirect logs (BATCH only)    */
+/* ----------------------------- */
+%if %upcase(&__runmode)=BATCH %then %do;
+
+  %local __log_dir __PROD_DATA_ROOT;
+  %let __PROD_DATA_ROOT = &__netapp_root./CDISC01_CSR_DATA_PROD;
+
+  /* Check if program name starts with qc_ */
+  %if %upcase(%substr(&__prog_name,1,3)) = QC_ %then
+      %let __log_dir = &__PROD_DATA_ROOT./qc/logs;
+  %else
+      %let __log_dir = &__PROD_DATA_ROOT./logs;
+
+  %put TRACE: (setup) Writing batch log to &__log_dir./&__prog_name..log;
+
+  proc printto log="&__log_dir./&__prog_name..log" NEW;
+  run;
+
+%end;
 
 %mend __setup;
 
