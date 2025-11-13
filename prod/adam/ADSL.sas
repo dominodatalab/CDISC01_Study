@@ -62,7 +62,7 @@
 
       libname sdtm "&data_path.";
 
-      data outputs.adsl_dataset;
+      data outputs.adsl;
          set sdtm.dm; /* reading in the dm sas7bdat file from the SDTM Dataset */
       run;
 
