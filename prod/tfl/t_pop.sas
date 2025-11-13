@@ -26,6 +26,8 @@
 *  10MAY2023  | Megan Harries  | Original
 * ----------------------------------------------------------------------------
 \*****************************************************************************/
+%let __DCUTDTC = %sysfunc(today(), yymmdd10.);
+
 
 %macro run_domino_code;
 
@@ -256,7 +258,7 @@ run;
 
 ** create the table output;
 
-ods pdf file = "/mnt/artifacts/TFL/&__prog_name..pdf"
+ods pdf file = "/mnt/artifacts/tfl/&__prog_name..pdf"
 		style = newstyle;
         
 ods noproctitle;
@@ -269,8 +271,7 @@ title3 "&DisplayTitle.";
 title4 "&Title1.";
 
 ** justify contents to decimal places;
-** if you want TFL to also be written to Dataset.    proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tfl.&__prog_name.;
-proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3};
+proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tfl.&__prog_name.;
         column  (order1 ageresults stat placebo low_dose high_dose);
         
         ** order variables;
@@ -315,7 +316,6 @@ options
 * Assign values to these macro variables. I have no idea where they are coming from;
   %let __PROG_NAME = t_pop;       
   %let __PROG_EXT = sas;          
-  %let __DCUTDTC = %sysfunc(today(), yymmdd10.);
   %let __WORKING_DIR = /mnt/code;
   %let __PROJECT_NAME = MyProject;
   %let __PROTOCOL = MyProtocol;

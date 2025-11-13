@@ -140,6 +140,9 @@
   libname TFL     "&__OUT_ROOT./tfl";
   libname TFLQC   "&__OUT_ROOT./qc/tfl";
 
+  /* METADATA (R/W) */
+  libname METADATA  "&__netapp_root./MDR/TFL_Metadata_sas7bdat";	
+
   /* ----------------------------- */
   /* SASAUTOS                      */
   /* ----------------------------- */
