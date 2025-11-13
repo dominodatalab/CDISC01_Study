@@ -291,9 +291,31 @@ run;
     
 ods pdf close;
 
+/* ============================================================
+   Write out a copy of the SAS log for this program
+   ============================================================ */
+filename LOGOUT "/mnt/artifacts/logs/&__PROG_NAME..log";
 
+/* Switch log to external file */
+proc printto log=LOGOUT new;
+run;
+
+/* Write timestamp + indicator at bottom of log */
+data _null_;
+    file LOGOUT mod;
+    put "===============================================";
+    put "Log copy written: %sysfunc(datetime(), datetime.)";
+    put "Program: &__PROG_NAME..sas";
+    put "Runmode: &__runmode.";
+    put "===============================================";
+run;
+
+/* Reset log back to default destination */
+proc printto;
+run;
 
  %end;
+
    /* If DOMINO_IS_WORKFLOW_JOB=false, run the second block */
    %else %if &domino_is_workflow_job = true %then %do;
 
