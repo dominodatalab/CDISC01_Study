@@ -319,7 +319,7 @@
     run;
 
     /* === Output === */
-    ods pdf file="/mnt/artifacts/TFL/&__prog_name..pdf" style=newstyle;
+    ods pdf file="/mnt/artifacts/tfl/&__prog_name..pdf" style=newstyle;
     ods noproctitle;
     ods escapechar="^";
 
