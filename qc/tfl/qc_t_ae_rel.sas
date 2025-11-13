@@ -328,7 +328,7 @@ run;
 
 ** create the table output;
 
-ods pdf file = "/mnt/artifacts/TFL_QC/qc_t_ae_rel.pdf"
+ods pdf file = "/mnt/artifacts/tfl_qc/qc_t_ae_rel.pdf"
 		style = newstyle;
         
 ods noproctitle;
@@ -342,8 +342,8 @@ title4 "Analysis Set";
 
 ** justify contents to decimal places;
 proc report data = final headline split = "*" 
-			style(report) = {width = 100%}; 
-** if you want TFL written to a Dataset   out = tflqc.t_ae_rel
+			style(report) = {width = 100%} out = tflqc.qc_t_ae_rel; 
+
         column  aesoc
                    aedecod
                    indent soc_pt_disp &byvar trt_99_npp;
