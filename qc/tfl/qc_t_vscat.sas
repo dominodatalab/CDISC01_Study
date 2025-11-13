@@ -349,7 +349,7 @@ run;
 
 ** create the table output;
 
-ods pdf file = "/mnt/artifacts/TFL_QC/qc_t_vscat.pdf"
+ods pdf file = "/mnt/artifacts/tfl_qc/qc_t_vscat.pdf"
         style = newstyle;
         
 ods noproctitle;
@@ -362,8 +362,8 @@ title3 "Post-baseline Vital Signs Meeting Criteria of Interest";
 title4 "Analysis Set";
 
 ** justify contents to decimal places;
-** If you want TFL written to a Dataset   proc report data = add_param_results_stat headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tflqc.t_vscat;
-proc report data = add_param_results_stat headline split = "*" style(report) = {width = 100% cellpadding = 3};
+
+proc report data = add_param_results_stat headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tflqc.qc_t_vscat;
         column  (order1 order2 param_results stat placebo low_dose high_dose);
         
         ** order variables;
