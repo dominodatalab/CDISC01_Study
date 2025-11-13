@@ -27,7 +27,7 @@
 \*****************************************************************************/
 
 %macro tfl_metadata();
-	data metadata;v
+	data metadata;
 		set metadata.&__prog_name.;
 	run;
 
