@@ -53,6 +53,17 @@
 
       ods path(prepend) work.templat(update);
 
+      /* If running in batch mode, write log to /mnt/artifacts/logs */
+      %if %symexist(__runmode) %then %do;
+        %if %upcase(&__runmode) = BATCH %then %do;
+          %put NOTE: BATCH run detected. Log will be written to /mnt/artifacts/logs/&__prog_name..log;
+          filename tfllog "/mnt/artifacts/logs/&__prog_name..log";
+          proc printto log=tfllog new;
+          run;
+        %end;
+      %end;
+
+
       /* Set the template for the output; inherit from a printer style to avoid parent errors */
       proc template;
         define style newstyle / store=work.templat;
@@ -347,28 +358,14 @@
 
       ods pdf close;
 
-/* ============================================================
-   Write out a copy of the SAS log for this program
-   ============================================================ */
-filename LOGOUT "/mnt/artifacts/logs/&__PROG_NAME..log";
 
-/* Switch log to external file */
-proc printto log=LOGOUT new;
-run;
-
-/* Write timestamp + indicator at bottom of log */
-data _null_;
-    file LOGOUT mod;
-    put "===============================================";
-    put "Log copy written: %sysfunc(datetime(), datetime.)";
-    put "Program: &__PROG_NAME..sas";
-    put "Runmode: &__runmode.";
-    put "===============================================";
-run;
-
-/* Reset log back to default destination */
-proc printto;
-run;
+      /* Reset log destination back to default if running in batch */
+      %if %symexist(__runmode) %then %do;
+        %if %upcase(&__runmode) = BATCH %then %do;
+          proc printto;
+          run;
+        %end;
+      %end;
 
    %end;
 
