@@ -650,7 +650,7 @@
     title3 "&DisplayTitle.";
     title4 "&Title1.";
 
-    proc report data=final headline split="*" style(report)={width=100%};
+    proc report data=final headline split="*" style(report)={width=100%} out = outputs.t_ae_rel_data;
       column aesoc aedecod indent soc_pt_disp &byvar trt_99_npp;
 
       define aesoc       / order order=data noprint;
