@@ -257,7 +257,7 @@ title4 "Analysis Set";
 
 ** justify contents to decimal places;
 ** if you want TFL to also be written to Dataset.  proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tflqc.t_pop;
-proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3};
+proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tflqc.qc_t_pop;
         column  (order1 ageresults stat placebo low_dose high_dose);
         
         ** order variables;
