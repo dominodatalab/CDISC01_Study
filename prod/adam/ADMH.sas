@@ -34,7 +34,7 @@
 
    %put NOTE: DOMINO_IS_WORKFLOW_JOB is &domino_is_workflow_job;
 
-   /* If DOMINO_IS_WORKFLOW_JOB=true, run the following block */
+   /* If DOMINO_IS_WORKFLOW_JOB=false, run the following block */
    %if &domino_is_workflow_job = false %then %do;
 
 *********;
@@ -50,7 +50,7 @@ run;
 
 
 %end;
-   /* If DOMINO_IS_WORKFLOW_JOB=false, run the second block */
+   /* If DOMINO_IS_WORKFLOW_JOB=true, run the second block */
    %else %if &domino_is_workflow_job = true %then %do;
 
 
@@ -59,7 +59,7 @@ run;
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/inputs/<NAME OF OUTPUT> */ 
 
 /* Mandatory step to add sas7bdat file extension to inputs */
-  x "mv /workflow/inputs/adsl_dataset /workflow/inputs/adsl_dataset.sas7bdat";
+  x "mv /workflow/inputs/adsl /workflow/inputs/adsl.sas7bdat";
 
 /* Read in the SDTM data path input from the Flow input parameter */
 data _null__;
@@ -71,8 +71,8 @@ libname sdtm "&data_path.";
 *********;
 
 
-data outputs.admh_dataset;
-	merge inputs.adsl_dataset sdtm.mh (in = mh);
+data outputs.admh;
+	merge inputs.adsl sdtm.mh (in = mh);
 	by usubjid;
 	if mh;
 run;
