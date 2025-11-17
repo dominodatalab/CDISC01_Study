@@ -378,15 +378,6 @@
     /* Assign macro vars (Flows) */
     %let __PROG_NAME = t_ae_rel;
     %let __PROG_EXT  = sas;
-    %let __DCUTDTC   = %sysfunc(today(), yymmdd10.);
-    %let __WORKING_DIR   = /mnt/code;
-    %let __PROJECT_NAME  = MyProject;
-    %let __PROTOCOL      = MyProtocol;
-    %let __PROJECT_TYPE  = MyType;
-    %let __localdata_path= /mnt/data;
-    %let __prog_path     = /mnt/code/t_ae_rel.sas;
-    %let __results_path  = /mnt/results;
-    %let __runmode       = batch;
 
     /* Flows inputs/outputs */
     libname inputs  "/workflow/inputs";
