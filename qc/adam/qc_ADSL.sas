@@ -34,7 +34,7 @@
 
    %put NOTE: DOMINO_IS_WORKFLOW_JOB is &domino_is_workflow_job;
 
-   /* If DOMINO_IS_WORKFLOW_JOB=true, run the following block */
+   /* If DOMINO_IS_WORKFLOW_JOB=false, run the following block */
    %if &domino_is_workflow_job = false %then %do;
 
 
@@ -49,7 +49,7 @@ run;
 
 
  %end;
-   /* If DOMINO_IS_WORKFLOW_JOB=false, run the second block */
+   /* If DOMINO_IS_WORKFLOW_JOB=true, run the second block */
    %else %if &domino_is_workflow_job = true %then %do;
 
 
@@ -66,7 +66,7 @@ data _null__;
 run;
 libname sdtm "&data_path.";
 
-data outputs.qc_adsl_dataset;
+data outputs.qc_adsl;
 	set sdtm.dm; /*reading in the dm sas7bdat file from the SDTM Dataset which is fed in as Flow parameter. */
 run;
 
