@@ -404,7 +404,7 @@
       libname outputs "/workflow/outputs"; 
 
       /* Mandatory: add extension to inputs */
-      x "mv /workflow/inputs/advs_dataset /workflow/inputs/advs_dataset.sas7bdat";
+      x "mv /workflow/inputs/advs /workflow/inputs/advs.sas7bdat";
 
       /* Read in METADATA path from Flow input parameter */
       data _null__;
@@ -413,7 +413,9 @@
           call symputx('metadata_path', metadata_path, 'G');
       run;
       libname sdtm "&metadata_path.";
-      libname metadata "&metadata_path.";
+
+      * Assign Metadata NetApp Volume;
+  libname metadata "&metadata_path./TFL_Metadata_sas7bdat";
 
       ods path(prepend) work.templat(update);
 
@@ -466,7 +468,7 @@
       /** vital signs adam and include required variables for table;*/
       data advs (rename = (visitnum = avisitn actarm = trta vstest = param vstestcd = paramcd vsstresn = aval));
         length trtan paramn 8. crit1cd $1;
-        set inputs.advs_dataset;
+        set inputs.advs;
         
         if actarm = "Placebo" then trtan = 1;
         else if actarm = "Xanomeline Low Dose" then trtan = 2;
