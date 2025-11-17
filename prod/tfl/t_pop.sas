@@ -360,9 +360,9 @@ data _null__;
 run;
 libname sdtm "&metadata_path.";
 
-* Assign Metadata Dataset;
-  libname metadata "&metadata_path.";
-
+* Assign Metadata NetApp Volume;
+  libname metadata "&metadata_path./TFL_Metadata_sas7bdat";
+	
 
 *********;
 
