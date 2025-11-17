@@ -383,18 +383,9 @@
           ,"/mnt/imported/code/SCE_STANDARD_LIB/macros"
           ,SASAUTOS) ;
 
-      /* Assign values to these macro variables (Flows provides inputs separately) */
+       /* Assign macro vars (Flows) */
       %let __PROG_NAME = t_vscat;       
       %let __PROG_EXT = sas;          
-      %let __DCUTDTC = %sysfunc(today(), yymmdd10.);
-      %let __WORKING_DIR = /mnt/code;
-      %let __PROJECT_NAME = MyProject;
-      %let __PROTOCOL = MyProtocol;
-      %let __PROJECT_TYPE = MyType;
-      %let __localdata_path = /mnt/data;
-      %let __prog_path = /mnt/code/t_vscat.sas;
-      %let __results_path = /mnt/artifacts/results;
-      %let __runmode = batch;
 
       /* Assign read/write folders for Flows inputs/outputs*/
       libname inputs "/workflow/inputs"; 
