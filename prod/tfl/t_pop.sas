@@ -332,7 +332,7 @@ options
     ,"/mnt/imported/code/SCE_STANDARD_LIB/macros"
     ,SASAUTOS) ;
 
-* Assign values to these macro variables. 
+ /* Assign macro vars (Flows) */
   %let __PROG_NAME = t_pop;       
   %let __PROG_EXT = sas;          
 
