@@ -20,7 +20,7 @@
 *
 * Macros:       tfl_metadata.sas
 *
-* Assumptions:  test
+* Assumptions:  
 *
 * ____________________________________________________________________________
 * PROGRAM HISTORY
@@ -393,8 +393,8 @@
     libname outputs "/workflow/outputs";
 
     /* Ensure file extensions for SAS datasets */
-    x "mv /workflow/inputs/adsl_dataset /workflow/inputs/adsl_dataset.sas7bdat";
-    x "mv /workflow/inputs/adae_dataset /workflow/inputs/adae_dataset.sas7bdat";
+    x "mv /workflow/inputs/adsl /workflow/inputs/adsl.sas7bdat";
+    x "mv /workflow/inputs/adae /workflow/inputs/adae.sas7bdat";
 
     /* Read metadata snapshot path from Flow input parameter */
     data _null_;
@@ -403,7 +403,9 @@
       call symputx('metadata_path', metadata_path, 'G');
     run;
     libname sdtm "&metadata_path.";
-    libname metadata "&metadata_path.";
+
+   * Assign Metadata NetApp Volume;
+  libname metadata "&metadata_path./TFL_Metadata_sas7bdat";
 
     /* Style: inherit from printer */
     ods path(prepend) work.templat(update);
@@ -453,7 +455,7 @@
     /* Inputs with consistent key lengths */
     data teae (rename=(actarm=trta));
       length relcat $20 aesoc aedecod $200;
-      set inputs.adae_dataset;
+      set inputs.adae;
       if aerel in ('POSSIBLE','PROBABLE','DEFINITE') then relcat='Related';
       else relcat='Not Related';
 
@@ -464,7 +466,7 @@
 
     data adsl1 (rename=(actarm=trta) where=(trtan ^= .));
       length aesoc aedecod $200;
-      set inputs.adsl_dataset;
+      set inputs.adsl;
       if actarm="Placebo" then trtan=1;
       else if actarm="Xanomeline Low Dose" then trtan=2;
       else if actarm="Xanomeline High Dose" then trtan=3;
