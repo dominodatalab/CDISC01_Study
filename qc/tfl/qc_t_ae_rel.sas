@@ -405,25 +405,16 @@ options
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/inputs/<NAME OF OUTPUT> */ 
 
 /* Mandatory step to add sas7bdat file extension to inputs */
-  x "mv /workflow/inputs/qc_adsl_dataset /workflow/inputs/qc_adsl_dataset.sas7bdat";
-  x "mv /workflow/inputs/qc_adae_dataset /workflow/inputs/qc_adae_dataset.sas7bdat";
+  x "mv /workflow/inputs/qc_adsl /workflow/inputs/qc_adsl.sas7bdat";
+  x "mv /workflow/inputs/qc_adae /workflow/inputs/qc_adae.sas7bdat";
 
-* Assign Metadata Dataset;
-  libname metadata "/mnt/data/METADATA";
+* Assign Metadata NetApp Volume;
+  libname metadata "&metadata_path./TFL_Metadata_sas7bdat";
 
 
 * Assign values to these macro variables. I have no idea where they are coming from;
   %let __PROG_NAME = qc_t_ae_rel;       
   %let __PROG_EXT = sas;          
-  %let __DCUTDTC = %sysfunc(today(), yymmdd10.);
-  *%let __WORKING_DIR = /mnt/code;
-  %let __PROJECT_NAME = MyProject;
-  %let __PROTOCOL = MyProtocol;
-  %let __PROJECT_TYPE = MyType;
-  %let __localdata_path = /mnt/data;
-  %let __prog_path = /mnt/code/qc_t_ae_rel.sas;
-  %let __results_path = /mnt/artifacts/results;
-  %let __runmode = batch;
 
 *********;
 
@@ -486,7 +477,7 @@ run;
 
 data teae (rename = (actarm = trta));
     length relcat $20;
-    set inputs.qc_adae_dataset;
+    set inputs.qc_adae;
     
 	if aerel in ('POSSIBLE' 'PROBABLE' 'DEFINITE') then relcat = 'Related';
     else relcat = 'Not Related';
@@ -498,7 +489,7 @@ run;
 
 ** exclude non-treated subjects;
 data adsl1 (rename = (actarm = trta) where = (trtan ^= .));
-    set inputs.qc_adsl_dataset;
+    set inputs.qc_adsl;
 	
 	if actarm = "Placebo" then trtan = 1;
 	else if actarm = "Xanomeline Low Dose" then trtan = 2;
