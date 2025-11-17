@@ -304,24 +304,15 @@ options
   libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/inputs/<NAME OF OUTPUT> */ 
 
 /* Mandatory step to add sas7bdat file extension to inputs */
-  x "mv /workflow/inputs/qc_adsl_dataset /workflow/inputs/qc_adsl_dataset.sas7bdat";
+  x "mv /workflow/inputs/qc_adsl /workflow/inputs/qc_adsl.sas7bdat";
 
-* Assign Metadata Dataset;
-  libname metadata "/mnt/data/METADATA";
+* Assign Metadata NetApp Volume;
+  libname metadata "&metadata_path./TFL_Metadata_sas7bdat";
 
 
 * Assign values to these macro variables. I have no idea where they are coming from;
   %let __PROG_NAME = t_pop;       
   %let __PROG_EXT = sas;          
-  %let __DCUTDTC = %sysfunc(today(), yymmdd10.);
-  %let __WORKING_DIR = /mnt/code;
-  %let __PROJECT_NAME = MyProject;
-  %let __PROTOCOL = MyProtocol;
-  %let __PROJECT_TYPE = MyType;
-  %let __localdata_path = /mnt/data;
-  %let __prog_path = /mnt/code/qc_t_pop.sas;
-  %let __results_path = /mnt/results;
-  %let __runmode = batch;
 
 *********;
 
@@ -376,7 +367,7 @@ options orientation = landscape nonumber nodate nobyline;
 ** adsl and include required variables for table;
 data adsl_all (rename = (actarm = trta));
 	length trtan agen sexn 8.;
-	set inputs.qc_adsl_dataset;
+	set inputs.qc_adsl;
 	
 	if actarm = "Placebo" then trtan = 1;
 	else if actarm = "Xanomeline Low Dose" then trtan = 2;
