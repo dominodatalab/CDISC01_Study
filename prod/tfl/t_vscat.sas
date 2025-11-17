@@ -377,10 +377,7 @@
       * Set SASAUTOS to search for shared macros. 
       * This would usually be in domino.sas but putting in program for now. ;
       * ==================================================================;*/
-      options
-        mautocomplete
-        MAUTOSOURCE
-        MAUTOLOCDISPLAY 
+      options MAUTOSOURCE MAUTOLOCDISPLAY
         sasautos=(
           "/mnt/code/share/macros"
           ,"/mnt/imported/code/SCE_STANDARD_LIB/macros"
