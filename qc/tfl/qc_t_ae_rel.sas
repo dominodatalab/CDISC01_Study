@@ -408,8 +408,16 @@ options
   x "mv /workflow/inputs/qc_adsl /workflow/inputs/qc_adsl.sas7bdat";
   x "mv /workflow/inputs/qc_adae /workflow/inputs/qc_adae.sas7bdat";
 
+/* Read in the METADATA data path input from the Flow input parameter */
+data _null__;
+    infile '/workflow/inputs/metadata_snapshot' truncover;
+    input metadata_path $CHAR100.;
+    call symputx('metadata_path', metadata_path, 'G');
+run;
+libname sdtm "&metadata_path.";
+
 * Assign Metadata NetApp Volume;
-  libname METADATA "&metadata_path./TFL_Metadata_sas7bdat";
+  libname metadata "&metadata_path./TFL_Metadata_sas7bdat";
 
 
 * Assign values to these macro variables. I have no idea where they are coming from;
