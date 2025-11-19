@@ -38,6 +38,6 @@
 /* Mandatory step to add sas7bdat file extension to inputs */
   x "mv /workflow/inputs/dm /workflow/inputs/dm.sas7bdat";
 
-data outputs.adsl_dataset;
+data outputs.adsl;
 	set inputs.dm; *reading in the dm sas7bdat file from the SDTM Dataset which is fed in as Flow parameter.
 run;
