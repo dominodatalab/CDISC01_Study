@@ -41,11 +41,11 @@
 /* Mandatory step to add sas7bdat file extension to inputs */
   x "mv /workflow/inputs/ae /workflow/inputs/ae.sas7bdat";
   x "mv /workflow/inputs/ex /workflow/inputs/ex.sas7bdat";
-  x "mv /workflow/inputs/adsl_dataset /workflow/inputs/adsl_dataset.sas7bdat";
+  x "mv /workflow/inputs/adsl /workflow/inputs/adsl.sas7bdat";
 
 
-data adae_dataset;
-	merge inputs.adsl_dataset inputs.ae (in = ae);
+data adae;
+	merge inputs.adsl inputs.ae (in = ae);
 		by usubjid;
 	if ae;
 	if 1 <= aestdy < 13 then visitnum = 3;
@@ -53,11 +53,11 @@ data adae_dataset;
 	else if 162 <= aestdy then visitnum = 12;
 run;
 
-proc sort data = adae_dataset out = adae_s;
+proc sort data = adae out = adae_s;
 	by usubjid visitnum;
 run;
 
-data outputs.adae_dataset;
+data outputs.adae;
 	merge adae_s (in = ae) inputs.ex;
 	by usubjid visitnum;
 	if ae;
