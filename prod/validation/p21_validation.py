@@ -359,7 +359,7 @@ def run_p21_validation():
     print_status("Checking for ADaM datasets in workflow inputs...")
     workflow_inputs = Path("/workflow/inputs")
     for dataset_lower in datasets.keys():
-        dataset_path = workflow_inputs / f"{dataset_lower}_dataset"
+        dataset_path = workflow_inputs / f"{dataset_lower}"
         if dataset_path.exists():
             print(f"      ✓ Found: {dataset_lower.upper()}.sas7bdat")
         else:
