@@ -37,11 +37,11 @@
 
 /* Mandatory step to add sas7bdat file extension to inputs */
   x "mv /workflow/inputs/lb /workflow/inputs/lb.sas7bdat";
-  x "mv /workflow/inputs/adsl_dataset /workflow/inputs/adsl_dataset.sas7bdat";
+  x "mv /workflow/inputs/adsl /workflow/inputs/adsl.sas7bdat";
 
 
-data outputs.adlb_dataset;
-	merge inputs.adsl_dataset inputs.lb (in = lb);
+data outputs.adlb;
+	merge inputs.adsl inputs.lb (in = lb);
 	by usubjid;
 	if lb;
 run;
