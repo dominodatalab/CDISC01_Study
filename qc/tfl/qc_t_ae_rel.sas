@@ -48,44 +48,33 @@ ods path(prepend) work.templat(update);
 
 *Set the template for the output;
 proc template;
-  define style newstyle;
+    define style newstyle;
+      parent = styles.printer;
 
-  class Table  /
-			 Rules = Groups
-             Frame = void;
+      style Table  from Table  / rules = groups frame = void;
+      style Header from Header / just  = c fontweight = medium;
 
-  style header
-       / just              = c
-         fontweight        = medium;
+      style Body   from Document /
+        bottommargin = 1.54cm topmargin = 2.54cm rightmargin = 2.54cm leftmargin = 2.54cm;
 
-  replace Body from Document /
-    bottommargin = 1.54cm
-    topmargin = 2.54cm
-    rightmargin = 2.54cm
-    leftmargin = 2.54cm;
+      style Fonts  from Fonts /
+        'TitleFont2'          = ("Courier New",9pt)
+        'TitleFont'           = ("Courier New",9pt)
+        'StrongFont'          = ("Courier New",9pt)
+        'EmphasisFont'        = ("Courier New",9pt,Italic)
+        'FixedEmphasisFont'   = ("Courier New, Courier",9pt,Italic)
+        'FixedStrongFont'     = ("Courier New, Courier",9pt)
+        'FixedHeadingFont'    = ("Courier New, Courier",9pt)
+        'BatchFixedFont'      = ("SAS Monospace, Courier New, Courier",9pt)
+        'FixedFont'           = ("Courier New, Courier",9pt)
+        'headingEmphasisFont' = ("Courier New",9pt,Bold Italic)
+        'headingFont'         = ("Courier New",9pt)
+        'docFont'             = ("Courier New",9pt);
 
-  replace fonts /
-           'TitleFont2' = ("Courier New",9pt)
-           'TitleFont' = ("Courier New",9pt/*,Bold*/)     /* titles */
-           'StrongFont' = ("Courier New",9pt/*,Bold*/)
-           'EmphasisFont' = ("Courier New",9pt,Italic)
-           'FixedEmphasisFont' = ("Courier New, Courier",9pt,Italic)
-           'FixedStrongFont' = ("Courier New, Courier",9pt/*,Bold*/)
-           'FixedHeadingFont' = ("Courier New, Courier",9pt/*,Bold*/)
-           'BatchFixedFont' = ("SAS Monospace, Courier New, Courier",9pt)
-           'FixedFont' = ("Courier New, Courier",9pt)
-           'headingEmphasisFont' = ("Courier New",9pt,Bold Italic)
-           'headingFont' = ("Courier New",9pt/*,Bold*/)   /* header block */
-           'docFont' = ("Courier New",9pt);           /* table cells */
-
-   replace color_list
-         "Colors used in the default style" /
-         'link' = blue
-         'bgH' = white     /* header background */
-         'fg' = black
-         'bg' = _undef_;
-end;
-run ;
+      style color_list /
+        'link' = blue 'bgH' = white 'fg' = black 'bg' = _undef_;
+    end;
+  run;
 
 options orientation = landscape nonumber nodate nobyline;
 
@@ -430,44 +419,33 @@ ods path(prepend) work.templat(update);
 
 *Set the template for the output;
 proc template;
-  define style newstyle;
+    define style newstyle;
+      parent = styles.printer;
 
-  class Table  /
-			 Rules = Groups
-             Frame = void;
+      style Table  from Table  / rules = groups frame = void;
+      style Header from Header / just  = c fontweight = medium;
 
-  style header
-       / just              = c
-         fontweight        = medium;
+      style Body   from Document /
+        bottommargin = 1.54cm topmargin = 2.54cm rightmargin = 2.54cm leftmargin = 2.54cm;
 
-  replace Body from Document /
-    bottommargin = 1.54cm
-    topmargin = 2.54cm
-    rightmargin = 2.54cm
-    leftmargin = 2.54cm;
+      style Fonts  from Fonts /
+        'TitleFont2'          = ("Courier New",9pt)
+        'TitleFont'           = ("Courier New",9pt)
+        'StrongFont'          = ("Courier New",9pt)
+        'EmphasisFont'        = ("Courier New",9pt,Italic)
+        'FixedEmphasisFont'   = ("Courier New, Courier",9pt,Italic)
+        'FixedStrongFont'     = ("Courier New, Courier",9pt)
+        'FixedHeadingFont'    = ("Courier New, Courier",9pt)
+        'BatchFixedFont'      = ("SAS Monospace, Courier New, Courier",9pt)
+        'FixedFont'           = ("Courier New, Courier",9pt)
+        'headingEmphasisFont' = ("Courier New",9pt,Bold Italic)
+        'headingFont'         = ("Courier New",9pt)
+        'docFont'             = ("Courier New",9pt);
 
-  replace fonts /
-           'TitleFont2' = ("Courier New",9pt)
-           'TitleFont' = ("Courier New",9pt/*,Bold*/)     /* titles */
-           'StrongFont' = ("Courier New",9pt/*,Bold*/)
-           'EmphasisFont' = ("Courier New",9pt,Italic)
-           'FixedEmphasisFont' = ("Courier New, Courier",9pt,Italic)
-           'FixedStrongFont' = ("Courier New, Courier",9pt/*,Bold*/)
-           'FixedHeadingFont' = ("Courier New, Courier",9pt/*,Bold*/)
-           'BatchFixedFont' = ("SAS Monospace, Courier New, Courier",9pt)
-           'FixedFont' = ("Courier New, Courier",9pt)
-           'headingEmphasisFont' = ("Courier New",9pt,Bold Italic)
-           'headingFont' = ("Courier New",9pt/*,Bold*/)   /* header block */
-           'docFont' = ("Courier New",9pt);           /* table cells */
-
-   replace color_list
-         "Colors used in the default style" /
-         'link' = blue
-         'bgH' = white     /* header background */
-         'fg' = black
-         'bg' = _undef_;
-end;
-run ;
+      style color_list /
+        'link' = blue 'bgH' = white 'fg' = black 'bg' = _undef_;
+    end;
+  run;
 
 options orientation = landscape nonumber nodate nobyline;
 

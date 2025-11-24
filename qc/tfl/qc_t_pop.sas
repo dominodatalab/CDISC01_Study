@@ -17,9 +17,9 @@
 * Output files: qc_t_pop.
 *				t_pop.sas7bdat
 *               
-* Macros:       None vt
+* Macros:       None 
 *         
-* Assumptions: Demo only - Second comment 20240311
+* Assumptions: 
 *
 * ____________________________________________________________________________
 * PROGRAM HISTORY                                   
@@ -48,44 +48,50 @@
 ods path(prepend) work.templat(update);
 
 *Set the template for the output;
+*Set the template for the output;
 proc template;
-  define style newstyle;
-
-  class Table  /
-			 Rules = Groups
-             Frame = void;
-
-  style header
-       / just              = c
-         fontweight        = medium;
-
-  replace Body from Document /
-    bottommargin = 1.54cm
-    topmargin = 2.54cm
-    rightmargin = 2.54cm
-    leftmargin = 2.54cm;
-
-  replace fonts /
-           'TitleFont2' = ("Courier New",9pt)
-           'TitleFont' = ("Courier New",9pt/*,Bold*/)     /* titles */
-           'StrongFont' = ("Courier New",9pt/*,Bold*/)
-           'EmphasisFont' = ("Courier New",9pt,Italic)
-           'FixedEmphasisFont' = ("Courier New, Courier",9pt,Italic)
-           'FixedStrongFont' = ("Courier New, Courier",9pt/*,Bold*/)
-           'FixedHeadingFont' = ("Courier New, Courier",9pt/*,Bold*/)
-           'BatchFixedFont' = ("SAS Monospace, Courier New, Courier",9pt)
-           'FixedFont' = ("Courier New, Courier",9pt)
-           'headingEmphasisFont' = ("Courier New",9pt,Bold Italic)
-           'headingFont' = ("Courier New",9pt/*,Bold*/)   /* header block */
-           'docFont' = ("Courier New",9pt);           /* table cells */
-
-   replace color_list
-         "Colors used in the default style" /
-         'link' = blue
-         'bgH' = white     /* header background */
-         'fg' = black
-         'bg' = _undef_;
-end;
+    define style newstyle;
+      parent = styles.printer;
+  
+      /* Table framing */
+      style Table from Table /
+        rules = groups
+        frame = void;
+  
+      /* Header look */
+      style Header from Header /
+        just       = c
+        fontweight = medium;
+  
+      /* Page margins */
+      style Body from Document /
+        bottommargin = 1.54cm
+        topmargin    = 2.54cm
+        rightmargin  = 2.54cm
+        leftmargin   = 2.54cm;
+  
+      /* Fonts block */
+      style Fonts from Fonts /
+        'TitleFont2'         = ("Courier New",9pt)
+        'TitleFont'          = ("Courier New",9pt)
+        'StrongFont'         = ("Courier New",9pt)
+        'EmphasisFont'       = ("Courier New",9pt,Italic)
+        'FixedEmphasisFont'  = ("Courier New, Courier",9pt,Italic)
+        'FixedStrongFont'    = ("Courier New, Courier",9pt)
+        'FixedHeadingFont'   = ("Courier New, Courier",9pt)
+        'BatchFixedFont'     = ("SAS Monospace, Courier New, Courier",9pt)
+        'FixedFont'          = ("Courier New, Courier",9pt)
+        'headingEmphasisFont'= ("Courier New",9pt,Bold Italic)
+        'headingFont'        = ("Courier New",9pt)
+        'docFont'            = ("Courier New",9pt);
+  
+      /* Colors */
+      style color_list /
+        'link' = blue
+        'bgH'  = white
+        'fg'   = black
+        'bg'   = _undef_;
+    end;
 run ;
 
 options orientation = landscape nonumber nodate nobyline;
@@ -257,8 +263,7 @@ title3 "Summary of Age for each Treatment";
 title4 "Analysis Set";
 
 ** justify contents to decimal places;
-** if you want TFL to also be written to Dataset.  proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tflqc.t_pop;
-proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tflqc.qc_t_pop;
+proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tfl.qc_t_pop;
         column  (order1 ageresults stat placebo low_dose high_dose);
         
         ** order variables;
@@ -271,12 +276,12 @@ proc report data = order_results headline split = "*" style(report) = {width = 1
         define high_dose / "Xanomeline High Dose* (N=%cmpres(&high_dose_n))" style(column) = {just = d width = 20%};
         
         ** add footnotes describing the critical codes;
-        footnote1 justify = left "Note: n = number of unique subjects in age group.";
-        footnote2 justify = left "Note: percentages are based on the number of patients for each treatment.";
-        footnote3 justify = left "Dataset(s): ADSL; Program: qc_t_pop.sas; Output: qc_t_pop.pdf; Generated on: &sysdate9 &systime";
+        footnote1 justify = left "&Footer1.";
+        footnote2 justify = left "&Footer2.";
+        footnote3 justify = left "&Footer3.";
 run;
     
-ods pdf close;
+      ods pdf close;
 
 
 
@@ -331,44 +336,50 @@ libname sdtm "&metadata_path.";
 ods path(prepend) work.templat(update);
 
 *Set the template for the output;
+*Set the template for the output;
 proc template;
-  define style newstyle;
-
-  class Table  /
-			 Rules = Groups
-             Frame = void;
-
-  style header
-       / just              = c
-         fontweight        = medium;
-
-  replace Body from Document /
-    bottommargin = 1.54cm
-    topmargin = 2.54cm
-    rightmargin = 2.54cm
-    leftmargin = 2.54cm;
-
-  replace fonts /
-           'TitleFont2' = ("Courier New",9pt)
-           'TitleFont' = ("Courier New",9pt/*,Bold*/)     /* titles */
-           'StrongFont' = ("Courier New",9pt/*,Bold*/)
-           'EmphasisFont' = ("Courier New",9pt,Italic)
-           'FixedEmphasisFont' = ("Courier New, Courier",9pt,Italic)
-           'FixedStrongFont' = ("Courier New, Courier",9pt/*,Bold*/)
-           'FixedHeadingFont' = ("Courier New, Courier",9pt/*,Bold*/)
-           'BatchFixedFont' = ("SAS Monospace, Courier New, Courier",9pt)
-           'FixedFont' = ("Courier New, Courier",9pt)
-           'headingEmphasisFont' = ("Courier New",9pt,Bold Italic)
-           'headingFont' = ("Courier New",9pt/*,Bold*/)   /* header block */
-           'docFont' = ("Courier New",9pt);           /* table cells */
-
-   replace color_list
-         "Colors used in the default style" /
-         'link' = blue
-         'bgH' = white     /* header background */
-         'fg' = black
-         'bg' = _undef_;
-end;
+    define style newstyle;
+      parent = styles.printer;
+  
+      /* Table framing */
+      style Table from Table /
+        rules = groups
+        frame = void;
+  
+      /* Header look */
+      style Header from Header /
+        just       = c
+        fontweight = medium;
+  
+      /* Page margins */
+      style Body from Document /
+        bottommargin = 1.54cm
+        topmargin    = 2.54cm
+        rightmargin  = 2.54cm
+        leftmargin   = 2.54cm;
+  
+      /* Fonts block */
+      style Fonts from Fonts /
+        'TitleFont2'         = ("Courier New",9pt)
+        'TitleFont'          = ("Courier New",9pt)
+        'StrongFont'         = ("Courier New",9pt)
+        'EmphasisFont'       = ("Courier New",9pt,Italic)
+        'FixedEmphasisFont'  = ("Courier New, Courier",9pt,Italic)
+        'FixedStrongFont'    = ("Courier New, Courier",9pt)
+        'FixedHeadingFont'   = ("Courier New, Courier",9pt)
+        'BatchFixedFont'     = ("SAS Monospace, Courier New, Courier",9pt)
+        'FixedFont'          = ("Courier New, Courier",9pt)
+        'headingEmphasisFont'= ("Courier New",9pt,Bold Italic)
+        'headingFont'        = ("Courier New",9pt)
+        'docFont'            = ("Courier New",9pt);
+  
+      /* Colors */
+      style color_list /
+        'link' = blue
+        'bgH'  = white
+        'fg'   = black
+        'bg'   = _undef_;
+    end;
 run ;
 
 options orientation = landscape nonumber nodate nobyline;
