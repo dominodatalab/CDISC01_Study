@@ -43,6 +43,80 @@ def ADaM_only(netapp_volume_snapshot: str):
         cache=cache,
         cache_version="1.0"
     )
+    adae_task = run_domino_job_task(
+        flyte_task_name="Create ADAE Dataset",
+        command="prod/adam/ADAE.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
+                Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
+        output_specs=[Output(name="adae", type=DataArtifact.File(name="adae", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
+        main_git_repo_ref=GitRef(Type=GitRef_type, Value=GitRef_value),
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
+    )
+
+    adcm_task = run_domino_job_task(
+        flyte_task_name="Create ADCM Dataset",
+        command="prod/adam/ADCM.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
+                Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
+        output_specs=[Output(name="adcm", type=DataArtifact.File(name="adcm", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
+        main_git_repo_ref=GitRef(Type=GitRef_type, Value=GitRef_value),
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
+    )
+
+    adlb_task = run_domino_job_task(
+        flyte_task_name="Create ADLB Dataset",
+        command="prod/adam/ADLB.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
+                Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
+        output_specs=[Output(name="adlb", type=DataArtifact.File(name="adlb", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
+        main_git_repo_ref=GitRef(Type=GitRef_type, Value=GitRef_value),
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
+    )
+
+    admh_task = run_domino_job_task(
+        flyte_task_name="Create ADMH Dataset",
+        command="prod/adam/ADMH.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
+                Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
+        output_specs=[Output(name="admh", type=DataArtifact.File(name="admh", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
+        main_git_repo_ref=GitRef(Type=GitRef_type, Value=GitRef_value),
+        use_project_defaults_for_omitted=True,
+        cache=cache,
+        cache_version="1.0"
+    )
+
+    advs_task = run_domino_job_task(
+        flyte_task_name="Create ADVS Dataset",
+        command="prod/adam/ADVS.sas",
+        inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
+                Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
+        output_specs=[Output(name="advs", type=DataArtifact.File(name="advs", type="sas7bdat"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name=environment_name,
+        use_project_defaults_for_omitted=True,
+        netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
+        main_git_repo_ref=GitRef(Type=GitRef_type, Value=GitRef_value),
+        cache=cache,
+        cache_version="1.0"
+    )    
 
     return
  
