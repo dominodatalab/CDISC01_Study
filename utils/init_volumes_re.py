@@ -26,7 +26,7 @@ from re import sub
 
 # Domino authentication and project configuration
 DOMINO_USER_API_KEY = os.environ['DOMINO_USER_API_KEY']
-DOMINO_API_HOST = os.environ['DOMINO_API_HOST']
+DOMINO_API_HOST = os.environ['DOMINO_REMOTE_FILE_SYSTEM_HOSTPORT']
 DOMINO_PROJECT_ID = os.environ['DOMINO_PROJECT_ID']
 DOMINO_PROJECT_OWNER = os.environ['DOMINO_PROJECT_OWNER']
 DOMINO_PROJECT_NAME = os.environ['DOMINO_PROJECT_NAME']
