@@ -1,6 +1,7 @@
 dhparams.pem
 /.vscode
 /.snakemake
-/__pycache__
+**/__pycache__/**
 /utils/__pycache__
 /flows/__pycache__
+/Trash*

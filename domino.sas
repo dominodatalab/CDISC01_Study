@@ -12,19 +12,19 @@
 * - BATCH (SYSIN set)        -> PROD volumes
 *
 * NETAPP ROOTS USED:
-* - /mnt/netapp-volumes/CDISC01_CSR_DATA_DEV
-* - /mnt/netapp-volumes/CDISC01_CSR_DATA_PROD
-* - /mnt/netapp-volumes/CDISC01_CSR_OUTPUT_DEV
-* - /mnt/netapp-volumes/CDISC01_CSR_OUTPUT_PROD
+* - /mnt/netapp-volumes/{DOMINO_PROJECT_NAME}_DATA_DEV
+* - /mnt/netapp-volumes/{DOMINO_PROJECT_NAME}_DATA_PROD
+* - /mnt/netapp-volumes/{DOMINO_PROJECT_NAME}_OUTPUT_DEV
+* - /mnt/netapp-volumes/{DOMINO_PROJECT_NAME}_OUTPUT_PROD
 * - /mnt/netapp-volumes/snapshot-tags/CDISC01_SDTMBLIND/<SNAPSHOT_TAG>
 * - /mnt/netapp-volumes/snapshot-tags/CDISC01_SDTMUNBLIND/<SNAPSHOT_TAG>
 *
 * LIBNAMES CREATED:
 * - SDTM   : read-only snapshot tag path
-* - ADAM   : <CSR_DATA_[DEV|PROD]>/adam
-* - ADAMQC : <CSR_DATA_[DEV|PROD]>/qc/adam
-* - TFL    : <CSR_OUTPUT_[DEV|PROD]>/tfl
-* - TFLQC  : <CSR_OUTPUT_[DEV|PROD]>/qc/tfl
+* - ADAM   : <DATA_[DEV|PROD]>/adam
+* - ADAMQC : <DATA_[DEV|PROD]>/qc/adam
+* - TFL    : <OUTPUT_[DEV|PROD]>/tfl
+* - TFLQC  : <OUTPUT_[DEV|PROD]>/qc/tfl
 ******************************************************************************/
 
 %macro __setup();
@@ -116,11 +116,11 @@
   /* ----------------------------- */
   %let __netapp_root   = /mnt/netapp-volumes;
 
-  %let __DATA_DEV_ROOT  = &__netapp_root./CDISC01_CSR_DATA_DEV;
-  %let __DATA_PROD_ROOT = &__netapp_root./CDISC01_CSR_DATA_PROD;
+  %let __DATA_DEV_ROOT  = &__netapp_root./&__PROJECT_NAME._DATA_DEV;
+  %let __DATA_PROD_ROOT = &__netapp_root./&__PROJECT_NAME._DATA_PROD;
 
-  %let __OUT_DEV_ROOT   = &__netapp_root./CDISC01_CSR_OUTPUT_DEV;
-  %let __OUT_PROD_ROOT  = &__netapp_root./CDISC01_CSR_OUTPUT_PROD;
+  %let __OUT_DEV_ROOT   = &__netapp_root./&__PROJECT_NAME._OUTPUT_DEV;
+  %let __OUT_PROD_ROOT  = &__netapp_root./&__PROJECT_NAME._OUTPUT_PROD;
 
   %if &__target_env=DEV %then %do;
     %let __DATA_ROOT = &__DATA_DEV_ROOT;
@@ -172,8 +172,8 @@
          __PROD_DATA_ROOT __PROD_OUT_ROOT __path_lc;
 
   /* PROD roots for log placement */
-  %let __PROD_DATA_ROOT = &__netapp_root./CDISC01_CSR_DATA_PROD;
-  %let __PROD_OUT_ROOT  = &__netapp_root./CDISC01_CSR_OUTPUT_PROD;
+  %let __PROD_DATA_ROOT = &__netapp_root./&__PROJECT_NAME._DATA_PROD;
+  %let __PROD_OUT_ROOT  = &__netapp_root./&__PROJECT_NAME._OUTPUT_PROD;
 
   /* Classifiers */
   %let __path_lc = %lowcase(&__prog_path.);
