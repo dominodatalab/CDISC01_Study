@@ -28,6 +28,7 @@ from re import sub
 DOMINO_PROJECT_ID = os.environ['DOMINO_PROJECT_ID']
 DOMINO_PROJECT_OWNER = os.environ['DOMINO_PROJECT_OWNER']
 DOMINO_PROJECT_NAME = os.environ['DOMINO_PROJECT_NAME']
+DOMINO_USER_ID = os.environ['DOMINO_STARTING_USERNAME']  # Current user's ID
 
 # API endpoints
 DOMINO_API_PROXY = os.environ['DOMINO_API_PROXY']
@@ -77,6 +78,9 @@ ACCESS_TOKEN = get_access_token()
 if not ACCESS_TOKEN:
     print("FATAL ERROR: Cannot proceed without access token")
     exit(1)
+
+print(f"✓ Authenticated as user: {DOMINO_USER_ID}")
+print(f"✓ Project: {DOMINO_PROJECT_NAME} (ID: {DOMINO_PROJECT_ID})")
 
 # ==============================================================================
 # UTILITY FUNCTIONS
@@ -270,8 +274,13 @@ for volume_key, volume_description in REQUIRED_VOLUMES.items():
     print(f"\nCreating NetApp volume: {volume_name}")
     
     try:
-        # Create volume with project attachment
-        # The grants array can be empty when projectId is specified
+        # Create volume with project attachment and owner grant
+        # Volume roles (as defined in Swagger):
+        #   - VolumeOwner: Full access, can manage permissions
+        #   - VolumeEditor: Read/write access to volume content
+        #   - VolumeReader: Read-only access to volume content
+        #   - Service: Internal service access
+        # The current user is added as VolumeOwner to have full control
         create_response = submit_api_call(
             'POST',
             f'{NETAPP_BASE_PATH}/volumes',
@@ -281,7 +290,12 @@ for volume_key, volume_description in REQUIRED_VOLUMES.items():
                 "filesystemId": filesystem_id,
                 "capacity": DEFAULT_VOLUME_CAPACITY,
                 "projectId": DOMINO_PROJECT_ID,
-                "grants": []  # Empty grants when project attachment is used
+                "grants": [
+                    {
+                        "targetId": DOMINO_USER_ID,
+                        "targetRole": "VolumeOwner"
+                    }
+                ]
             }
         )
         
@@ -307,12 +321,12 @@ print("=" * 80)
 
 # Define volumes that need to be imported/attached from the SDTM project
 REQUIRED_ATTACHED_VOLUMES = {
-    "SDTMBLIND"
+    "SDTMBLIND",
+    "SDTMUNBLIND"
 }
 
-# Derive the SDTM project name from the current project name
-# Convention: Replace "RE_*" pattern with "SDTM" to find source project
-SDTM_PROJECT_NAME = sub(r"RE_\w+", "SDTM", DOMINO_PROJECT_NAME)
+# SDTM project name is fixed as CDISC01_SDTM
+SDTM_PROJECT_NAME = "CDISC01_SDTM"
 print(f"\nLooking for SDTM project: {SDTM_PROJECT_NAME}")
 
 # Get SDTM project ID from project list
