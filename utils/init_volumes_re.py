@@ -34,7 +34,8 @@ DOMINO_PROJECT_NAME = os.environ['DOMINO_PROJECT_NAME']
 domino = Domino(f"{DOMINO_PROJECT_OWNER}/{DOMINO_PROJECT_NAME}")
 
 # NetApp Volumes API base path
-NETAPP_BASE_PATH = "remotefs/v1"
+# The Swagger documentation shows the service is at /domino-netapp-volumes/remotefs/v1
+NETAPP_BASE_PATH = "domino-netapp-volumes/remotefs/v1"
 
 # ==============================================================================
 # UTILITY FUNCTIONS
