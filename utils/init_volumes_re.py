@@ -171,6 +171,7 @@ REQUIRED_VOLUMES = {
 print("=" * 80)
 print("CREATING REQUIRED NETAPP VOLUMES")
 print(f'{DOMINO_API_HOST}/{NETAPP_BASE_PATH}')
+print(DOMINO_USER_API_KEY)
 print("=" * 80)
 
 # Get filesystem ID
