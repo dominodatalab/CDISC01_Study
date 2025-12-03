@@ -36,6 +36,7 @@
     __WORKING_DIR
     __PROJECT_NAME
     __SNAPSHOT_TAG
+    __snapshot_directory
     __SDTM_DATASET
     __SDTM_VOLUME
     __netapp_root
@@ -55,6 +56,13 @@
   %let __PROJECT_NAME  = %sysget(DOMINO_PROJECT_NAME);
   %let __SNAPSHOT_TAG  = %sysget(SNAPSHOT_TAG);
   %let __SDTM_DATASET  = %sysget(SDTM_DATASET);
+  
+  /* ----------------------------- */
+  /* If using tagged snapshots change this to snapshot-tags else snapshots. */
+  /* If using just snapshots it should point to a number in the env variabel for SNAPSHOT_TAG */
+  /* ----------------------------- */
+ 
+  %let __snapshot_directory = snapshots
 
   %if %superq(__SNAPSHOT_TAG)= %then %put %str(ER)ROR: Environment variable SNAPSHOT_TAG is required.;
   %if %superq(__SDTM_DATASET)= %then %put %str(ER)ROR: Environment variable SDTM_DATASET is required.;
@@ -129,7 +137,7 @@
 
   /* SDTM via snapshot-tags (read-only) */
   libname SDTM
-    "&__netapp_root./snapshot-tags/&__SDTM_VOLUME./&__SNAPSHOT_TAG."
+    "&__netapp_root./&__snapshot_directory/&__SDTM_VOLUME./&__SNAPSHOT_TAG."
     access=readonly;
 
   /* ADaM / QC (R/W) */
