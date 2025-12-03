@@ -58,16 +58,25 @@ def submit_api_call(method, endpoint, data=None):
         'accept': 'application/json',
     }
     url = f'{DOMINO_API_HOST}/{endpoint}'
-    response = requests.request(method, url, headers=headers, json=data)
-
-    # Handle different response types
+    
     try:
-        return response.json()
-    except:
+        response = requests.request(method, url, headers=headers, json=data)
+        
+        # Check for HTTP errors
+        if response.status_code >= 400:
+            print(f"WARNING: HTTP {response.status_code} for {method} {endpoint}")
+            print(f"Response: {response.text[:500]}")  # Print first 500 chars
+        
+        # Try to parse as JSON first
         try:
+            return response.json()
+        except ValueError:
+            # If JSON parsing fails, return text
             return response.text
-        except:
-            return response
+            
+    except Exception as e:
+        print(f"ERROR: Request failed for {method} {endpoint}: {e}")
+        raise
 
 
 def generate_volume_name(base_name):
@@ -97,20 +106,36 @@ def get_default_filesystem():
     try:
         filesystems_response = submit_api_call('GET', f'{NETAPP_BASE_PATH}/filesystems')
         
-        if filesystems_response and 'data' in filesystems_response:
-            for filesystem in filesystems_response['data']:
-                if filesystem.get('isDataPlaneDefault', False):
-                    return filesystem
+        # Debug: print response type and content
+        print(f"DEBUG: Filesystems response type: {type(filesystems_response)}")
+        print(f"DEBUG: Filesystems response: {filesystems_response}")
+        
+        # Check if response is a dict with data
+        if not isinstance(filesystems_response, dict):
+            print(f"ERROR: Expected dict response, got {type(filesystems_response)}")
+            return None
+        
+        if 'data' not in filesystems_response:
+            print(f"ERROR: Response missing 'data' field. Response keys: {filesystems_response.keys()}")
+            return None
+        
+        # Look for default filesystem
+        for filesystem in filesystems_response['data']:
+            if filesystem.get('isDataPlaneDefault', False):
+                return filesystem
         
         # If no default found, return the first filesystem
-        if filesystems_response and 'data' in filesystems_response and len(filesystems_response['data']) > 0:
+        if len(filesystems_response['data']) > 0:
             print("WARNING: No default filesystem found, using first available filesystem")
             return filesystems_response['data'][0]
         
         print("ERROR: No filesystems available")
         return None
+        
     except Exception as e:
         print(f"ERROR: Failed to get default filesystem: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 
