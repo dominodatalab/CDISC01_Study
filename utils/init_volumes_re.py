@@ -12,7 +12,7 @@ NetApp volume names are globally unique and prefixed with the project name
 to avoid naming conflicts across the Domino deployment.
 
 Author: Domino Data Lab
-Version: 2.0
+Version: 3.0
 """
 
 from domino import Domino
@@ -24,44 +24,91 @@ from re import sub
 # ENVIRONMENT CONFIGURATION
 # ==============================================================================
 
-# Domino authentication and project configuration
-DOMINO_USER_API_KEY = os.environ['DOMINO_USER_API_KEY']
-DOMINO_API_HOST = os.environ['DOMINO_REMOTE_FILE_SYSTEM_HOSTPORT']
+# Domino project configuration
 DOMINO_PROJECT_ID = os.environ['DOMINO_PROJECT_ID']
 DOMINO_PROJECT_OWNER = os.environ['DOMINO_PROJECT_OWNER']
 DOMINO_PROJECT_NAME = os.environ['DOMINO_PROJECT_NAME']
 
+# API endpoints
+DOMINO_API_PROXY = os.environ['DOMINO_API_PROXY']
+DOMINO_REMOTE_FILE_SYSTEM_HOSTPORT = os.environ['DOMINO_REMOTE_FILE_SYSTEM_HOSTPORT']
+
 # Initialize Domino client
 domino = Domino(f"{DOMINO_PROJECT_OWNER}/{DOMINO_PROJECT_NAME}")
 
-# NetApp Volumes API base path
+# NetApp Volumes API base path (relative to remote file system host)
 NETAPP_BASE_PATH = "remotefs/v1"
 
 # Default capacity for volumes (100GB in bytes)
 DEFAULT_VOLUME_CAPACITY = 100 * 1024 * 1024 * 1024
 
 # ==============================================================================
+# AUTHENTICATION
+# ==============================================================================
+
+def get_access_token():
+    """
+    Get access token from Domino API proxy.
+    
+    Returns:
+        str: Bearer token for API authentication
+    """
+    try:
+        token_url = f"{DOMINO_API_PROXY}/access-token"
+        response = requests.get(token_url)
+        
+        if response.status_code == 200:
+            token = response.text.strip()
+            print(f"✓ Successfully obtained access token")
+            return token
+        else:
+            print(f"ERROR: Failed to get access token. Status: {response.status_code}")
+            print(f"Response: {response.text[:200]}")
+            return None
+            
+    except Exception as e:
+        print(f"ERROR: Failed to get access token: {e}")
+        return None
+
+
+# Get authentication token at startup
+ACCESS_TOKEN = get_access_token()
+
+if not ACCESS_TOKEN:
+    print("FATAL ERROR: Cannot proceed without access token")
+    exit(1)
+
+# ==============================================================================
 # UTILITY FUNCTIONS
 # ==============================================================================
 
-def submit_api_call(method, endpoint, data=None):
+def submit_api_call(method, endpoint, data=None, use_netapp_host=True):
     """
     Submit a REST API call to Domino with proper authentication.
     
     Args:
         method (str): HTTP method (GET, POST, PUT, DELETE)
-        endpoint (str): API endpoint path (relative to DOMINO_API_HOST)
+        endpoint (str): API endpoint path (relative to host)
         data (dict, optional): JSON payload for POST/PUT requests
+        use_netapp_host (bool): If True, use DOMINO_REMOTE_FILE_SYSTEM_HOSTPORT,
+                                otherwise use DOMINO_API_PROXY
     
     Returns:
         Response content as JSON dict, text string, or raw response object
     """
     headers = {
-        'X-Domino-Api-Key': DOMINO_USER_API_KEY, 
+        'Authorization': f'Bearer {ACCESS_TOKEN}',
         'Content-Type': 'application/json',
         'accept': 'application/json',
     }
-    url = f'{DOMINO_API_HOST}/{endpoint}'
+    
+    # Choose the appropriate host
+    if use_netapp_host:
+        base_url = DOMINO_REMOTE_FILE_SYSTEM_HOSTPORT
+    else:
+        base_url = DOMINO_API_PROXY
+    
+    url = f'{base_url}/{endpoint}'
     
     try:
         response = requests.request(method, url, headers=headers, json=data)
@@ -123,7 +170,7 @@ def get_filesystem_id():
             return None
         
         if 'data' not in filesystems_response:
-            print(f"ERROR: Response missing 'data' field")
+            print(f"ERROR: Response missing 'data' field. Keys: {filesystems_response.keys()}")
             return None
         
         filesystems = filesystems_response['data']
@@ -168,10 +215,8 @@ REQUIRED_VOLUMES = {
     "ADAMQC": "ADAMQC is created using SDTM data for qc"
 }
 
-print("=" * 80)
+print("\n" + "=" * 80)
 print("CREATING REQUIRED NETAPP VOLUMES")
-print(f'{DOMINO_API_HOST}/{NETAPP_BASE_PATH}')
-print(DOMINO_USER_API_KEY)
 print("=" * 80)
 
 # Get filesystem ID
@@ -206,7 +251,8 @@ try:
                 base_name = volume_name.replace(f"{DOMINO_PROJECT_NAME}_", "", 1)
                 CURRENT_VOLUMES[base_name] = volume
     
-    print(f"\nFound {len(set(v['id'] for v in CURRENT_VOLUMES.values()))} existing volume(s) in project")
+    unique_volumes = len(set(v['id'] for v in CURRENT_VOLUMES.values()))
+    print(f"\nFound {unique_volumes} existing volume(s) in project")
     
 except Exception as e:
     print(f"ERROR: Failed to list existing volumes: {e}")
@@ -270,10 +316,12 @@ SDTM_PROJECT_NAME = sub(r"RE_\w+", "SDTM", DOMINO_PROJECT_NAME)
 print(f"\nLooking for SDTM project: {SDTM_PROJECT_NAME}")
 
 # Get SDTM project ID from project list
+# Note: This uses the API proxy, not the remote file system host
 try:
     projects_response = submit_api_call(
         "GET",
-        "api/projects/beta/projects?limit=999"
+        "api/projects/beta/projects?limit=999",
+        use_netapp_host=False  # Use API proxy for project list
     )
     
     SDTM_PROJECT_ID = None
