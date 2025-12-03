@@ -35,7 +35,7 @@ DOMINO_PROJECT_NAME = os.environ['DOMINO_PROJECT_NAME']
 domino = Domino(f"{DOMINO_PROJECT_OWNER}/{DOMINO_PROJECT_NAME}")
 
 # NetApp Volumes API base path
-NETAPP_BASE_PATH = "domino-netapp-volumes/remotefs/v1"
+NETAPP_BASE_PATH = "remotefs/v1"
 
 # Default capacity for volumes (100GB in bytes)
 DEFAULT_VOLUME_CAPACITY = 100 * 1024 * 1024 * 1024
