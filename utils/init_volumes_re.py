@@ -40,8 +40,6 @@ NETAPP_BASE_PATH = "domino-netapp-volumes/remotefs/v1"
 # Default capacity for volumes (100GB in bytes)
 DEFAULT_VOLUME_CAPACITY = 100 * 1024 * 1024 * 1024
 
-print(f'{DOMINO_API_HOST}/{NETAPP_BASE_PATH}')
-
 # ==============================================================================
 # UTILITY FUNCTIONS
 # ==============================================================================
@@ -172,6 +170,7 @@ REQUIRED_VOLUMES = {
 
 print("=" * 80)
 print("CREATING REQUIRED NETAPP VOLUMES")
+print(f'{DOMINO_API_HOST}/{NETAPP_BASE_PATH}')
 print("=" * 80)
 
 # Get filesystem ID
