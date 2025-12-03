@@ -4,7 +4,7 @@ NetApp Volume Setup Script for Domino Data Lab
 This script automates the setup of NetApp volumes for a Domino project.
 It:
 1. Discovers available NetApp filesystems automatically
-2. Creates required NetApp volumes for production and QC workflows
+2. Creates required NetApp volumes for production and development workflows
 3. Attaches shared volumes from related SDTM projects
 4. Creates necessary artifact directories for outputs
 
@@ -142,10 +142,10 @@ def generate_volume_name(base_name):
     This function prefixes the base name with the project name to ensure uniqueness.
     
     Args:
-        base_name (str): Base name for the volume (e.g., "METADATA", "ADAM")
+        base_name (str): Base name for the volume (e.g., "OUTPUT_DEV", "DATA_PROD")
     
     Returns:
-        str: Globally unique volume name (e.g., "CDISC03_JC_METADATA")
+        str: Globally unique volume name (e.g., "CDISC03_JC_OUTPUT_DEV")
     """
     return f"{DOMINO_PROJECT_NAME}_{base_name}"
 
@@ -211,12 +211,12 @@ def get_filesystem_id():
 # ==============================================================================
 
 # Define required volumes and their purposes
-# These are project-specific volumes created for this ADAM/RE project
+# These are project-specific volumes created for this project
 REQUIRED_VOLUMES = {
-    "METADATA": "Internal metadata for the TFLs. Pulled from the MDR and converted to sas7bdat",
-    "COMPARE": "PROC COMPARE datasets for QC",
-    "ADAM": "ADAM is created using SDTM data for production",
-    "ADAMQC": "ADAMQC is created using SDTM data for qc"
+    "OUTPUT_DEV": "Development outputs for testing and validation",
+    "OUTPUT_PROD": "Production outputs for final deliverables",
+    "DATA_PROD": "Production data storage",
+    "DATA_DEV": "Development data storage"
 }
 
 print("\n" + "=" * 80)
@@ -320,9 +320,10 @@ print("ATTACHING SHARED VOLUMES FROM SDTM PROJECT")
 print("=" * 80)
 
 # Define volumes that need to be imported/attached from the SDTM project
+# These are the full volume names including the project prefix
 REQUIRED_ATTACHED_VOLUMES = {
-    "SDTMBLIND",
-    "SDTMUNBLIND"
+    "CDISC01_SDTMBLIND",
+    "CDISC01_SDTMUNBLIND"
 }
 
 # SDTM project name is fixed as CDISC01_SDTM
@@ -358,21 +359,17 @@ try:
                 f'{NETAPP_BASE_PATH}/volumes?project_id={SDTM_PROJECT_ID}'
             )
             
-            # Build mapping of volume base names to volume objects
+            # Build mapping of volume names to volume objects
             SDTM_VOLUMES = {}
             if isinstance(sdtm_volumes_response, dict) and 'data' in sdtm_volumes_response:
                 for volume in sdtm_volumes_response['data']:
                     volume_name = volume['name']
-                    # Handle globally unique naming - extract base name
-                    # Assumes naming convention: {PROJECT_NAME}_{BASE_NAME}
-                    if volume_name.startswith(f"{SDTM_PROJECT_NAME}_"):
-                        base_name = volume_name.replace(f"{SDTM_PROJECT_NAME}_", "", 1)
-                    else:
-                        base_name = volume_name
-                    
-                    SDTM_VOLUMES[base_name] = volume
+                    # Store by full name to match the exact names we're looking for
+                    SDTM_VOLUMES[volume_name] = volume
             
-            print(f"Found {len(SDTM_VOLUMES)} volume(s) in SDTM project")
+            print(f"Found {len(SDTM_VOLUMES)} volume(s) in SDTM project:")
+            for vol_name in SDTM_VOLUMES.keys():
+                print(f"  - {vol_name}")
             
             # Get currently attached volumes to avoid duplicates
             current_project_volumes = submit_api_call(
@@ -386,14 +383,14 @@ try:
                     CURRENT_ATTACHED_IDS.add(volume['id'])
             
             # Attach each required volume that isn't already attached
-            for required_volume in REQUIRED_ATTACHED_VOLUMES:
-                if required_volume not in SDTM_VOLUMES:
-                    print(f"\n✗ ERROR: Could not find required volume '{required_volume}' "
+            for required_volume_name in REQUIRED_ATTACHED_VOLUMES:
+                if required_volume_name not in SDTM_VOLUMES:
+                    print(f"\n✗ ERROR: Could not find required volume '{required_volume_name}' "
                           f"in {SDTM_PROJECT_NAME}")
                     print(f"  Available volumes: {list(SDTM_VOLUMES.keys())}")
                     continue
                 
-                volume_to_attach = SDTM_VOLUMES[required_volume]
+                volume_to_attach = SDTM_VOLUMES[required_volume_name]
                 volume_id = volume_to_attach['id']
                 
                 # Check if already attached
