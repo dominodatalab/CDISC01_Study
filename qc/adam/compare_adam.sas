@@ -25,6 +25,7 @@
 *  08JUN2022   | Jake Tombeur   | Original version
 \*****************************************************************************/
 
+options user=work;
 options errorcheck=normal noerrorabend;
 
 %let _STUDYID = CDISC01;
@@ -76,6 +77,10 @@ run;
 data _null_;
    if &syserr in (4, 6) then call symputx('syserr', 0);
 run;
+
+proc options option=config; run;
+
+
 
 
 

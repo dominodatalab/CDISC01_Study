@@ -26,11 +26,53 @@
 * ----------------------------------------------------------------------------
 \*****************************************************************************/
 
-*********;
-** Setup environment including libraries for this reporting effort;
-%include "/mnt/code/domino.sas";
-*********;
+%macro run_domino_code;
 
-data adam.adsl;
-	set sdtm.dm;
-run;
+   /* Retrieve the environment variable */
+   %let domino_is_workflow_job = %sysget(DOMINO_IS_WORKFLOW_JOB);
+
+   %put NOTE: DOMINO_IS_WORKFLOW_JOB is &domino_is_workflow_job;
+
+   /* If DOMINO_IS_WORKFLOW_JOB=false, run the following block */
+   %if &domino_is_workflow_job = false %then %do;
+
+      *********;
+      ** Setup environment including libraries for this reporting effort;
+      %include "/mnt/code/domino.sas";
+      *********;
+
+      data adam.adsl;
+         set sdtm.dm;
+      run;
+
+   %end;
+   /* If DOMINO_IS_WORKFLOW_JOB=true, run the second block */
+   %else %if &domino_is_workflow_job = true %then %do;
+
+      * Assign read/write folders for Flows inputs/outputs;
+      libname inputs "/workflow/inputs"; /* All inputs live in this directory at workflow/inputs/<NAME OF INPUT> */ 
+      libname outputs "/workflow/outputs"; /* All outputs must go to this directory at workflow/outputs/<NAME OF OUTPUT> */ 
+
+      /* Read in the SDTM data path input from the Flow input parameter */
+      data _null__;
+         infile '/workflow/inputs/sdtm_snapshot_task_input' truncover;
+         input data_path $CHAR100.;
+         call symputx('data_path', data_path, 'G');
+      run;
+
+      libname sdtm "&data_path.";
+
+      data outputs.adsl;
+         set sdtm.dm; /* reading in the dm sas7bdat file from the SDTM Dataset */
+      run;
+
+   %end;
+   /* Otherwise, log a warning that the variable is not recognized */
+   %else %do;
+      %put WARNING: DOMINO_IS_WORKFLOW_JOB environment variable not recognized or missing.;
+   %end;
+
+%mend run_domino_code;
+
+/* Invoke the macro */
+%run_domino_code;

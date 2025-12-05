@@ -15,23 +15,21 @@ The global `domino.sas` autoexec progam is also included in the repository to ap
 ```
 repo
 │   domino.sas
+├───flows
 ├───prod
 │   ├───adam
-    ├───adam_flows
+    ├───adam_flows_sdtm
     ├───tfl
-│   └───tfl_flows
 ├───qc
 │   ├───adam
 │   │       compare_adam.sas
-    ├───adam_flows
+    ├───adam_flows_sdtm
     ├───tfl
-│   └───tfl_flows
-├───utilities
-│       init_datasets_re.py
-│       import_metadata.sas
-├───flows
 └───share
     └───macros
+├───utils
+│       init_datasets_re.py
+│       convert_metadata.sas
 ```
 
 # Naming convention

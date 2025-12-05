@@ -13,12 +13,10 @@ domino = Domino(f"{DOMINO_PROJECT_OWNER}/{DOMINO_PROJECT_NAME}")
 
 # Required Datasets & Descriptions
 REQUIRED = {
-    "METADATA": "Internal metadata",
+    "METADATA": "Internal metadata for the TFLs. Pulled from the MDR and converted to sas7bdat",
     "COMPARE": "PROC COMPARE datasets for QC",
     "ADAM": "ADAM is created using SDTM data for production",
-    "ADAMQC": "ADAMQC is created using SDTM data for qc",
-    "TFL": "TFL is created using ADAM for production tfls",
-    "TFLQC": "TFLQC is created using ADAM for qc tfls"
+    "ADAMQC": "ADAMQC is created using SDTM data for qc"
 }
 
 # Existing Datasets
@@ -52,8 +50,7 @@ def submit_api_call(method, endpoint, data=None):
 # Mount imported datasets
 
 REQUIRED_MOUNTED = {
-    "SDTMBLIND",
-    "METADATA"
+    "SDTMBLIND"
 }
 
 # What datasets are currently mounted? And What are they called?
@@ -108,4 +105,12 @@ for missing_dataset in REQUIRED_MOUNTED.difference(CURRENT_MOUNTED):
         print(f"ERROR: Could not find required dataset {missing_dataset} in {SDTM_PROJECT} datasets: {SDTM_DATASETS.keys()}")
     except Exception as e:
         print(e)
-        
+
+# Create TFL artifacts directory
+os.makedirs("/mnt/artifacts/TFL", exist_ok=True)
+
+# Create QC TFL artifacts directory
+os.makedirs("/mnt/artifacts/TFL_QC", exist_ok=True)
+
+# Create SAS logs artifacts directory
+os.makedirs("/mnt/artifacts/sas_logs", exist_ok=True)
