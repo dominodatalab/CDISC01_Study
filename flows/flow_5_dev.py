@@ -25,7 +25,6 @@ cache = True
 # Define Flow Artifacts for ADaM Datasets, TFL Reports, and Pinnacle21 Validation Reports
 DataArtifact = Artifact("ADaM Datasets", DATA)
 ReportArtifact = Artifact("TFL Reports", DATA)
-# P21Artifact = Artifact("Pinnacle21 Validation Report", DATA)
 
 @workflow
 def SDTM_ADaM_TFL(netapp_volume_snapshot: str, metadata_snapshot: str):
