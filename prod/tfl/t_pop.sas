@@ -10,7 +10,7 @@
 * Program              : t_pop.sas
 * Purpose              : Create the Summary of Populations Table
 * ____________________________________________________________________________
-* DESCRIPTION                                                    
+* DESCRIPTION:                                                    
 *                                                                   
 * Input files: ADaM.ADSL add a comment
 *              
