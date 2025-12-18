@@ -10,7 +10,7 @@ from flytekitplugins.domino.artifact import Artifact, DATA, MODEL, REPORT
 environment_name="SAS Analytics Pro"
 hardware_tier_name="Small"
 GitRef_type="branches"                                     
-GitRef_value="prod_netapp"    
+GitRef_value="CSR"    
 
 # Default for caching, set to True or False
 cache = True
@@ -34,7 +34,7 @@ def ADaM_only(netapp_volume_snapshot: str):
         flyte_task_name="Create ADSL Dataset",
         command="prod/adam/ADSL.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot)],
-        output_specs=[Output(name="adsl", type=DataArtifact.File(name="adsl", type="sas7bdat"))],
+        output_specs=[Output(name="adsl", type=DataArtifact.File(name="adsl.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
@@ -48,7 +48,7 @@ def ADaM_only(netapp_volume_snapshot: str):
         command="prod/adam/ADAE.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
                 Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
-        output_specs=[Output(name="adae", type=DataArtifact.File(name="adae", type="sas7bdat"))],
+        output_specs=[Output(name="adae", type=DataArtifact.File(name="adae.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
@@ -63,7 +63,7 @@ def ADaM_only(netapp_volume_snapshot: str):
         command="prod/adam/ADCM.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
                 Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
-        output_specs=[Output(name="adcm", type=DataArtifact.File(name="adcm", type="sas7bdat"))],
+        output_specs=[Output(name="adcm", type=DataArtifact.File(name="adcm.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
@@ -78,7 +78,7 @@ def ADaM_only(netapp_volume_snapshot: str):
         command="prod/adam/ADLB.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
                 Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
-        output_specs=[Output(name="adlb", type=DataArtifact.File(name="adlb", type="sas7bdat"))],
+        output_specs=[Output(name="adlb", type=DataArtifact.File(name="adlb.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
@@ -93,7 +93,7 @@ def ADaM_only(netapp_volume_snapshot: str):
         command="prod/adam/ADMH.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
                 Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
-        output_specs=[Output(name="admh", type=DataArtifact.File(name="admh", type="sas7bdat"))],
+        output_specs=[Output(name="admh", type=DataArtifact.File(name="admh.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="c4b37e73-55bc-4f75-84af-7cd2ea9046ba", Version=1)],
@@ -108,7 +108,7 @@ def ADaM_only(netapp_volume_snapshot: str):
         command="prod/adam/ADVS.sas",
         inputs=[Input(name="sdtm_snapshot_task_input", type=str, value=netapp_volume_snapshot),
                 Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"])],
-        output_specs=[Output(name="advs", type=DataArtifact.File(name="advs", type="sas7bdat"))],
+        output_specs=[Output(name="advs", type=DataArtifact.File(name="advs.sas7bdat", type="sas7bdat"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         use_project_defaults_for_omitted=True,

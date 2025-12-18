@@ -10,7 +10,7 @@ from flytekitplugins.domino.artifact import Artifact, DATA, MODEL, REPORT
 environment_name="SAS Analytics Pro"
 hardware_tier_name="Small"
 GitRef_type="branches"                                     
-GitRef_value="prod_netapp"  
+GitRef_value="CSR"  
 
 # Default for caching, set to True or False
 cache = True
@@ -230,7 +230,7 @@ def SDTM_ADaM_TFL(netapp_volume_snapshot: str, metadata_snapshot: str):
         command="prod/tfl/t_pop.sas",
         inputs=[Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
-        output_specs=[Output(name="t_pop", type=ReportArtifact.File(name="t_pop", type="pdf"))],
+        output_specs=[Output(name="t_pop", type=ReportArtifact.File(name="t_pop.pdf", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="202c441a-6506-40dc-a77c-7851df7c11cb", Version=1)],
@@ -247,7 +247,7 @@ def SDTM_ADaM_TFL(netapp_volume_snapshot: str, metadata_snapshot: str):
         inputs=[Input(name="adsl", type=FlyteFile[TypeVar("sas7bdat")], value=adsl_task["adsl"]),
                 Input(name="adae", type=FlyteFile[TypeVar("sas7bdat")], value=adae_task["adae"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
-        output_specs=[Output(name="t_ae_rel", type=ReportArtifact.File(name="t_ae_rel", type="pdf"))],
+        output_specs=[Output(name="t_ae_rel", type=ReportArtifact.File(name="t_ae_rel.pdf", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="202c441a-6506-40dc-a77c-7851df7c11cb", Version=1)],
@@ -263,7 +263,7 @@ def SDTM_ADaM_TFL(netapp_volume_snapshot: str, metadata_snapshot: str):
         command="prod/tfl/t_vscat.sas",
         inputs=[Input(name="advs", type=FlyteFile[TypeVar("sas7bdat")], value=advs_task["advs"]),
                 Input(name="metadata_snapshot", type=str, value=metadata_snapshot)],
-        output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat", type="pdf"))],
+        output_specs=[Output(name="t_vscat", type=ReportArtifact.File(name="t_vscat.pdf", type="pdf"))],
         hardware_tier_name=hardware_tier_name,
         environment_name=environment_name,
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="202c441a-6506-40dc-a77c-7851df7c11cb", Version=1)],
