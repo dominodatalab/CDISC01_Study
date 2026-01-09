@@ -28,7 +28,7 @@ from re import sub
 DOMINO_PROJECT_ID = os.environ["DOMINO_PROJECT_ID"]
 DOMINO_PROJECT_OWNER = os.environ["DOMINO_PROJECT_OWNER"]
 DOMINO_PROJECT_NAME = os.environ["DOMINO_PROJECT_NAME"]
-DOMINO_USER_ID = os.environ["DOMINO_USER_ID"]  # Current user's ID
+DOMINO_USER_ID = os.environ["DOMINO_USER_NAME"]  # Current user's ID
 
 # API endpoints
 DOMINO_API_PROXY = os.environ["DOMINO_API_PROXY"]
