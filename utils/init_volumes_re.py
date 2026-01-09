@@ -494,7 +494,6 @@ try:
             "projectId": DOMINO_PROJECT_ID,
             "commandToRun": "python /mnt/code/utils/init_subdirectories.py",
             "title": "Initialize NetApp Volume Subdirectories",
-            "commitId": "HEAD",
             "netAppVolumeIds": volume_ids,
         }
 
@@ -506,7 +505,9 @@ try:
             use_netapp_host=False,  # Use API proxy for job start
         )
 
-        if isinstance(job_response, dict) and ("runId" in job_response or "id" in job_response):
+        if isinstance(job_response, dict) and (
+            "runId" in job_response or "id" in job_response
+        ):
             run_id = job_response.get("runId") or job_response.get("id")
             print("✓ Successfully launched subdirectory initialization job")
             print(f"  Run ID: {run_id}")
