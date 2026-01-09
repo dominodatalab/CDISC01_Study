@@ -28,7 +28,7 @@ from re import sub
 DOMINO_PROJECT_ID = os.environ["DOMINO_PROJECT_ID"]
 DOMINO_PROJECT_OWNER = os.environ["DOMINO_PROJECT_OWNER"]
 DOMINO_PROJECT_NAME = os.environ["DOMINO_PROJECT_NAME"]
-DOMINO_USER_ID = os.environ["DOMINO_USE_ID"]  # Current user's ID
+DOMINO_USER_ID = os.environ["DOMINO_USER_ID"]  # Current user's ID
 
 # API endpoints
 DOMINO_API_PROXY = os.environ["DOMINO_API_PROXY"]
@@ -478,7 +478,7 @@ try:
             volume_id = volume["id"]
             mount_config = {
                 "volumeId": volume_id,
-                "mountPath": f"/mnt/netapp-volumes/{volume_name}"
+                "mountPath": f"/mnt/netapp-volumes/{volume_name}",
             }
             volume_mounts.append(mount_config)
             print(f"  Will mount: {volume_name}")
@@ -486,7 +486,9 @@ try:
     print(f"\nTotal volumes to mount: {len(volume_mounts)}")
 
     if len(volume_mounts) == 0:
-        print("WARNING: No volumes found to mount. Skipping subdirectory initialization.")
+        print(
+            "WARNING: No volumes found to mount. Skipping subdirectory initialization."
+        )
     else:
         # Launch Domino job to initialize subdirectories
         print("\nStarting Domino job to create subdirectories...")
@@ -516,6 +518,7 @@ try:
 except Exception as e:
     print(f"ERROR: Failed to launch subdirectory initialization job: {e}")
     import traceback
+
     traceback.print_exc()
 
 print("\n" + "=" * 80)
