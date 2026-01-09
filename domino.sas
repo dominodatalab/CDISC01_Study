@@ -61,8 +61,8 @@
   /* If using tagged snapshots change this to snapshot-tags else snapshots. */
   /* If using just snapshots it should point to a number in the env variabel for SNAPSHOT_TAG */
   /* ----------------------------- */
- 
-  %let __snapshot_directory = snapshots;
+
+  %let __snapshot_directory = snapshot-tags;
 
   %if %superq(__SNAPSHOT_TAG)= %then %put %str(ER)ROR: Environment variable SNAPSHOT_TAG is required.;
   %if %superq(__SDTM_DATASET)= %then %put %str(ER)ROR: Environment variable SDTM_DATASET is required.;
