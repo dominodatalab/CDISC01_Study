@@ -81,48 +81,6 @@ if not ACCESS_TOKEN:
     exit(1)
 
 # ==============================================================================
-# GET CURRENT USER ID
-# ==============================================================================
-
-def get_current_user_id():
-    """
-    Get the current user's ID from /users/self endpoint.
-
-    Returns:
-        str: User ID for grants/permissions
-    """
-    try:
-        user_response = submit_api_call(
-            "GET",
-            "v4/users/self",
-            use_netapp_host=False  # Use API proxy
-        )
-
-        if isinstance(user_response, dict) and "id" in user_response:
-            user_id = user_response["id"]
-            user_name = user_response.get("userName", "unknown")
-            print(f"✓ Retrieved user ID: {user_id} (username: {user_name})")
-            return user_id
-        else:
-            print("ERROR: Failed to get user ID from /users/self")
-            print(f"Response: {user_response}")
-            return None
-
-    except Exception as e:
-        print(f"ERROR: Failed to get current user ID: {e}")
-        return None
-
-# Get current user ID for volume grants
-DOMINO_USER_ID = get_current_user_id()
-
-if not DOMINO_USER_ID:
-    print("FATAL ERROR: Cannot proceed without user ID")
-    exit(1)
-
-print(f"✓ Authenticated as user: {DOMINO_USER_NAME}")
-print(f"✓ Project: {DOMINO_PROJECT_NAME} (ID: {DOMINO_PROJECT_ID})")
-
-# ==============================================================================
 # UTILITY FUNCTIONS
 # ==============================================================================
 
@@ -253,6 +211,49 @@ def get_filesystem_id():
         traceback.print_exc()
         return None
 
+
+def get_current_user_id():
+    """
+    Get the current user's ID from /users/self endpoint.
+
+    Returns:
+        str: User ID for grants/permissions
+    """
+    try:
+        user_response = submit_api_call(
+            "GET",
+            "v4/users/self",
+            use_netapp_host=False  # Use API proxy
+        )
+
+        if isinstance(user_response, dict) and "id" in user_response:
+            user_id = user_response["id"]
+            user_name = user_response.get("userName", "unknown")
+            print(f"✓ Retrieved user ID: {user_id} (username: {user_name})")
+            return user_id
+        else:
+            print("ERROR: Failed to get user ID from /users/self")
+            print(f"Response: {user_response}")
+            return None
+
+    except Exception as e:
+        print(f"ERROR: Failed to get current user ID: {e}")
+        return None
+
+
+# ==============================================================================
+# GET CURRENT USER ID
+# ==============================================================================
+
+# Get current user ID for volume grants
+DOMINO_USER_ID = get_current_user_id()
+
+if not DOMINO_USER_ID:
+    print("FATAL ERROR: Cannot proceed without user ID")
+    exit(1)
+
+print(f"✓ Authenticated as user: {DOMINO_USER_NAME}")
+print(f"✓ Project: {DOMINO_PROJECT_NAME} (ID: {DOMINO_PROJECT_ID})")
 
 # ==============================================================================
 # CREATE REQUIRED NETAPP VOLUMES
