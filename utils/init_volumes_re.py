@@ -471,41 +471,42 @@ try:
         "GET", f"{NETAPP_BASE_PATH}/volumes?project_id={DOMINO_PROJECT_ID}"
     )
 
-    volume_mounts = []
+    volume_ids = []
     if isinstance(all_volumes_response, dict) and "data" in all_volumes_response:
         for volume in all_volumes_response["data"]:
             volume_name = volume["name"]
             volume_id = volume["id"]
-            mount_config = {
-                "volumeId": volume_id,
-                "mountPath": f"/mnt/netapp-volumes/{volume_name}",
-            }
-            volume_mounts.append(mount_config)
-            print(f"  Will mount: {volume_name}")
+            volume_ids.append(volume_id)
+            print(f"  Will mount: {volume_name} (ID: {volume_id})")
 
-    print(f"\nTotal volumes to mount: {len(volume_mounts)}")
+    print(f"\nTotal volumes to mount: {len(volume_ids)}")
 
-    if len(volume_mounts) == 0:
+    if len(volume_ids) == 0:
         print(
             "WARNING: No volumes found to mount. Skipping subdirectory initialization."
         )
     else:
-        # Launch Domino job to initialize subdirectories
+        # Launch Domino job to initialize subdirectories using REST API
         print("\nStarting Domino job to create subdirectories...")
 
-        # Command to run the subdirectory initialization script
-        command = ["python", "/mnt/code/utils/init_subdirectories.py"]
+        # Build job request payload according to NewJobV1 schema
+        job_payload = {
+            "projectId": DOMINO_PROJECT_ID,
+            "commandToRun": "python /mnt/code/utils/init_subdirectories.py",
+            "title": "Initialize NetApp Volume Subdirectories",
+            "commitId": "HEAD",
+            "netAppVolumeIds": volume_ids,
+        }
 
-        # Start the job with volume mounts
-        job_response = domino.runs_start(
-            command=command,
-            title="Initialize NetApp Volume Subdirectories",
-            tier="Small",
-            commitId="HEAD",
-            volumeMounts=volume_mounts,
+        # Start the job using REST API
+        job_response = submit_api_call(
+            "POST",
+            "v4/jobs/start",
+            data=job_payload,
+            use_netapp_host=False,  # Use API proxy for job start
         )
 
-        if "runId" in job_response or "id" in job_response:
+        if isinstance(job_response, dict) and ("runId" in job_response or "id" in job_response):
             run_id = job_response.get("runId") or job_response.get("id")
             print("✓ Successfully launched subdirectory initialization job")
             print(f"  Run ID: {run_id}")
