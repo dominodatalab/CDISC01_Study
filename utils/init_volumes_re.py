@@ -482,9 +482,9 @@ print("=" * 80)
 # These directories are used by SAS and R scripts for storing generated files
 
 directories = [
-    ("/mnt/artifacts/TFL", "Production TFLs (Tables, Figures, Listings)"),
-    ("/mnt/artifacts/TFL_QC", "QC TFLs for validation"),
-    ("/mnt/artifacts/sas_logs", "SAS execution logs for debugging and audit trail"),
+    ("/mnt/artifacts/tfl", "Production TFLs (Tables, Figures, Listings)"),
+    ("/mnt/artifacts/tfl_qc", "QC TFLs for validation"),
+    ("/mnt/artifacts/logs", "SAS execution logs for debugging and audit trail"),
 ]
 
 for directory_path, description in directories:
