@@ -529,6 +529,35 @@ try:
         # Launch Domino job to initialize subdirectories using REST API
         print("\nStarting Domino job to create subdirectories...")
 
+        # Get list of available environments
+        print("\nFetching available environments...")
+        environments_response = submit_api_call(
+            "GET",
+            "api/environments/beta/environments",
+            use_netapp_host=False,  # Use API proxy
+        )
+
+        environment_id = None
+        if isinstance(environments_response, dict) and "environments" in environments_response:
+            print(f"Found {len(environments_response['environments'])} environment(s)")
+
+            # Find Domino Standard Environment
+            for env in environments_response["environments"]:
+                env_name = env.get("name", "")
+                if "Domino Standard Environment" in env_name:
+                    environment_id = env.get("id")
+                    print(f"✓ Found environment: {env_name} (ID: {environment_id})")
+                    break
+
+            if not environment_id:
+                print("WARNING: Could not find 'Domino Standard Environment'")
+                print("Available environments:")
+                for env in environments_response["environments"]:
+                    print(f"  - {env.get('name', 'Unknown')}")
+        else:
+            print("WARNING: Failed to get environments list")
+            print(f"Response: {environments_response}")
+
         # Build job request payload according to NewJobV1 schema
         job_payload = {
             "projectId": DOMINO_PROJECT_ID,
@@ -536,6 +565,10 @@ try:
             "title": "Initialize NetApp Volume Subdirectories",
             "netAppVolumeIds": volume_ids,
         }
+
+        # Add environmentId if found
+        if environment_id:
+            job_payload["environmentId"] = environment_id
 
         # Start the job using REST API
         job_response = submit_api_call(
