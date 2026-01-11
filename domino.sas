@@ -12,19 +12,19 @@
 * - BATCH (SYSIN set)        -> PROD volumes
 *
 * NETAPP ROOTS USED:
-* - /mnt/netapp-volumes/CDISC01_CSR_DATA_DEV
-* - /mnt/netapp-volumes/CDISC01_CSR_DATA_PROD
-* - /mnt/netapp-volumes/CDISC01_CSR_OUTPUT_DEV
-* - /mnt/netapp-volumes/CDISC01_CSR_OUTPUT_PROD
+* - /mnt/netapp-volumes/{DOMINO_PROJECT_NAME}_DATA_DEV
+* - /mnt/netapp-volumes/{DOMINO_PROJECT_NAME}_DATA_PROD
+* - /mnt/netapp-volumes/{DOMINO_PROJECT_NAME}_OUTPUT_DEV
+* - /mnt/netapp-volumes/{DOMINO_PROJECT_NAME}_OUTPUT_PROD
 * - /mnt/netapp-volumes/snapshot-tags/CDISC01_SDTMBLIND/<SNAPSHOT_TAG>
 * - /mnt/netapp-volumes/snapshot-tags/CDISC01_SDTMUNBLIND/<SNAPSHOT_TAG>
 *
 * LIBNAMES CREATED:
 * - SDTM   : read-only snapshot tag path
-* - ADAM   : <CSR_DATA_[DEV|PROD]>/adam
-* - ADAMQC : <CSR_DATA_[DEV|PROD]>/qc/adam
-* - TFL    : <CSR_OUTPUT_[DEV|PROD]>/tfl
-* - TFLQC  : <CSR_OUTPUT_[DEV|PROD]>/qc/tfl
+* - ADAM   : <DATA_[DEV|PROD]>/adam
+* - ADAMQC : <DATA_[DEV|PROD]>/qc/adam
+* - TFL    : <OUTPUT_[DEV|PROD]>/tfl
+* - TFLQC  : <OUTPUT_[DEV|PROD]>/qc/tfl
 ******************************************************************************/
 
 %macro __setup();
@@ -36,6 +36,7 @@
     __WORKING_DIR
     __PROJECT_NAME
     __SNAPSHOT_TAG
+    __snapshot_directory
     __SDTM_DATASET
     __SDTM_VOLUME
     __netapp_root
@@ -55,6 +56,13 @@
   %let __PROJECT_NAME  = %sysget(DOMINO_PROJECT_NAME);
   %let __SNAPSHOT_TAG  = %sysget(SNAPSHOT_TAG);
   %let __SDTM_DATASET  = %sysget(SDTM_DATASET);
+  
+  /* ----------------------------- */
+  /* If using tagged snapshots change this to snapshot-tags else snapshots. */
+  /* If using just snapshots it should point to a number in the env variabel for SNAPSHOT_TAG */
+  /* ----------------------------- */
+
+  %let __snapshot_directory = snapshot-tags;
 
   %if %superq(__SNAPSHOT_TAG)= %then %put %str(ER)ROR: Environment variable SNAPSHOT_TAG is required.;
   %if %superq(__SDTM_DATASET)= %then %put %str(ER)ROR: Environment variable SDTM_DATASET is required.;
@@ -108,11 +116,11 @@
   /* ----------------------------- */
   %let __netapp_root   = /mnt/netapp-volumes;
 
-  %let __DATA_DEV_ROOT  = &__netapp_root./CDISC01_CSR_DATA_DEV;
-  %let __DATA_PROD_ROOT = &__netapp_root./CDISC01_CSR_DATA_PROD;
+  %let __DATA_DEV_ROOT  = &__netapp_root./&__PROJECT_NAME._DATA_DEV;
+  %let __DATA_PROD_ROOT = &__netapp_root./&__PROJECT_NAME._DATA_PROD;
 
-  %let __OUT_DEV_ROOT   = &__netapp_root./CDISC01_CSR_OUTPUT_DEV;
-  %let __OUT_PROD_ROOT  = &__netapp_root./CDISC01_CSR_OUTPUT_PROD;
+  %let __OUT_DEV_ROOT   = &__netapp_root./&__PROJECT_NAME._OUTPUT_DEV;
+  %let __OUT_PROD_ROOT  = &__netapp_root./&__PROJECT_NAME._OUTPUT_PROD;
 
   %if &__target_env=DEV %then %do;
     %let __DATA_ROOT = &__DATA_DEV_ROOT;
@@ -129,7 +137,7 @@
 
   /* SDTM via snapshot-tags (read-only) */
   libname SDTM
-    "&__netapp_root./snapshot-tags/&__SDTM_VOLUME./&__SNAPSHOT_TAG."
+    "&__netapp_root./&__snapshot_directory/&__SDTM_VOLUME./&__SNAPSHOT_TAG."
     access=readonly;
 
   /* ADaM / QC (R/W) */
@@ -164,8 +172,8 @@
          __PROD_DATA_ROOT __PROD_OUT_ROOT __path_lc;
 
   /* PROD roots for log placement */
-  %let __PROD_DATA_ROOT = &__netapp_root./CDISC01_CSR_DATA_PROD;
-  %let __PROD_OUT_ROOT  = &__netapp_root./CDISC01_CSR_OUTPUT_PROD;
+  %let __PROD_DATA_ROOT = &__netapp_root./&__PROJECT_NAME._DATA_PROD;
+  %let __PROD_OUT_ROOT  = &__netapp_root./&__PROJECT_NAME._OUTPUT_PROD;
 
   /* Classifiers */
   %let __path_lc = %lowcase(&__prog_path.);
