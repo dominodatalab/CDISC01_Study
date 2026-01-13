@@ -36,7 +36,7 @@
 
    %put NOTE: DOMINO_IS_WORKFLOW_JOB is &domino_is_workflow_job;
 
-   /* If DOMINO_IS_WORKFLOW_JOB=true, run the following block */
+   /* If DOMINO_IS_WORKFLOW_JOB=false, run the following block */
    %if &domino_is_workflow_job = false %then %do;
 
 
@@ -263,7 +263,7 @@ title3 "Summary of Age for each Treatment";
 title4 "Analysis Set";
 
 ** justify contents to decimal places;
-proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tfl.qc_t_pop;
+proc report data = order_results headline split = "*" style(report) = {width = 100% cellpadding = 3} out = tflqc.qc_t_pop;
         column  (order1 ageresults stat placebo low_dose high_dose);
         
         ** order variables;
@@ -276,9 +276,9 @@ proc report data = order_results headline split = "*" style(report) = {width = 1
         define high_dose / "Xanomeline High Dose* (N=%cmpres(&high_dose_n))" style(column) = {just = d width = 20%};
         
         ** add footnotes describing the critical codes;
-        footnote1 justify = left "&Footer1.";
-        footnote2 justify = left "&Footer2.";
-        footnote3 justify = left "&Footer3.";
+        footnote1 justify=left "Note: n (%) are based on the number of patients in the treatment group.";
+		footnote2 justify=left "Dataset(s): ADSL; Program: qc_t_pop.sas; Output: qc_t_pop.pdf;";
+		footnote3 justify=left "Generated on: &sysdate9 &systime";
 run;
     
       ods pdf close;
