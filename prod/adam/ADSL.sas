@@ -44,7 +44,7 @@
       data adam.adsl;
          set sdtm.dm;
       run;
-  /* Testing edits
+  /* Testing edits for demo purposes - AY
    %end;
    /* If DOMINO_IS_WORKFLOW_JOB=true, run the second block */
    %else %if &domino_is_workflow_job = true %then %do;
