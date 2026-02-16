@@ -16,7 +16,7 @@ GitRef_value="CSR"
 cache = True
 
 # Enter the command below to run this Flow. There are two Flow input parameters. One for the SDTM Dataset snapshot and one for the METADATA dataset snapshot.
-# pyflyte run --remote ./flows/flow_2_dev.py ADaM_TFL --netapp_volume_snapshot /mnt/netapp-volumes/CDISC01_SDTMBLIND --metadata_snapshot /mnt/netapp-volumes/MDR
+# pyflyte run --remote code/flows/flow_2_dev.py ADaM_TFL --netapp_volume_snapshot /mnt/netapp-volumes/CDISC01_SDTMBLIND --metadata_snapshot /mnt/netapp-volumes/MDR
 
 # If you want to give the run a name, then use this command and replace the MY_CUSTOM_NAME argument
 # pyflyte run --remote --name ENTER_RUN_NAME ./flows/flow_2_dev.py ADaM_TFL --netapp_volume_snapshot /mnt/netapp-volumes/CDISC01_SDTMBLIND --metadata_snapshot /mnt/netapp-volumes/MDR
@@ -145,7 +145,7 @@ def ADaM_TFL(netapp_volume_snapshot: str, metadata_snapshot: str):
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="202c441a-6506-40dc-a77c-7851df7c11cb", Version=1)],
         main_git_repo_ref=GitRef(Type=GitRef_type, Value=GitRef_value),
         use_project_defaults_for_omitted=True,
-        cache=False,
+        cache=cache,
         cache_version="1.0"
     )
 
@@ -160,7 +160,22 @@ def ADaM_TFL(netapp_volume_snapshot: str, metadata_snapshot: str):
         netapp_volume_snapshots=[NetAppVolumeSnapshot(Id="202c441a-6506-40dc-a77c-7851df7c11cb", Version=1)],
         main_git_repo_ref=GitRef(Type=GitRef_type, Value=GitRef_value),
         use_project_defaults_for_omitted=True,
-        cache=False,
+        cache=cache,
+        cache_version="1.0"
+    )
+
+    combine_tfls_task = run_domino_job_task(
+        flyte_task_name="Combine TFL Reports into single PDF",
+        command="utils/combine_pdfs.py",
+        inputs=[Input(name="t_pop", type=FlyteFile[TypeVar("pdf")], value=t_pop_task["t_pop"]),
+                Input(name="t_ae_rel", type=FlyteFile[TypeVar("pdf")], value=t_ae_rel_task["t_ae_rel"]),
+                Input(name="t_vscat", type=FlyteFile[TypeVar("pdf")], value=t_vscat_task["t_vscat"])],
+        output_specs=[Output(name="combined_tfls", type=ReportArtifact.File(name="combined_tfls.pdf", type="pdf"))],
+        hardware_tier_name=hardware_tier_name,
+        environment_name="GxP R & Python",
+        main_git_repo_ref=GitRef(Type=GitRef_type, Value=GitRef_value),
+        use_project_defaults_for_omitted=True,
+        cache=cache,
         cache_version="1.0"
     )
 
