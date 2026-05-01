@@ -16,7 +16,7 @@ GitRef_value="CSR"
 cache = True
 
 # Enter the command below to run this Flow. There are two Flow input parameters. One for the SDTM Dataset snapshot and one for the METADATA dataset snapshot.
-# pyflyte run --remote code/flows/flow_2_dev.py ADaM_TFL --netapp_volume_snapshot /mnt/netapp-volumes/CDISC01_SDTMBLIND --metadata_snapshot /mnt/netapp-volumes/MDR
+# pyflyte run --remote ./flows/flow_2_dev.py ADaM_TFL --netapp_volume_snapshot /mnt/netapp-volumes/CDISC01_SDTMBLIND --metadata_snapshot /mnt/netapp-volumes/MDR
 
 # If you want to give the run a name, then use this command and replace the MY_CUSTOM_NAME argument
 # pyflyte run --remote --name ENTER_RUN_NAME ./flows/flow_2_dev.py ADaM_TFL --netapp_volume_snapshot /mnt/netapp-volumes/CDISC01_SDTMBLIND --metadata_snapshot /mnt/netapp-volumes/MDR
