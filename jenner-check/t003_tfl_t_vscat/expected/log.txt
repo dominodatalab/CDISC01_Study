@@ -1,0 +1,219 @@
+Jenner 0.1.0 (Unlicensed - limited to 100 observations)
+Get a license at https://jenneranalytics.com/license
+
+NOTE: Option OBS changed to 100.
+NOTE: DATA adam.advs
+
+
+NOTE: Wrote adam.advs (81 rows, 6 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: Option ORIENTATION changed to LANDSCAPE.
+NOTE: DATA advs
+
+
+NOTE: Read 81 rows from adam.advs.
+NOTE: Wrote advs (81 rows, 9 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: DATA post_base
+
+
+NOTE: Read 81 rows from advs.
+NOTE: Wrote post_base (54 rows, 7 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC SQL 
+
+NOTE: Macro variable PLACEBO_N = 3
+NOTE: Macro variable LOW_DOSE_N = 3
+NOTE: Macro variable HIGH_DOSE_N = 3
+NOTE: PROC SQL statement used.
+NOTE: DATA pb_sysbp
+
+
+NOTE: Read 54 rows from post_base.
+NOTE: Wrote pb_sysbp (18 rows, 7 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: DATA pb_diabp
+
+
+NOTE: Read 54 rows from post_base.
+NOTE: Wrote pb_diabp (18 rows, 7 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: DATA pb_hr
+
+
+NOTE: Read 54 rows from post_base.
+NOTE: Wrote pb_hr (18 rows, 7 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC SQL 
+
+NOTE: Table total_pb created.
+NOTE: PROC SQL statement used.
+NOTE: PROC SQL 
+
+NOTE: Table total_criteria created.
+NOTE: PROC SQL statement used.
+NOTE: DATA any_results
+
+NOTE: Stream 1 processed 3 rows, max BY-group size: 1 (O(1) memory verified)
+NOTE: Stream 2 processed 3 rows, max BY-group size: 1 (O(1) memory verified)
+
+NOTE: Wrote any_results (3 rows, 5 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC SQL 
+
+NOTE: Table total_pb_sysbp created.
+NOTE: PROC SQL statement used.
+NOTE: PROC SQL 
+
+NOTE: Table total_sysbp_h created.
+NOTE: PROC SQL statement used.
+NOTE: PROC SQL 
+
+NOTE: Table total_sysbp_l created.
+NOTE: PROC SQL statement used.
+NOTE: DATA sysbp_results
+
+NOTE: Stream 1 processed 3 rows, max BY-group size: 1 (O(1) memory verified)
+NOTE: Stream 2 processed 3 rows, max BY-group size: 1 (O(1) memory verified)
+
+NOTE: Wrote sysbp_results (3 rows, 8 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC SQL 
+
+NOTE: Table total_pb_diabp created.
+NOTE: PROC SQL statement used.
+NOTE: PROC SQL 
+
+NOTE: Table total_diabp_h created.
+NOTE: PROC SQL statement used.
+NOTE: PROC SQL 
+
+NOTE: Table total_diabp_l created.
+NOTE: PROC SQL statement used.
+NOTE: DATA diabp_results
+
+NOTE: Stream 1 processed 3 rows, max BY-group size: 1 (O(1) memory verified)
+NOTE: Stream 2 processed 3 rows, max BY-group size: 1 (O(1) memory verified)
+
+NOTE: Wrote diabp_results (3 rows, 8 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC SQL 
+
+NOTE: Table total_pb_hr created.
+NOTE: PROC SQL statement used.
+NOTE: PROC SQL 
+
+NOTE: Table total_hr_h created.
+NOTE: PROC SQL statement used.
+NOTE: PROC SQL 
+
+NOTE: Table total_hr_l created.
+NOTE: PROC SQL statement used.
+NOTE: DATA hr_results
+
+NOTE: Stream 1 processed 3 rows, max BY-group size: 1 (O(1) memory verified)
+NOTE: Stream 3 processed 3 rows, max BY-group size: 1 (O(1) memory verified)
+
+NOTE: Wrote hr_results (3 rows, 8 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: DATA any_results_c
+
+
+NOTE: Read 3 rows from any_results.
+NOTE: Wrote any_results_c (3 rows, 8 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: DATA sysbp_results_c
+
+
+NOTE: Read 3 rows from sysbp_results.
+NOTE: Wrote sysbp_results_c (3 rows, 12 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: DATA diabp_results_c
+
+
+NOTE: Read 3 rows from diabp_results.
+NOTE: Wrote diabp_results_c (3 rows, 12 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: DATA hr_results_c
+
+
+NOTE: Read 3 rows from hr_results.
+NOTE: Wrote hr_results_c (3 rows, 12 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: Option VALIDVARNAME changed to V7.
+NOTE: PROC TRANSPOSE data=any_results_c
+
+NOTE: Created 3 rows.
+NOTE: Output written to /tmp/work/work/a6e4a20c-ac5e-421c-9620-c00ddaa00a67/any_results_t.avro.
+NOTE: PROC TRANSPOSE data=sysbp_results_c
+
+NOTE: Created 4 rows.
+NOTE: Output written to /tmp/work/work/a6e4a20c-ac5e-421c-9620-c00ddaa00a67/sysbp_results_t.avro.
+NOTE: PROC TRANSPOSE data=diabp_results_c
+
+NOTE: Created 4 rows.
+NOTE: Output written to /tmp/work/work/a6e4a20c-ac5e-421c-9620-c00ddaa00a67/diabp_results_t.avro.
+NOTE: PROC TRANSPOSE data=hr_results_c
+
+NOTE: Created 4 rows.
+NOTE: Output written to /tmp/work/work/a6e4a20c-ac5e-421c-9620-c00ddaa00a67/hr_results_t.avro.
+NOTE: DATA stack_results
+
+
+NOTE: Read 3 rows from any_results_t.
+NOTE: Read 7 rows from sysbp_results_t.
+NOTE: Read 11 rows from diabp_results_t.
+NOTE: Read 15 rows from hr_results_t.
+NOTE: Wrote stack_results (15 rows, 6 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: DATA add_param_results_stat
+
+
+NOTE: Read 15 rows from stack_results.
+NOTE: Wrote add_param_results_stat (15 rows, 9 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: Option TITLE changed to Domino.
+NOTE: Option TITLE2 changed to Vital Signs.
+NOTE: Option TITLE3 changed to Categorical Summary.
+NOTE: Option TITLE4 changed to Post-baseline results.
+NOTE: PROC REPORT data=add_param_results_stat
+
+NOTE: PROC REPORT output 15 observations with 7 variables.
+
+NOTE: Read 15 rows from add_param_results_stat.
+NOTE: Wrote (console) (15 rows, 7 columns).
+NOTE: PROC REPORT elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds

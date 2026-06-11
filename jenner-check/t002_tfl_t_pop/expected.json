@@ -1,0 +1,20 @@
+{
+  "_captured_at": "2026-06-11T19:19:24Z",
+  "_captured_run_id": "r_019eb81f692e77c28b213c4ad3abb233",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Macro variable PLACEBO_N = 30",
+    "NOTE: Macro variable LOW_DOSE_N = 30",
+    "NOTE: Macro variable HIGH_DOSE_N = 30",
+    "NOTE: Wrote order_results (7 rows, 7 columns)."
+  ],
+  "log_does_not_contain": [
+    "ERROR:",
+    "[JENNER-ERROR"
+  ],
+  "diagnostics": {
+    "parse_warnings": [],
+    "runtime_warnings": []
+  }
+}

@@ -1,0 +1,15 @@
+                                                         Domino                                                         
+                                                 Summary of Populations                                                 
+                                           Summary of Age for each Treatment                                            
+                                                      Analysis Set                                                      
+
+                                                                Placebo                           Xanomeline Low Dose               Xanomeline High Dose            
+Age Group                                           Statistic    (N=30)                            (N=30)                            (N=30)                         
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                .                                 .                                 .                               
+Less than 60 years old                              n (%)       5 (16.7)                          5 (16.7)                          5 (16.7)                        
+60 years old <= age < 65 years old                  n (%)       5 (16.7)                          5 (16.7)                          5 (16.7)                        
+65 years old <= age < 70 years old                  n (%)       5 (16.7)                          5 (16.7)                          5 (16.7)                        
+70 years old <= age < 75 years old                  n (%)       5 (16.7)                          5 (16.7)                          5 (16.7)                        
+75 years old <= age < 80 years old                  n (%)       5 (16.7)                          5 (16.7)                          5 (16.7)                        
+80 years and older                                  n (%)       5 (16.7)                          5 (16.7)                          5 (16.7)

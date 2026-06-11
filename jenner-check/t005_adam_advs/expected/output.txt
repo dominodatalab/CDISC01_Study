@@ -1,0 +1,42 @@
+                          ADaM ADVS - vital signs analysis dataset (ADSL merged with SDTM.VS)                           
+
+
+  Obs    USUBJID                ACTARM  AGE  SEX  VISITNUM  VSTESTCD        VSTEST  VSSTRESN
+-----  ---------  --------------------  ---  ---  --------  --------  ------------  --------
+    1  SUBJ-0001  Placebo                64  F           2  SYSBP     Systolic BP        125
+    2  SUBJ-0001  Placebo                64  F           6  SYSBP     Systolic BP        124
+    3  SUBJ-0001  Placebo                64  F           2  DIABP     Diastolic BP        81
+    4  SUBJ-0001  Placebo                64  F           6  DIABP     Diastolic BP        80
+    5  SUBJ-0001  Placebo                64  F           2  PULSE     Pulse Rate          73
+    6  SUBJ-0001  Placebo                64  F           6  PULSE     Pulse Rate          72
+    7  SUBJ-0002  Placebo                71  M           2  SYSBP     Systolic BP        126
+    8  SUBJ-0002  Placebo                71  M           6  SYSBP     Systolic BP        125
+    9  SUBJ-0002  Placebo                71  M           2  DIABP     Diastolic BP        82
+   10  SUBJ-0002  Placebo                71  M           6  DIABP     Diastolic BP        81
+   11  SUBJ-0002  Placebo                71  M           2  PULSE     Pulse Rate          74
+   12  SUBJ-0002  Placebo                71  M           6  PULSE     Pulse Rate          73
+   13  SUBJ-0003  Xanomeline Low Dose    58  F           2  SYSBP     Systolic BP        122
+   14  SUBJ-0003  Xanomeline Low Dose    58  F           6  SYSBP     Systolic BP        126
+   15  SUBJ-0003  Xanomeline Low Dose    58  F           2  DIABP     Diastolic BP        78
+   16  SUBJ-0003  Xanomeline Low Dose    58  F           6  DIABP     Diastolic BP        82
+   17  SUBJ-0003  Xanomeline Low Dose    58  F           2  PULSE     Pulse Rate          70
+   18  SUBJ-0003  Xanomeline Low Dose    58  F           6  PULSE     Pulse Rate          74
+   19  SUBJ-0004  Xanomeline Low Dose    66  M           2  SYSBP     Systolic BP        123
+   20  SUBJ-0004  Xanomeline Low Dose    66  M           6  SYSBP     Systolic BP        122
+   21  SUBJ-0004  Xanomeline Low Dose    66  M           2  DIABP     Diastolic BP        79
+   22  SUBJ-0004  Xanomeline Low Dose    66  M           6  DIABP     Diastolic BP        78
+   23  SUBJ-0004  Xanomeline Low Dose    66  M           2  PULSE     Pulse Rate          71
+   24  SUBJ-0004  Xanomeline Low Dose    66  M           6  PULSE     Pulse Rate          70
+   25  SUBJ-0005  Xanomeline High Dose   77  F           2  SYSBP     Systolic BP        124
+   26  SUBJ-0005  Xanomeline High Dose   77  F           6  SYSBP     Systolic BP        123
+   27  SUBJ-0005  Xanomeline High Dose   77  F           2  DIABP     Diastolic BP        80
+   28  SUBJ-0005  Xanomeline High Dose   77  F           6  DIABP     Diastolic BP        79
+   29  SUBJ-0005  Xanomeline High Dose   77  F           2  PULSE     Pulse Rate          72
+   30  SUBJ-0005  Xanomeline High Dose   77  F           6  PULSE     Pulse Rate          71
+   31  SUBJ-0006  Xanomeline High Dose   69  M           2  SYSBP     Systolic BP        125
+   32  SUBJ-0006  Xanomeline High Dose   69  M           6  SYSBP     Systolic BP        124
+   33  SUBJ-0006  Xanomeline High Dose   69  M           2  DIABP     Diastolic BP        81
+   34  SUBJ-0006  Xanomeline High Dose   69  M           6  DIABP     Diastolic BP        80
+   35  SUBJ-0006  Xanomeline High Dose   69  M           2  PULSE     Pulse Rate          73
+   36  SUBJ-0006  Xanomeline High Dose   69  M           6  PULSE     Pulse Rate          72
+

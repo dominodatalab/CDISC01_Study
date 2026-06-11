@@ -1,0 +1,17 @@
+{
+  "_captured_at": "2026-06-11T19:32:20Z",
+  "_captured_run_id": "r_019eb82b8ee67fc09c35b5ba6d4535f7",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Wrote adam.advs (36 rows, 8 columns)."
+  ],
+  "log_does_not_contain": [
+    "ERROR:",
+    "[JENNER-ERROR"
+  ],
+  "diagnostics": {
+    "parse_warnings": [],
+    "runtime_warnings": []
+  }
+}
