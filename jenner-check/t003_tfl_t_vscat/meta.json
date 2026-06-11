@@ -1,0 +1,8 @@
+{
+  "bundle": "t003_tfl_t_vscat",
+  "source_file": "prod/tfl/t_vscat.sas",
+  "source_blob_sha": "9a45bc60eba1f321195ad0016b46f344919579ca",
+  "source_commit": "a38102d6ce4de9ed3faa90bb52634483d74a3d4c",
+  "tier": "real_data",
+  "notes": "Vital Signs Categorical Summary from prod/tfl/t_vscat.sas (interactive branch). Derives High/Low criteria flags per parameter (SYSBP/DIABP/PULSE), PROC SQL aggregations with macro loops over parameters, three PROC TRANSPOSE passes, PROC REPORT. Adapted: %include domino.sas replaced by bundled mock ADVS (9 subjects/3 per arm, baseline + 2 post-baseline visits, deterministic criteria excursions); program's own inline DisplayName/Footer defaults kept; ODS PDF dropped (LISTING); DEFINE-level style() overrides and the compute-line block removed; analysis preserved."
+}

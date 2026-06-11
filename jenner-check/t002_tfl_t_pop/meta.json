@@ -1,0 +1,8 @@
+{
+  "bundle": "t002_tfl_t_pop",
+  "source_file": "prod/tfl/t_pop.sas",
+  "source_blob_sha": "db4ecf6f7e64b8ebf95e9527bfc9a57424588e40",
+  "source_commit": "a38102d6ce4de9ed3faa90bb52634483d74a3d4c",
+  "tier": "real_data",
+  "notes": "Summary of Populations table from prod/tfl/t_pop.sas (interactive branch). PROC SQL distinct counts, age-group macro loop, PROC TRANSPOSE, PROC REPORT. Adapted: %include domino.sas replaced by bundled mock ADSL (90 subj/30 per arm across the 6 SAP age bands); %tfl_metadata title lookup replaced with literal titles; ODS PDF dropped (LISTING); DEFINE-level cosmetic style() overrides and in-body star comments removed (analysis/report structure unchanged)."
+}

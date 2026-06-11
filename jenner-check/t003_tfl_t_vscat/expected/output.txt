@@ -1,0 +1,23 @@
+                                                         Domino                                                         
+                                                      Vital Signs                                                       
+                                                  Categorical Summary                                                   
+                                                 Post-baseline results                                                  
+
+Parameter                                                       Placebo                           Xanomeline Low Dose         Xanomeline High Dose       
+  Results                                           Statistic    (N=3)                             (N=3)                       (N=3)                     
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Any result                                                      .                                 .                           .                          
+  Patients with post-baseline results               n           3                                 3                           3                          
+  Results meeting criteria of interest              n (%) e     3 (100) 3                         3 (100) 3                   3 (100) 3                  
+Systolic blood pressure                                         .                                 .                           .                          
+  Patients with post-baseline results               n           3                                 3                           3                          
+    <90 mmHg                                        n (%) e     0                                 0                           0                          
+    >140 mmHg                                       n (%) e     1 (33.3) 1                        1 (33.3) 1                  1 (33.3) 1                 
+Diastolic blood pressure                                        .                                 .                           .                          
+  Patients with post-baseline results               n           3                                 3                           3                          
+    <60 mmHg                                        n (%) e     0                                 0                           0                          
+    >90 mmHg                                        n (%) e     1 (33.3) 1                        1 (33.3) 1                  1 (33.3) 1                 
+Heart Rate                                                      .                                 .                           .                          
+  Patients with post-baseline results               n           3                                 3                           3                          
+    <60 beats/min                                   n (%) e     1 (33.3) 1                        1 (33.3) 1                  1 (33.3) 1                 
+    >100 beats/min                                  n (%) e     0                                 0                           0

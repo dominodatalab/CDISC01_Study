@@ -1,0 +1,13 @@
+                          ADaM ADAE - derived adverse events with analysis visit and exposure                           
+
+
+  Obs    USUBJID                ACTARM       AEDECOD                       AESOC        AEREL  AESTDY  VISITNUM                 EXTRT  EXDOSE
+-----  ---------  --------------------  ------------  --------------------------  -----------  ------  --------  --------------------  ------
+    1  SUBJ-0001  Placebo               Headache      Nervous system disorders    POSSIBLE          5         3  Placebo                    0
+    2  SUBJ-0001  Placebo               Nausea        Gastrointestinal disorders  NOT RELATED      40         4  Placebo                    0
+    3  SUBJ-0002  Placebo               Dizziness     Nervous system disorders    PROBABLE        170        12  Placebo                    0
+    4  SUBJ-0003  Xanomeline Low Dose   Diarrhoea     Gastrointestinal disorders  DEFINITE          8         3  Xanomeline Low Dose       54
+    5  SUBJ-0004  Xanomeline Low Dose   Rash          Skin disorders              POSSIBLE         90         4  Xanomeline Low Dose       54
+    6  SUBJ-0005  Xanomeline High Dose  Headache      Nervous system disorders    NOT RELATED     200        12  Xanomeline High Dose      81
+    7  SUBJ-0006  Xanomeline High Dose  Palpitations  Cardiac disorders           POSSIBLE         15         4  Xanomeline High Dose      81
+

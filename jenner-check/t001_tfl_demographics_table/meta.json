@@ -1,0 +1,8 @@
+{
+  "bundle": "t001_tfl_demographics_table",
+  "source_file": "prod/tfl/demographics_table.sas",
+  "source_blob_sha": "e6de756915536d9137a9ae8892dfbf7332603b48",
+  "source_commit": "a38102d6ce4de9ed3faa90bb52634483d74a3d4c",
+  "tier": "real_data",
+  "notes": "Self-contained demographics summary: simulated ADSL via CALL STREAMINIT(12345), PROC SQL distinct counts, age-group macro loop, PROC TRANSPOSE, PROC REPORT and a PROC FREQ verification cross-tab. Adapted: cohort generated at 90 subjects (30/arm) instead of 300 so all three arms are present; ODS PDF output left off (LISTING destination); DEFINE-level cosmetic style() overrides removed (analysis/report structure unchanged)."
+}

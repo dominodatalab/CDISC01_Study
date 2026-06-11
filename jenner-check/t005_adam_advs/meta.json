@@ -1,0 +1,8 @@
+{
+  "bundle": "t005_adam_advs",
+  "source_file": "prod/adam/ADVS.sas",
+  "source_blob_sha": "c4f6bd4b82b1343b1ceec9743df5b4aa378f3cfe",
+  "source_commit": "a38102d6ce4de9ed3faa90bb52634483d74a3d4c",
+  "tier": "real_data",
+  "notes": "ADaM ADVS derivation from prod/adam/ADVS.sas (interactive branch): DATA-step MERGE of subject-level ADSL with the SDTM vital signs domain SDTM.VS by USUBJID, keeping VS records. Adapted: %include domino.sas replaced by bundled mock ADSL/SDTM.VS (6 subjects/2 per arm, SYSBP/DIABP/PULSE at a baseline and a post-baseline visit); a PROC PRINT of the derived ADVS added for visible output. Derivation logic unchanged."
+}

@@ -1,0 +1,8 @@
+{
+  "bundle": "t004_adam_adae",
+  "source_file": "prod/adam/ADAE.sas",
+  "source_blob_sha": "f0250974538929134530cec38d9fd84bacdc8645",
+  "source_commit": "a38102d6ce4de9ed3faa90bb52634483d74a3d4c",
+  "tier": "real_data",
+  "notes": "ADaM ADAE derivation from prod/adam/ADAE.sas (interactive branch): multi-step DATA-step MERGE of ADSL + SDTM.AE by USUBJID, analysis-visit derivation from AE start day (1-12->3, 13-161->4, 162+->12), PROC SORT, then MERGE on SDTM.EX by USUBJID/VISITNUM. Adapted: %include domino.sas replaced by bundled mock ADSL/SDTM.AE/SDTM.EX (6 subjects/2 per arm, AEs across all three visit windows); a PROC PRINT of the derived ADAE added for visible output. Derivation logic unchanged."
+}
