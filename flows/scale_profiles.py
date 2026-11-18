@@ -1,9 +1,11 @@
 """Study-file profiles for the DOM-79203 Flows Artifact Export test.
 
 Folder file counts and sizes come from the customer file-size report attached
-to DOM-79203, rounded up. `full` reproduces the report, including its largest
-file (supplb.sas7bdat, about 11 GiB). `regular` keeps the same folder mix at a
-small fraction of the files and bytes so it can run in the standard suite.
+to DOM-79203, rounded up. `full` keeps the report's bytes, including its largest
+file (supplb.sas7bdat, about 11 GiB), but only 60% of its files. At the report's
+5,204 files, one output per file compiles past the 2 MiB Flyte workflow limit and
+the flow fails to launch. `regular` keeps the same folder mix at a small fraction
+of the files and bytes so it can run in the standard suite.
 """
 
 from __future__ import annotations
