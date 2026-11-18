@@ -5,3 +5,4 @@ dhparams.pem
 /utils/__pycache__
 /flows/__pycache__
 /Trash*
+/scripts/__pycache__
