@@ -1,0 +1,41 @@
+{
+  "bundle": {
+    "id": "c96c47f9-a3e6-4fa8-871f-292a8587a97c",
+    "name": "ADSL Dataset",
+    "policy": "ADaM QC Plan - High Risk",
+    "stage": "Self QC"
+  },
+  "project": {
+    "id": "69f51679544ca06d66716565",
+    "name": "CDISC01_CSR",
+    "owner": "CDISC01_ReportingTeam",
+    "study": "CDISC01"
+  },
+  "dataset": "ADSL",
+  "spec": {
+    "filename": "adam_derivations_spec.csv",
+    "volume": "CDISC01_CSR_DATA_DEV",
+    "snapshot": 4
+  },
+  "sdtm": {
+    "volume": "CDISC01_SDTMBLIND",
+    "volume_id": "43d47cd8-af02-4d8e-8d0b-ab046102c03b",
+    "unique_name": "netapp-volume-CDISC01_SDTMBLIND-43d47cd8-af02-4d8e-8d0b-ab046102c03b",
+    "snapshot": 54,
+    "files": [
+      "dm.sas7bdat",
+      "ds.sas7bdat",
+      "ex.sas7bdat"
+    ]
+  },
+  "adam": null,
+  "output": {
+    "name": "CDISC01_CSR_DATA_DEV",
+    "id": "8b11dafd-190e-4445-ba82-d35164b6a93c",
+    "dir": "agent/adam"
+  },
+  "program": "programs/adam/CDISC01/adsl.R",
+  "session_id": "20261118-131129-628669~3164038a-6809-4f20-bb5f-0efba00494ab",
+  "program_version": 9,
+  "program_sha256": "285d5708e140b0cef12fd474f060d259f05ced68b64d660c1d338711221a0fee"
+}
