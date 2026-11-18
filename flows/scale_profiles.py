@@ -29,7 +29,7 @@ LARGE_FILE_BYTES = 11 * GIB
 # profile -> (fraction of each folder's files, fraction of its bytes, include the large file)
 PROFILES = {
     "regular": (0.02, 0.01, False),
-    "full": (1.0, 1.0, True),
+    "full": (0.6, 1.0, True),
 }
 
 FILES_PER_TASK = 50
